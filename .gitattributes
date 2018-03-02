@@ -1,3 +1,4 @@
 # Auto detect text files and perform LF normalization
 * text=auto
 SQL/PLSQL/*.sql linguist-language=PLSQL
+SQL/PLSQL/*/*.sql linguist-language=PLSQL
