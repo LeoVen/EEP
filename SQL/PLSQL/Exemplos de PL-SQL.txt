@@ -1,0 +1,9 @@
+<< ------------------------------------------------------------ Exemplos em ordem alfabética ------------------------------------------------------------ >>
+
+<< ---------- Soma de datas ---------- >>
+select to_date('01/11/2017', 'dd/mm/yyyy') + 10 from dual
+
+
+<< ---------- Copy table1 to table2 ---------- >>
+
+CREATE TABLE table1 AS (SELECT * FROM table2);

@@ -1,0 +1,654 @@
+	Estudos
+	Ultima Edição 		:	23-10-2017
+	Banco de Dados usado 	: 	11g
+	Editor Usado		:	PL/SQL Developer
+<<< <<< ---------------------------------------------------------------------- Notas ---------------------------------------------------------------------- >>> >>>
+
+	( * )  Usado como nota
+	( ? )  Usado como uma dúvida ainda não resolvido ou problema não bem definido
+	( T )  Já testado ou lido (sobre)
+	( NT ) Nunca Testado ou nuca lido (sobre)
+	(
+
+
+
+
+
+
+	
+<<< <<< ------------------------------------------------------------ SQL (Em Oracle Database*) ------------------------------------------------------------ >>> >>>
+
+		( * ) Nem todos os comandos funcionam no Oracle Database ( ? ) ( T )
+
+<< Casos Importantes >>
+
+<< Para Comparar Datas >>
+	Para se comparar uma data, se esta é maior que aquela devemos fazer da seguinte forma:
+		[SELECT * FROM table_name WHERE date_column >= 'yyyy-mm-dd';]
+		[SELECT * FROM table_name WHERE date_column BETWEEN 'yyyy-mm-dd' AND 'yyyy-mm-dd';]
+		[SELECT * FROM Orders WHERE OrderDate >= '1996-09-26';]
+
+<< Para Somar Datas >>
+	Para se somar uma data com a outra usamos o seguinte exemplo
+		[SELECT {Data aqui} + INTERVAL '{Quantidade}' {year/month/day/hour/minute/second} from dual]
+
+<< Usando LIKE com 'Wildcard' >>
+	<< LIKE >>
+		É usado depois de WHERE para procurar por um padrão especifico.
+		É usado conjuntamente com % e _
+		<< Exemplos >>
+			[
+				SELECT * FROM registro WHERE nome LIKE 'Thiago Cos__'
+				UNION
+				SELECT * FROM registro WHERE nome LIKE 'Leonardo%'
+				UNION
+				SELECT * FROM registro WHERE nome LIKE 'Ma%s%';
+			] -- Detalhe: Pode-se usar quantos 'Wildcards' você quiser
+		<< % >>
+			[SELECT * FROM registro WHERE nome LIKE '%a';] -- Encontra qualquer valor com terminação em 'a'
+			[SELECT * FROM registro WHERE nome LIKE 'a%';] -- Encontra qualquer valor que começa em 'a'
+			[SELECT * FROM registro WHERE nome LIKE '%a%';] -- Encontra qualquer valor com 'a' no meio
+			[SELECT * FROM registro WHERE nome LIKE 'b%a';] -- Encontra qualquer valor que começa em 'b' e que termina com 'a'
+		<< _ >>
+			[SELECT * FROM registro WHERE nome LIKE '_a%';] -- Encontra qualquer valor com 'a' na segunda posição
+			[SELECT * FROM registro WHERE nome LIKE 'a_%_%';] -- Encontra qualquer valor que começa em 'a' e que a segunda letra repetirá uma segunda vez
+			[SELECT * FROM registro WHERE nome LIKE '%a_';] -- Encontra qualquer valor onde a penultima letra é 'a'
+			[SELECT * FROM registro WHERE nome LIKE '%a_a%';] -- Encontra qualquer valor onde exista uma letra 'a' seguida por qualquer letra e denovo 'a'
+
+
+
+
+<< FUNÇÕES >>
+
+<< CREATE >>
+	Cria banco de tablespaces, databases e tables.
+	<< Exemplos >>
+		[CREATE DATABASE] -- CREATE DATABASE database_name
+		[CREATE TABLE] -- CREATE TABLE table_name
+
+
+<< INSERT INTO >>
+	Inserir dados em uma tabela.
+	<< Exemplos >>
+		[
+			INSERT INTO table_name (column_1, column_2, column_n)
+			VALUES (value_1, value_2, value_n)
+		]
+		[
+			INSERT INTO table_name
+			VALUES (value_1, value_2, value_n)
+		] -- Note que é possível omitir em quais colunas serão colocadas os valores
+		[
+			INSERT INTO table_name (column_1, column_2, column_n)
+			VALUES (value_1, value_2, value_3), (value_4, value_5, value_6), (value_7, value_8, value_9)
+		] -- ( T ) Em bancos de dados Oracle não é possível inserir varios registros dessa maneira. Veja INSERT ALL na área de PL/SQL para mais informações.
+		  -- ( NT ) ( ? ) Funciona também em outros bancos de dados?
+
+
+<< DROP >>
+	É usado para deletar uma tabela (não apenas seu conteúdo).
+	<< Exemplos >>
+		[DROP DATABASE] -- Precisa do database_name ( ? ) ( NT )
+		[DROP TABLE table_name]
+
+
+<< DELETE >>
+	Deleta conteúdo de tabelas. Deve ser usado em conjunto com FROM.
+	<< Exemplos >>
+		[DELETE * FROM table_name]
+		[DELETE * FROM table_name WHERE condition]
+
+
+<< UPDATE >>
+	Modifica valores da tabela especificados.
+	<< Exemplos >>
+		[
+			UPDATE table_name 
+			SET column_name = value_1, value_2, ... , value_n 
+			WHERE condition;
+		]
+		[
+			UPDATE sugar_cane_productivity
+			SET population = 207.7 
+			WHERE country = 'Brazil';
+		]
+
+
+<< ORDER BY >>
+	Ordernar os registros em ordem numérica ou alfabética dependendo de uma coluna.
+	<< Exemplos >>
+		[
+			SELECT * FROM table_name
+			ORDER BY column_name;
+		]
+		[
+			SELECT * FROM registro
+			ORDER BY nome;
+		]
+
+
+<< GROUP BY >>
+	O group by só pode ser usado com um SELECT das seguintes funções:
+		- MIN()
+		- MAX()
+		- SUM()
+		- COUNT()
+		- AVG()
+	Que são funções de agrupamento.
+	<< Exemplos >>
+		[
+			SELECT COUNT(*), c_age
+			FROM c_user
+			GROUP BY c_age
+			ORDER BY COUNT(*) DESC;
+		]
+		[
+			SELECT COUNT(*), SUM(c_salary)
+			FROM c_user
+			WHERE c_salary BETWEEN 200 AND 300
+			GROUP BY c_salary
+			ORDER BY COUNT(*) DESC;
+		]
+
+
+<< JOIN >>
+	É usado para combinar duas tabelas ( ou uma nela mesma ) baseado em um valor em comum entre elas.
+	Observe que as tabelas não se modificam.
+	{{São elas	:
+	<< INNER JOIN >>
+		Retorna registros que têm valores correspondentes em ambas as tabelas.
+		<< Exemplos >>
+			[
+				SELECT column_names(s)
+				FROM table_name_1
+				INNER JOIN table_name_2
+				ON table_name_1.column_name_1 = table_name_2.column_name_2
+				ORDER BY column_name;
+			]
+			[
+				SELECT table_name_1.column_name_1, table_name_2.column_name_2, table_name_3.column_name_3
+				FROM (	(table_name_1
+				INNER JOIN table_name_2 
+				ON table_name_1.column_name_1 = table_name_2.column_name_2 	)
+				INNER JOIN table_name_3
+				ON table_name_1.column_name_1 = table_name_3.column_name_3);
+			] -- Combinação de 3 colunas de 3 tabelas diferentes
+			[
+				SELECT registro.r_id, registro.nome, compras.id_compra, compras.nome_produto, compras.id_produto, compras.total_pago
+				FROM registro
+				INNER JOIN compras
+				ON registro.r_id = compras.id_usuario
+				WHERE registro.nome
+				LIKE 'Yasmin%'
+				ORDER BY registro.r_id;
+			]
+
+
+	<< LEFT JOIN >>
+		Retornar todos os registros da tabela à esquerda e os registros correspondentes da tabela da direita.
+		<< Exemplos >>
+			[
+				SELECT column_names(s)
+				FROM table_name_1
+				LEFT JOIN table_name_2
+				ON table_name_1.column_name_1 = table_name_2.column_name_2
+				ORDER BY column_name;
+			]
+	
+	<< RIGHT JOIN >>
+		Retornar todos os registros da tabela à direita e os registros correspondentes da tabela da esquerda.
+		<< Exemplos >>
+			[
+				SELECT column_names(s)
+				FROM table_name_1
+				RIGHT JOIN table_name_2
+				ON table_name_1.column_name_1 = table_name_2.column_name_2
+				ORDER BY column_name;
+			]
+
+	<< FULL OUTER JOIN >>
+		Retornar todos os registros quando houver uma correspondência na tabela à esquerda ou à direita.
+		<< Exemplos >>
+			[
+				SELECT column_names(s)
+				FROM table_name_1
+				RIGHT JOIN table_name_2
+				ON table_name_1.column_name_1 = table_name_2.column_name_2
+				ORDER BY column_name;
+			]
+	}}
+
+
+<< UNION >>
+	Usado para combinar o resultado de dois SELECT. Somente funciona se as duas colunas forem de mesmo tipo.
+	Observe que o UNION sozinho não produz duplicatas. Para permitir duplicatas use UNION ALL.
+	Observe que as tabelas não se modificam.
+	<< Exemplos >>
+		[
+			SELECT column_name(s) FROM table_name_1
+			UNION
+			SELECT column_name(s) FROM table_name_2;
+		]
+		[
+			SELECT column_name(s) FROM table_name_1
+			UNION ALL
+			SELECT column_name(s) FROM table_name_2;
+		] -- Permite Duplicatas
+		[
+			SELECT * FROM registro WHERE nome LIKE 'Thiago%'
+			UNION
+			SELECT * FROM registro WHERE nome LIKE 'Leonardo%'
+			UNION
+			SELECT * FROM registro WHERE nome LIKE 'Matheus%';
+		]
+
+
+<< ALTER TABLE >>
+	Usado para adicionar [ADD], excluir [DELETE] e modificar [MODIFY] colunas de uma tabela.
+	Também usado para adicionar ou remover restrições em uma tabela existente.
+	[ADD]
+		Adiciona novas colunas à tabela e é usado também para adicionar restrições.
+		<< Exemplos >>
+			[
+				ALTER TABLE table_name
+				ADD column_name datatype;
+			]
+			[
+				ALTER TABLE sugar_cane_productivity
+				ADD population FLOAT;
+			]
+	[DROP]
+		Remove colunas da tabela e é também usado para remover restrições.
+		<< Exemplos >>
+			[
+				ALTER TABLE table_name
+				DROP COLUMN column_name
+			]
+			[
+				ALTER TABLE sugar_cane_productivity
+				DROP COLUMN population;
+			] -- Apenas testado em Wamp Server (MySQL)
+	[MODIFY]
+		Pode modificar o tipo de dados de uma coluna ou também modificar restrições.
+		<< Exemplos >>
+			[
+				ALTER TABLE table_name
+				MODIFY COLUMN column_name datatype constraint;
+			]
+			[
+				ALTER TABLE sugar_cane_productivity
+				MODIFY COLUMN production DECIMAL (18, 2) NOT NULL;
+			]
+
+
+<< TOP, LIMIT, ROWNUM >>
+	TOP	: Usado em SQL Server e MS Access
+	LIIMIT	: Usado em MySQL
+	ROWNUM	: Usado em Oracle
+	Usado para limitar consulta. Retorna uma quantidade fixa de registros para optimizar vizualização.
+	<< Exemplos >>
+		[
+			SELECT * FROM (
+				SELECT * FROM compras
+				WHERE id_compra > 20 AND id_compra < 40
+				ORDER BY id_compra)
+			WHERE ROWNUM < 20;
+		] -- Exemplo com ROWNUM usado em um banco de dados Oracle
+		[
+			SELECT * FROM Customers
+			WHERE Country='Germany'
+			ORDER BY CustomerName
+			LIMIT 4;
+		] -- Exemplo com LIMIT usado em banco de dados MySQL 		(https://www.w3schools.com/sql/trymysql.asp?filename=trysql_select_limit_where)
+		[
+			SELECT TOP 10 PERCENT * FROM Customers
+			WHERE Country LIKE '%n%'
+			ORDER BY CustomerName;
+		] -- Exemplo usado em banco de dados SQL Server e MS Access 	(https://www.w3schools.com/sql/trysql.asp?filename=trysql_select_top_where&ss=-1)
+
+
+<<  >>
+
+
+
+
+
+
+<<< <<< ---------------------------------------------------------------------- PL/SQL ---------------------------------------------------------------------- >>> >>>
+	(Tutorials Point)
+
+<< PL/SQL >> 
+	É dividido em 3 blocos: DECLARE, BEGIN END, EXCEPTION
+		- Declarações (DECLARE) : 
+			[Opcional] Declaração de variáveis, subprogramas e outros elementos
+		- Programas Executáveis (BEGIN END;) :
+			[Obrigatório] Começa com BEGIN e termina com END; Aqui serão executados todas as linhas de códigos
+		- Exceções (EXCEPTION) : 
+			[Opcional] Lida com exceções caso os comandos não sejam executados corretamente
+	Observe que em um programa podem haver vários BEGIN END e vários EXCEPTION mas apenas um DECLARE.
+
+
+<< Exemplo >> 
+	[
+		DECLARE
+			<declaration section>
+		BEGIN
+			<executable command(s)>
+		EXCEPTION
+			<exception handling>
+		END;
+	] -- Note que blocos com BEGIN e END podem ter outros blocos BEGIN e END dentro.
+
+<< Scope de variáveis >>
+	Quando temos mais de um BEGIN END devemos tomar cuidado pois variáveis declaradas dentro de um bloco não servirão para o outro.
+	<< Exemplos >>
+		[
+			DECLARE
+  				-- Global variables
+  				num1 number := 95;
+  				num2 number := 85;
+			BEGIN
+  				dbms_output.put_line('Outer Variable num1: ' || num1);
+  				dbms_output.put_line('Outer Variable num2: ' || num2);
+
+  				DECLARE
+  					-- Local variables
+  					num1 number := 195;
+  					num2 number := 185;
+  				BEGIN
+    					dbms_output.put_line('Inner Variable num1: ' || num1);
+    					dbms_output.put_line('Inner Variable num2: ' || num2);
+  				END;
+			END;
+		] -- Exemplo de variáveis globais e variáveis locais.
+
+
+<< Hello World >> 
+	[
+		DECLARE
+	 		message varchar2(20):= 'Hello, World!';
+		BEGIN
+	 		dbms_output.put_line(message);
+		END;
+	]
+
+
+
+<< Identifiers >> 
+	(constantes, variáveis, exceções, procedimentos, cursores, palavras reservadas)
+	-- Não são case-sensitive (ex: integer = INTEGER)
+
+
+
+<< Comentários >> 
+	/* Comentário de várias linhas */
+	-- Comentário de uma linha 
+
+
+
+<< Tipos de Dados >> 
+	<< Scalar :
+		[Numeric] : Valores numéricos
+		[Character] : Valores alfanuméricos, podendo ser uma string
+		[Boolean] : Valor lógico (verdadeiro ou falso)
+		[Datetime] : Datas e tempos
+	<< Valores Lógicos :
+		[Boolean] : True, False
+		[NULL] : null
+
+
+<< INSERT ALL >>
+	Método para inserir vários registros ao mesmo tempo.
+	Note que este comando foi usado em um banco de dados oracle.
+	<< Exemplo >>
+		[
+			INSERT ALL
+    				INTO sugar_cane_productivity VALUES (1, 'Brazil', 736.11)
+    				INTO sugar_cane_productivity VALUES (2, 'India', 352.15)
+    				INTO sugar_cane_productivity VALUES (3, 'China', 126.15)
+    				INTO sugar_cane_productivity VALUES (4, 'Thailand', 103.7)
+    				INTO sugar_cane_productivity VALUES (5, 'Pakistan', 62.83)
+    				INTO sugar_cane_productivity VALUES (6, 'Mexico', 56.673)
+    				INTO sugar_cane_productivity VALUES (7, 'Colombia', 36.51)
+    				INTO sugar_cane_productivity VALUES (8, 'Australia', 30.52)
+    				INTO sugar_cane_productivity VALUES (9, 'Indonesia', 28.6)
+    				INTO sugar_cane_productivity VALUES (10, 'USA', 27.6)
+			SELECT * FROM DUAL;
+		]
+
+
+<< Arrays >>
+	Para fazer o uso de um vetor deve-se primeiramente definir um novo tipo de variável (VARRAY).
+	Depois devemos inicializar uma outra variável do novo tipo (nome do novo tipo de variável)
+	<< Exemplos >>
+		[
+			TYPE vetor IS VARRAY(20) OF VARCHAR2 (20);
+			produtos VETOR;
+		] -- Cria um VARRAY de nome 'produtos' de 20 posições em que cada posição armazena um VARCHAR2 de 20 espaços.
+
+
+<< - PROCEDURE FUNCTION (Subprograms) - >>
+	<< << PROCEDURE :
+	<< Um subprograma pode ser criado em três níveis :
+		[Standalone Subprogram]
+			É criado por CREATE PROCEDURE ou CREATE FUNCTION. É armazenado no banco de dados e pode ser deletado por DROP PROCEDURE ou DROP FUNCTION.
+		[Packaged Subprogram]
+			É armazenado no banco de dados e será deletado por DROP PACKAGE. {Veja mais sobre Packages}
+		[Dentro de um bloco de PL/SQL]
+			
+	<< Existem dois tipos de Subprogramas :
+		[Functions]
+			Esses subprogramas retornam um único valor, geralmente para fazer cálculos e retornar o valor.
+		[Procedures]
+			Esses subprogramas não retornam um valor, geralmente usados para apenas realizar um cálculo.
+	<< Partes de um subprograma :
+		[Declaração]
+			(Opcional) É a parte onde as variáveis locais são declaradas. Após a execução, essas variáveis serão desfeitas.
+			Observe que não há um bloco DECLARE, pois as variáveis são declaradas de um modo diferente.
+		[Execução]
+			(Obrigatório) É a parte do programa onde um código será executado.
+		[Exceção]
+			(Opcional) É onde em caso de exceções, um bloco de código será executado.
+	<< Hello World :
+		[
+			CREATE OR REPLACE PROCEDURE meu_procedimento
+			AS
+			BEGIN
+				dbms_output.put_line('Hello World!');
+			END;
+			DECLARE
+				i INT;
+				nome VARCHAR2 (20);
+			BEGIN
+				i := 20;
+				FOR i IN 1 .. 20 LOOP
+					meu_procedimento;
+				END LOOP;
+			END;
+		]
+	<< Chamando uma função :
+		Para chamar uma função basta chamar o nome da função num bloco PL/SQL (como mostrado acima) ou usar o comando EXECUTE.
+		O comando EXECUTE é usando no SQL prompt
+		[EXECUTE meu_procedimento;] -- Detalhe : ( ? ) Só funciona com SQL*Plus
+	<< Deletando um procedimento :
+		[DROP PROCEDURE meu_procedimento;]
+	<< Subprograma com parâmetros :
+		Parâmetros de um subprograma :
+		[IN] 	 -- É o modo padrão de passagem de parâmetros. São parâmetros read-only (valores fixos).
+		[OUT] 	 -- É um parâmetro que retorna um valor ao programa que o chamou. Deve ser um parâmetro variável.
+		[IN OUT] -- É um parâmetro que irá entrar no subprograma e voltará com um novo valor. Deve ser um parâmetro variável.
+		Observe que só pode haver um OUT ou um IN OUT.
+		<< Exemplos >>
+			[
+				DECLARE
+  					a number;
+					b number;
+  					c number;
+				PROCEDURE findMin(x IN number, y IN number, z OUT number)
+				AS
+				BEGIN
+  					IF x < y THEN
+    						z:= x;
+  					ELSE
+    						z:= y;
+  					END IF;
+				END;
+				BEGIN
+  					a:= 23;
+  					b:= 45;
+  					findMin(a, b, c);
+  						dbms_output.put_line(' Minimum of (23, 45) : ' || c);
+				END;
+			] -- Exemplo com IN e OUT
+			[
+				DECLARE
+					a number;
+				PROCEDURE squareNum(x IN OUT number) IS
+				BEGIN
+					x := x * x;
+				END;
+				BEGIN
+					a:= 23;
+					squareNum(a);
+					dbms_output.put_line(' Square of (23): ' || a);
+				END;
+			] -- Exemplo com IN OUT
+	<< Métodos de passar parâmetros :
+		[Positional Notation]
+			Os parâmetros são enviados em ordem.
+			<< Exemplos >>
+				[EXECUTE meu_procedimento(a, b, c, d);]
+		[Named Notation]
+			Os parâmetros enviados são associados aos 
+			Observe que os parâmetros podem ser especificados em qualquer ordem.
+			<< Exemplos >>
+				[EXECUTE meu_procedimento(x => a, y => b, z => c, k => d);]
+		[Mixed Notation]
+			Forma mixa de passar parâmetros, com 'Positional' e 'Named' Notation.
+			Observe que a forma 'Named' só pode ser usada no final. O segundo exemplo mostrado é ilegal.
+			<< Exemplos >>
+				[EXECUTE meu_procedimento(x, y, z, k => d);] -- Note que a.
+				[EXECUTE meu_procedimento(x => a, y, z, k);] -- Ilegal.
+	<< << FUNCTION :
+	<< Criando uma função
+		Observe que a função deve estar indentada dentro de um bloco PL/SQL antes do BEGIN (como se fosse uma delcaração de uma função).	
+		<< Exemplos >>
+			[
+				FUNCTION function_name (Parâmetros)
+				RETURN return_datatype 
+				IS
+					var_name return_datatype;
+				BEGIN
+					<Código>
+					RETURN var_name;
+				END function_name;
+			]
+			[
+				DECLARE
+  					i INT;
+  					random INT;
+  					numero_1 INT;
+  					numero_2 INT;
+  
+  					FUNCTION aleatorio(numero1 IN INT, numero2 IN INT)
+  					RETURN INT IS 
+    						resultado INT;
+  					BEGIN
+    						resultado := ABS(MOD(dbms_random.random, numero1)) + ABS(MOD(dbms_random.random, numero2));
+    						RETURN resultado;
+  					END aleatorio;
+
+				BEGIN
+  					numero_1 := 10;
+  					numero_2 := 14;
+  					FOR i IN 1 .. 10 LOOP
+    						random := aleatorio(numero_1, numero_2);
+    						dbms_output.put_line (random);
+  					END LOOP;
+				END;
+			]
+		Pode haver recursividade também.
+		<< Exemplos >>
+			[
+				DECLARE
+  					fat INT;
+  					numer INT;
+  
+  					FUNCTION fatorial(numero IN INT)
+  					RETURN INT IS
+    						resultado INT;
+  					BEGIN
+    						IF numero = 0 THEN
+      							resultado := 1;
+    						ELSE
+      							resultado := numero * fatorial(numero - 1);
+   						END IF;
+    						RETURN resultado;
+  					END fatorial;
+  
+  				BEGIN
+    					numer := 5; -- Pode haver input do usuário se possível
+    					fat := fatorial(numer);
+    					dbms_output.put_line (numer || '! = ' || fat);
+				END;
+			] -- Função de Fatorial
+
+
+<< EXCEPTION >>
+	Bloco que será executado caso haja erros durante a execução do programa.
+
+
+<< COLLECTIONS >>
+	É um grupo ordenado de elementos do mesmo tipo. Existem 3 tipos :
+	[Index-by tables or Associative array]
+	[Nested table]
+	[Variable-size array or Varray]
+	
+
+<< OBJECTS >>
+	Programação orientada a objetos.
+	<< Exemplos >>
+		[
+			CREATE OR REPLACE TYPE address AS OBJECT
+			(house_no VARCHAR2 (10),
+			 street VARCHAR2 (30),
+			 city VARCHAR2 (20),
+			 state VARCHAR2 (10),
+			 pincode VARCHAR2 (10
+			);
+		] -- Criando um objeto de nome 'address'
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+buffer
