@@ -9,3 +9,4 @@
 *.sql linguist-detectable=true
 *.prc linguist-detectable=true
 *.fnc linguist-detectable=true
+*.c linguist-language=C
