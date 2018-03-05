@@ -1,7 +1,7 @@
 * text=auto
+*.sql linguist-vendored=false
+*.prc linguist-vendored=false
+*.fnc linguist-vendored=false
 *.sql linguist-language=SQL
 *.prc linguist-language=SQL
 *.fnc linguist-language=SQL
-*.sql linguist-detectable=true
-*.prc linguist-detectable=true
-*.fnc linguist-detectable=true
