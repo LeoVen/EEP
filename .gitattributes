@@ -1,11 +1,7 @@
-# Auto detect text files and perform LF normalization
-
 * text=auto
-
 *.sql linguist-language=SQL
 *.prc linguist-language=SQL
 *.fnc linguist-language=SQL
 *.sql linguist-detectable=true
 *.prc linguist-detectable=true
 *.fnc linguist-detectable=true
-
