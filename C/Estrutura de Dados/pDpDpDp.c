@@ -3,7 +3,6 @@
 */
 
 #include <stdio.h>
-#include <stdlib.h>
 
 void func_1(int *a);
 void func_2(int **b);
@@ -13,11 +12,12 @@ void func_4(int ****d);
 int main(int argc, char **argv) {
 	
 	int x = 10;
-	printf("\nAddress of initial value: %p", &x);
-	printf("\nAnd its value: %d\n", x);
+
+	printf("\n [ x ] value   : %d\n", x);
+	printf(" [ x ] address : %p\n", &x);
 	func_1(&x);
-	printf("\nAddress of final value: %p", &x);
-	printf("\nAnd its value: %d\n", x);
+	printf("\n [ x ] address : %p", &x);
+	printf("\n [ x ] value   : %d\n", x);
 
 	return 0;
 }
@@ -25,30 +25,30 @@ int main(int argc, char **argv) {
 void func_1(int *a)
 {
 	(*a)++;
+	printf("\n [ a ] points to : %p\n", a);
+	printf(" [ a ] address   : %p\n", &a);
 	func_2(&a);
-	printf("\nAddress of a: %p\n", &a);
-	printf("And it points to : %p\n", a);
 }
 
 void func_2(int **b)
 {
 	(**b)++;
+	printf("\n [ b ] points to : %p\n", b);
+	printf(" [ b ] address   : %p\n", &b);
 	func_3(&b);
-	printf("\nAddress of b: %p\n", &b);
-	printf("And it points to : %p\n", b);
 }
 
 void func_3(int ***c)
 {
 	(***c)++;
+	printf("\n [ c ] points to : %p\n", c);
+	printf(" [ c ] address   : %p\n", &c);
 	func_4(&c);
-	printf("\nAddress of c: %p\n", &c);
-	printf("And it points to : %p\n", c);
 }
 
 void func_4(int ****d )
 {
 	(****d)++;
-	printf("\nAddress of d: %p\n", &d);
-	printf("And it points to : %p\n", d);
+	printf("\n [ d ] points to : %p\n", d);
+	printf(" [ d ] address   : %p\n", &d);
 }
