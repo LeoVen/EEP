@@ -6,7 +6,7 @@
 
 	Implementação de uma lista encadeada
 
-	+-----------------------------------------+
+    +-----------------------------------------+
     |        Simple Singly Linked List        |
     +-----------------------------------------+
 	
@@ -71,7 +71,7 @@ void println(const char *str);
 int main(int argc, char const *argv[])
 {
 	println(" ");
-	int err;
+	
 	SSLL *ssll;
 	printCode(init(&ssll));
 	printCode(resetAndInit(&ssll));
