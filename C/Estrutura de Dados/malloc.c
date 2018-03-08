@@ -1,3 +1,7 @@
+/*
+	Exemplo básico de malloc
+*/
+
 #include <stdio.h>
 #include <stdlib.h>
 
