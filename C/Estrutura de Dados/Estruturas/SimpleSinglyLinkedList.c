@@ -523,7 +523,7 @@ int insertRandom(SSLL **ssll, int quantity)
 {
 	int i, random;
 
-	for (i = 0; i < 10; i++) {
+	for (i = 0; i < quantity; i++) {
 		random = getRandom();
 
 		SSLL *new, *run;
