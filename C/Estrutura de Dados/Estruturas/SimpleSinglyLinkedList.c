@@ -33,7 +33,7 @@
 #define CLEAR_SCREEN "cls"
 
 // Change to 1 if you want list's first position to be considered as 1. Default 0.
-#define FIX 1
+#define FIX 0
 
 /*
 +-----------------------------------------+
@@ -68,7 +68,8 @@ typedef struct SimpleSinglyLinkedList {
 /*[ 111]*/// TODO int invertList(SSLL **ssll);                             // Inverts list
 /*[ 112]*/// TODO int arrayToList(SSLL **ssll, int v[]);                   // Transforms array to list
 /*[ 113]*/int initRandomList(SSLL **ssll);                                 // Reset and Initialize list with random numbers
-/*[ 113]*/int insertRandom(SSLL **ssll, int quantity);                     // Insert n random nodes
+/*[ 114]*/int insertRandom(SSLL **ssll, int quantity);                     // Insert n random nodes
+/*[ 115]*///SSLL* cloneList(SSLL **ssll);                                  // Returns the clone of a list
 
 /*[NONE]*/int getListSize(SSLL *ssll);                                     // Gets list's size
 /*[NONE]*/// TODO int getArraySize(int v[]);                               // Gets array's size
@@ -175,6 +176,10 @@ int main(int argc, char const *argv[])
 				else raise(500);
 				break;
 			case 15:
+				println("Method not implemented yet");
+				pause();
+				break;
+			case 16:
 				if (ini) printf("\nSIZE %d\n", getListSize(ssll));
 				pause();
 				break;
@@ -349,7 +354,7 @@ int removeMiddle(SSLL **ssll, int position)
 	SSLL *run, *kill;
 
 	// Fixing every possible unexpected behavior
-	if (position < (0 + FIX) || position > (size + FIX)) {
+	if (position < (0 + FIX) || position >= (size + FIX)) {
 		// Invalid position
 		return 6;
 	} else if (*ssll == NULL) {
@@ -539,7 +544,7 @@ int insertRandom(SSLL **ssll, int quantity)
 			run -> next = new;
 		}
 	}
-	return 0;
+	return 114;
 }
 
 int getListSize(SSLL *ssll)
@@ -641,6 +646,7 @@ int printMenu()
 	println(" [ 12 ] - Convert array to list");
 	println(" [ 13 ] - Restart list with random numbers");
 	println(" [ 14 ] - Insert 10 random nodes");
+	println(" [ 15 ] - Clone list to another list");
 	println(" ");
 	printf(" > ");
 	scanf("%d", &option);
