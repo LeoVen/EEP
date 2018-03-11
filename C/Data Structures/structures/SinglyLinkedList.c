@@ -7,7 +7,7 @@
 	Implementação de uma lista encadeada
 
     +-----------------------------------------+
-    |        Simple Singly Linked List        |
+    |            Singly Linked List           |
     +-----------------------------------------+
 */
 
@@ -16,7 +16,7 @@
  * I've chosen to make all functions independent. That is, no function calls another
  * function inside of itself. So I've made every logic again inside of every function.
  *
- * If you find any bugs or erros please create an issue.
+ * If you find any bugs or errors please create an issue.
  *
  * Any improvements are welcomed.
  *
@@ -24,24 +24,18 @@
 
 #include <stdio.h>
 #include <stdlib.h>
-#include <SSLL.h>
+#include <SinglyLinkedList.h>
 #include <utility.h>
 
 // Change to 1 if you want list's first position to be considered as 1. Default 0.
 #define FIX 0
 
-/*
-+-----------------------------------------+
-|        Simple Singly Linked List        |
-+-----------------------------------------+
-*/
-
-struct SimpleSinglyLinkedList {
+struct SinglyLinkedList {
     int data;
-    struct SimpleSinglyLinkedList *next;
+    struct SinglyLinkedList *next;
 };
 
-typedef struct SimpleSinglyLinkedList SSLL;
+typedef struct SinglyLinkedList SLL;
 
 /*
 +-----------------------------------------+
@@ -56,125 +50,125 @@ int getRandom();
 +-----------------------------------------+
 */
 //[info_code]
-/*[ 101]*/int initSSLL(SSLL **ssll);                                           // Init with null
-/*[ 102]*/int resetAndInitSSLL(SSLL **ssll);                                   // free memory and initSSLL with null
+/*[ 111]*/int initSLL(SLL **sll);                                           // Init with null
+/*[ 112]*/int resetAndInitSLL(SLL **sll);                                   // free memory and init with null
 
-/*[ 103]*/int insertHeadSSLL(SSLL **ssll, int data);                          // Insert at first position of list
-/*[ 105]*/int insertNodeSSLL(SSLL **ssll, int data, int position);            // Insert at the middle of the list
-/*[ 104]*/int insertTailSSLL(SSLL **ssll, int data);                            // Insert at the end of the list
+/*[ 113]*/int insertHeadSLL(SLL **sll, int data);                          // Insert at first position of list
+/*[ 115]*/int insertNodeSLL(SLL **sll, int data, int position);            // Insert at the middle of the list
+/*[ 114]*/int insertTailSLL(SLL **sll, int data);                            // Insert at the end of the list
 
-/*[ 106]*/int removeHeadSSLL(SSLL **ssll);                                    // Remove first position
-/*[ 107]*/int removeMiddleSSLL(SSLL **ssll, int position);                     // Remove nth position
-/*[ 108]*/int removeTailSSLL(SSLL **ssll);                                      // Remove last position
+/*[ 116]*/int removeHeadSLL(SLL **sll);                                    // Remove first position
+/*[ 117]*/int removeNodeSLL(SLL **sll, int position);                     // Remove nth position
+/*[ 118]*/int removeTailSLL(SLL **sll);                                      // Remove last position
 
-/*[ 109]*/int printSSLL(SSLL *ssll);                                         // Prints entire list
-/*[ 110]*/// TODO int listValue(SSLL *ssll, int position);                 // Prints value of single position
+/*[ 119]*/int printSLL(SLL *sll);                                         // Prints entire list
+/*[ 120]*/// TODO int listValueSLL(SLL *sll, int position);                 // Prints value of single position
 
-/*[ 111]*/// TODO int invertList(SSLL **ssll);                             // Inverts list
-/*[ 112]*/// TODO int arrayToList(SSLL **ssll, int v[]);                   // Transforms array to list
-/*[ 113]*/int initRandomSSLL(SSLL **ssll);                                 // Reset and Initialize list with random numbers
-/*[ 114]*/int insertRandomSSLL(SSLL **ssll, int quantity);                     // Insert n random nodes
-/*[ 115]*///SSLL* cloneList(SSLL **ssll);                                  // Returns the clone of a list
+/*[ 121]*/// TODO int invertListSLL(SLL **sll);                             // Inverts list
+/*[ 122]*/// TODO int arrayToListSLL(SLL **sll, int v[]);                   // Transforms array to list
+/*[ 123]*/int initRandomSLL(SLL **sll);                                 // Reset and Initialize list with random numbers
+/*[ 124]*/int insertRandomSLL(SLL **sll, int quantity);                     // Insert n random nodes
+/*[ 125]*/SLL ** cloneSLL(SLL **sll);                                  // Returns the clone of a list
 
-/*[NONE]*/int getListSize(SSLL *ssll);                                     // Gets list's size
+/*[NONE]*/int getListSize(SLL *sll);                                     // Gets list's size
 /*[NONE]*/// TODO int getArraySize(int v[]);                               // Gets array's size
 
 /* -----------------------------------------------------------------------------
 		[  1 ] INITIALIZE
 ------------------------------------------------------------------------------*/
-int initSSLL(SSLL **ssll)
+int initSLL(SLL **sll)
 {
-    *ssll = NULL;
-    return 101;
+    *sll = NULL;
+    return 111;
 }
 
 /* -----------------------------------------------------------------------------
 		[  2 ] RESET
 ------------------------------------------------------------------------------*/
-int resetAndInitSSLL(SSLL **ssll)
+int resetAndInitSLL(SLL **sll)
 {
-    SSLL *run, *kill;
+    SLL *run, *kill;
 
-    if (*ssll != NULL) {
+    if (*sll != NULL) {
         // List is not empty
-        run = *ssll;
+        run = *sll;
         while (run != NULL)
         {
             kill = run;
             run = run -> next;
             free(kill);
         }
-        *ssll = NULL;
-        return 102;
+        *sll = NULL;
+        return 112;
     } else {
         // List is empty
-        initSSLL(ssll);
-        return 2;
+        *sll = NULL;
+        return 102;
     }
 }
 
 /* -----------------------------------------------------------------------------
 		[  3 ] INSERT START
 ------------------------------------------------------------------------------*/
-int insertHeadSSLL(SSLL **ssll, int data)
+int insertHeadSLL(SLL **sll, int data)
 {
-    SSLL *new;
-    new = (SSLL *) malloc(sizeof( SSLL ));
+    SLL *new;
+    new = (SLL *) malloc(sizeof( SLL ));
     new -> data = data;
 
-    if (*ssll == NULL) {
+    if (*sll == NULL) {
         new -> next = NULL;
-        *ssll = new;
+        *sll = new;
     } else {
-        new -> next = *ssll;
-        *ssll = new;
+        new -> next = *sll;
+        *sll = new;
     }
-    return 103;
+    return 113;
 }
 
 /* -----------------------------------------------------------------------------
 		[  4 ] INSERT MIDDLE
 ------------------------------------------------------------------------------*/
-int insertNodeSSLL(SSLL **ssll, int data, int position)
+int insertNodeSLL(SLL **sll, int data, int position)
 {
-    int i, size = getListSize(*ssll);
-    SSLL *new, *run;
+    int i, size = getListSize(*sll);
+    SLL *new, *run;
 
-    new = (SSLL *) malloc(sizeof( SSLL ));
+    new = (SLL *) malloc(sizeof( SLL ));
     new -> data = data;
 
     // Fixing every possible unexpected behavior
     if (position < (0 + FIX) || position > (size + FIX)) {
         // Invalid position
-        return 5;
+        return 105;
     } else {
-        run = *ssll;
+        run = *sll;
         if (position == FIX) {
             // Insert at first position
-            if (*ssll == NULL) {
+            if (*sll == NULL) {
                 // Could happen
                 new -> next = NULL;
-                *ssll = new;
+                *sll = new;
             } else {
-                new -> next = *ssll;
-                *ssll = new;
+                new -> next = *sll;
+                *sll = new;
             }
-            return 103;
+            return 113;
         } else if (position == size + FIX) {
             // Insert at last position
             new -> next = NULL;
-            if (*ssll == NULL) {
+            if (*sll == NULL) {
                 // Could happen
-                *ssll = new;
+                *sll = new;
             } else {
-                run = *ssll;
+                run = *sll;
                 while(run -> next != NULL)
                 {
                     run = run -> next;
                 }
                 run -> next = new;
             }
-            return 105;
+            return 115;
         } else {
             // Insertion at the middle
             for (i = 0 + FIX; i < position - 1 /*One position before*/; i++) {
@@ -182,7 +176,7 @@ int insertNodeSSLL(SSLL **ssll, int data, int position)
             }
             new -> next = run -> next;
             run -> next = new;
-            return 104;
+            return 114;
         }
     }
 }
@@ -190,76 +184,76 @@ int insertNodeSSLL(SSLL **ssll, int data, int position)
 /* -----------------------------------------------------------------------------
 		[  5 ] INSERT END
 ------------------------------------------------------------------------------*/
-int insertTailSSLL(SSLL **ssll, int data)
+int insertTailSLL(SLL **sll, int data)
 {
-    SSLL *new, *run;
-    new = (SSLL *) malloc(sizeof( SSLL ));
+    SLL *new, *run;
+    new = (SLL *) malloc(sizeof( SLL ));
     new -> data = data;
     new -> next = NULL;
 
-    if (*ssll == NULL) {
+    if (*sll == NULL) {
         // Empty List
-        *ssll = new;
+        *sll = new;
     } else {
         // List not empty
-        run = *ssll;
+        run = *sll;
         while(run -> next != NULL)
         {
             run = run -> next;
         }
         run -> next = new;
     }
-    return 105;
+    return 115;
 }
 
 /* -----------------------------------------------------------------------------
 		[  6 ] REMOVE START
 ------------------------------------------------------------------------------*/
-int removeHeadSSLL(SSLL **ssll)
+int removeHeadSLL(SLL **sll)
 {
-    SSLL *kill;
+    SLL *kill;
 
-    if (*ssll == NULL) {
+    if (*sll == NULL) {
         // List is empty
-        return 3;
+        return 103;
     } else {
         // List not empty, remove first position
-        kill = *ssll;
-        *ssll = (*ssll) -> next;
+        kill = *sll;
+        *sll = (*sll) -> next;
         free(kill);
-        return 106;
+        return 116;
     }
 }
 
 /* -----------------------------------------------------------------------------
 		[  7 ] REMOVE MIDDLE
 ------------------------------------------------------------------------------*/
-int removeMiddleSSLL(SSLL **ssll, int position)
+int removeNodeSLL(SLL **sll, int position)
 {
-    int i, size = getListSize(*ssll);
-    SSLL *run, *kill;
+    int i, size = getListSize(*sll);
+    SLL *run, *kill;
 
     // Fixing every possible unexpected behavior
     if (position < (0 + FIX) || position >= (size + FIX)) {
         // Invalid position
-        return 6;
-    } else if (*ssll == NULL) {
+        return 106;
+    } else if (*sll == NULL) {
         // List is empty. Nothing to remove.
-        return 3;
+        return 103;
     } else {
         // Position is valid
         if (position == FIX) {
             // Remove first position
-            kill = *ssll;
-            *ssll = (*ssll) -> next;
+            kill = *sll;
+            *sll = (*sll) -> next;
             free(kill);
-            return 106;
+            return 116;
         } else if (position == size - 1 + FIX) {
             // Remove last position
-            run = *ssll;
+            run = *sll;
             if (run -> next == NULL) {
                 // Only one position. Remove it.
-                *ssll = NULL;
+                *sll = NULL;
                 free(run);
             } else {
                 // More than one position. Go to one before the end.
@@ -271,10 +265,10 @@ int removeMiddleSSLL(SSLL **ssll, int position)
                 run -> next = NULL;
                 free(kill);
             }
-            return 108;
+            return 118;
         } else {
             // Remove chosen position
-            run = *ssll;
+            run = *sll;
             for (i = 1 + FIX; i < position /*Two positions before*/; i++) {
                 run = run -> next;
             }
@@ -286,7 +280,7 @@ int removeMiddleSSLL(SSLL **ssll, int position)
                 run -> next = ( run -> next ) -> next; // Skipping the removed one
             }
             free(kill);
-            return 107;
+            return 117;
         }
     }
 }
@@ -294,20 +288,20 @@ int removeMiddleSSLL(SSLL **ssll, int position)
 /* -----------------------------------------------------------------------------
 		[  8 ] REMOVE END
 ------------------------------------------------------------------------------*/
-int removeTailSSLL(SSLL **ssll)
+int removeTailSLL(SLL **sll)
 {
-    SSLL *run, *kill;
+    SLL *run, *kill;
 
-    if (*ssll == NULL) {
+    if (*sll == NULL) {
         // List is empty
-        return 3;
+        return 103;
     } else {
-        run = *ssll;
+        run = *sll;
         if (run -> next == NULL) {
             // Only one position. Remove it.
-            *ssll = NULL;
+            *sll = NULL;
             free(run);
-            return 108;
+            return 118;
         } else {
             // More than one position. Go to one before the end.
             while (( run -> next ) -> next != NULL)
@@ -317,7 +311,7 @@ int removeTailSSLL(SSLL **ssll)
             kill = run -> next;
             run -> next = NULL;
             free(kill);
-            return 108;
+            return 118;
         }
     }
 }
@@ -325,23 +319,21 @@ int removeTailSSLL(SSLL **ssll)
 /* -----------------------------------------------------------------------------
 		[  9 ] LIST ALL
 ------------------------------------------------------------------------------*/
-int printSSLL(SSLL *ssll)
+int printSLL(SLL *sll)
 {
-    int i;
-
-    if (ssll == NULL) {
+    if (sll == NULL) {
         // List is empty
-        return 4;
+        return 104;
     } else {
-        println("\nLIST\n");
-        while (ssll != NULL)
+        println("\nSINGLY LINKED LIST\n");
+        while (sll != NULL)
         {
-            printf("%d ", ssll->data);
-            ssll = ssll -> next;
+            printf("%d ", sll -> data);
+            sll = sll -> next;
         }
     }
-    println("\n");
-    return 0;
+    println(" ");
+    return 100;
 }
 
 /* -----------------------------------------------------------------------------
@@ -359,20 +351,20 @@ int printSSLL(SSLL *ssll)
 /* -----------------------------------------------------------------------------
 		[ 13 ] RESTART RANDOM
 ------------------------------------------------------------------------------*/
-int initRandomSSLL(SSLL **ssll)
+int initRandomSLL(SLL **sll)
 {
-    SSLL *run, *kill;
+    SLL *run, *kill;
     int random;
 
-    if (*ssll != NULL) {
-        run = *ssll;
+    if (*sll != NULL) {
+        run = *sll;
         while (run != NULL)
         {
             kill = run;
             run = run -> next;
             free(kill);
         }
-        *ssll = NULL;
+        *sll = NULL;
     } // Now list is empty
 
     int i;
@@ -380,18 +372,18 @@ int initRandomSSLL(SSLL **ssll)
     for (i = 0; i < 10; i++) {
         random = getRandom();
 
-        SSLL *new;
-        new = (SSLL *) malloc(sizeof( SSLL ));
+        SLL *new;
+        new = (SLL *) malloc(sizeof( SLL ));
         new -> data = random;
         new -> next = NULL;
 
-        if (*ssll == NULL) {
+        if (*sll == NULL) {
             // Making sure list is empty
-            *ssll = new;
+            *sll = new;
             raise(0);
         } else {
             // OK
-            run = *ssll;
+            run = *sll;
             while(run -> next != NULL)
             {
                 run = run -> next;
@@ -399,30 +391,30 @@ int initRandomSSLL(SSLL **ssll)
             run -> next = new;
         }
     }
-    return 113;
+    return 123;
 }
 
 /* -----------------------------------------------------------------------------
 		[ 14 ] INSERT RANDOM
 ------------------------------------------------------------------------------*/
-int insertRandomSSLL(SSLL **ssll, int quantity)
+int insertRandomSLL(SLL **sll, int quantity)
 {
     int i, random;
 
     for (i = 0; i < quantity; i++) {
         random = getRandom();
 
-        SSLL *new, *run;
-        new = (SSLL *) malloc(sizeof( SSLL ));
+        SLL *new, *run;
+        new = (SLL *) malloc(sizeof( SLL ));
         new -> data = random;
         new -> next = NULL;
 
-        if (*ssll == NULL) {
+        if (*sll == NULL) {
             // Empty List
-            *ssll = new;
+            *sll = new;
         } else {
             // List not empty
-            run = *ssll;
+            run = *sll;
             while(run -> next != NULL)
             {
                 run = run -> next;
@@ -430,15 +422,55 @@ int insertRandomSSLL(SSLL **ssll, int quantity)
             run -> next = new;
         }
     }
-    return 114;
+    return 124;
 }
 
-int getListSize(SSLL *ssll)
+/* -----------------------------------------------------------------------------
+		[ 15 ] CLONE LIST
+------------------------------------------------------------------------------*/
+/*
+SLL ** cloneSLL(SLL **sll)
 {
-    SSLL *run;
+    SLL **newSll = NULL, *run, **newRun;
+
+    if (*sll == NULL) {
+        raise(108);
+        return NULL;
+    }
+    else {
+        run = *sll;
+        if (run -> next == NULL) {
+            // Only onde node
+            SLL *new = (SLL *) malloc(sizeof( SLL ));
+            new -> next = NULL;
+            new -> data = run -> data;
+            *newSll = new;
+        } else {
+            SLL *new = (SLL *) malloc(sizeof ( SLL ));
+            new -> next = NULL;
+            new -> data = run -> data;
+            **newRun = **newSll;
+            *newRun = new;
+            while (run -> next != NULL)
+            {
+                SLL *new = (SLL *) malloc(sizeof ( SLL ));
+                new -> data = run -> data;
+                *newRun -> next = new;
+                run = run -> next;
+            }
+        }
+    }
+
+    return *newSll;
+}
+ */
+
+int getListSize(SLL *sll)
+{
+    SLL *run;
     int size = 0;
 
-    run = ssll;
+    run = sll;
     while (run != NULL)
     {
         size++;

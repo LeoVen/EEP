@@ -10,8 +10,8 @@ Compiled in CLion with cmake.
 
 ## Structures
 
-* Integer Static Array
-* Simple Singly Linked List
+* Static Array
+* Singly Linked List
 
 
 

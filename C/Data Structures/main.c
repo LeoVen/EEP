@@ -9,26 +9,20 @@
 
 #include <stdio.h>
 #include <stdlib.h>
-#include <SSLL.h>
+#include <SinglyLinkedList.h>
 #include <utility.h>
+#include <StaticArray.h>
 
 int main()
 {
-
+    int *p = getArray(10);
+    initArray(p, 10);
+    pushValueArray(p, 10, 1);
+    pushValueArray(p, 10, 2);
+    insertValueArray(p, 10, 3, 4);
+    insertValueArray(p, 10, 4, 5);
+    pushValueArray(p, 10, 3);
+    printArray(p, 10);
 
     return 0;
-}
-
-int * getArray(int size)
-{
-    int *p = malloc ( ( size + 0 ) * sizeof(int));
-
-    int *arr = p;
-
-    for (int i = 0; i < size; i++)
-    {
-        *p = 0;
-        p++;
-    }
-    return arr;
 }

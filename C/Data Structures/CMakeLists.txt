@@ -13,4 +13,4 @@ include_directories(STRUCTURES)
 include_directories(HEADERS)
 include_directories(UTIL)
 
-add_executable(DataStructures main.c headers/SSLL.h structures/SimpleSinglyLinkedList.c util/raise.c util/utility.c headers/utility.h headers/IntegerStaticArray.h structures/IntegerStaticArray.c)
+add_executable(DataStructures main.c headers/SinglyLinkedList.h structures/SinglyLinkedList.c util/raise.c util/utility.c headers/utility.h headers/StaticArray.h structures/StaticArray.c)

@@ -7,8 +7,12 @@
 	remove() - Remove (limpa) uma posição do vetor
 	update() - Atualiza um valor de uma posição indicada do vertor
 	switch() - Troca uma valor de uma posição pelo valor de outra
-	initSSLL()   - Inicializa todas as posições do vetor com um certo valor
+	init()   - Inicializa todas as posições do vetor com um certo valor
 	printV() - Listar todos os dados do vetor
+
+    +-----------------------------------------+
+    |               Static Array              |
+    +-----------------------------------------+
 
 */
 
@@ -16,15 +20,9 @@
 #include <stdlib.h>
 #include <stdbool.h>
 #include <utility.h>
-#include <IntegerStaticArray.h>
+#include <StaticArray.h>
 
-long getValue(); // Gets user's choice
-long getPosition(); // Gets array position
-
-bool checkPosition(long v, long pos);
-bool checkPositionIsSet(long v, long pos);
-
-void randomFill(long v[]);
+void randomFill(long *v, int size);
 
 /*
 +-----------------------------------------+
@@ -47,37 +45,70 @@ int * getArray(int size)
     return arr;
 }
 
-void initArray(int *v, int size)
+int initArray(int *array, int size)
 {
     long i;
 
     for (i = 0; i < size; i++) {
-        v[i] = 0;
+        array[i] = 0;
+    }
+
+    return 200;
+}
+
+int insertValueArray(int *array, int size, int position, int value)
+{
+    if (position < 0 || position >= size) return 7; // Invalid position
+    else {
+        array += position;
+        if (*array == 0) {
+            // Position not taken
+            *array = value;
+            return 210; // Value inserted
+        } else return 102; // Position already taken
     }
 }
 
-void push(long v[], long n)
+int pushValueArray(int *array, int size, int value)
 {
-    long i = 0;
     long j;
     bool ok = false;
 
-    for (j = 0; j < SIZE; j++) {
-        if (v[j] == 0 && j < SIZE) {
-            v[j] = n;
+    for (j = 0; j < size; j++) {
+        if (*array == 0) {
+            *array = value;
             ok = true;
             break;
-        } else continue;
+        } else array++;
     }
-    if (!ok) println("\nArray completely filled...\n");
-    pause();
+    if (!ok) return 201; // Array completely filled
+    return 211;
 }
 
-void insert(long v[], long p, long n)
+int printArray(int *array, int size)
 {
-    bool ok = checkPosition(v[p], p);
-    if (ok) v[p] = n;
+    int i;
+    println("\nSTATIC ARRRAY\n");
+    for (i = 0; i < size; i++) {
+        printf("%d ", *array);
+        array++;
+    }
+    println(" ");
+    return 0;
 }
+
+int updateArray(int *array, int size, int position, int value)
+{
+    if (position < 0 || position >= size) return 7; // Invalid position
+    else {
+        array += position;
+        *array = value;
+        return 103;
+    }
+}
+
+/*
+
 
 void update(long v[], long p,  long n)
 {
@@ -103,19 +134,9 @@ void switchh(long v[], long p1, long p2)
     }
 }
 
-void printV(long v[], long p, long e)
-{
-    println(" ");
-    long i;
-    for (i = p; i < e; i++) {
-        printf("%ld - ", v[i]);
-    }
-    println("\n");
-    pause();
 
-}
 
-void randomFill(long v[])
+void randomFill(long *v, int size)
 {
     long pos;
     for (pos = 0; pos < SIZE; pos++) {
@@ -131,7 +152,7 @@ void randomFill(long v[])
     pause();
 }
 
-
+*/
 /*
 +-----------------------------------------+
 |           Utility Functions             |
@@ -140,6 +161,7 @@ void randomFill(long v[])
 
 // String handler
 // Needs to be implemented !
+/*
 long getValue()
 {
     long value;
@@ -183,15 +205,7 @@ long getInt()
     return val;
 }
 
-bool checkPosition(long v, long pos)
-{
-    if (v == 0) return true;
-    else {
-        printf("Position %ld is already taken. Please use update function.\n", pos);
-        pause();
-        return false;
-    }
-}
+
 
 bool checkPositionIsSet(long v, long pos)
 {
@@ -202,3 +216,4 @@ bool checkPositionIsSet(long v, long pos)
         return false;
     }
 }
+*/
