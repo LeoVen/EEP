@@ -1,4 +1,7 @@
+import unicodedata
+
 def NATO(w):
+    w_copy = w
     words = {
             "a":"alfa",
             "b":"bravo",
@@ -26,35 +29,20 @@ def NATO(w):
             "x":"x-ray",
             "y":"yankee",
             "z":"zulu",
-            
-            "A":"Alfa",
-            "B":"Bravo",
-            "C":"Charlie",
-            "D":"Delta",
-            "E":"Echo",
-            "F":"Foxtrot",
-            "G":"Golf",
-            "H":"Hotel",
-            "I":"India",
-            "J":"Juliett",
-            "K":"Kilo",
-            "L":"Lima",
-            "M":"Mike",
-            "N":"November",
-            "O":"Oscar",
-            "P":"Papa",
-            "Q":"Quebec",
-            "R":"Romeo",
-            "S":"Sierra",
-            "T":"Tango",
-            "U":"Uniform",
-            "V":"Victor",
-            "W":"Whiskey",
-            "X":"X-ray",
-            "Y":"Yankee",
-            "Z":"Zulu",
             " ":" "
         }
-
+        
     for i in range(len(w)):
-        print(words[w[i]] + " ")
+
+        normal_w = normalize_str(w[i])   
+        normal_w = normal_w.lower()    
+
+        if(w[i].istitle()):
+            print(words[normal_w].title() + " ")
+
+        else:
+            print(words[normal_w] + " ")
+
+def normalize_str(w):
+    nfkd_form = unicodedata.normalize('NFKD', w)
+    return u"".join([c for c in nfkd_form if not unicodedata.combining(c)])
