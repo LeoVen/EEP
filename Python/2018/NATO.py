@@ -1,7 +1,7 @@
 import unicodedata
 
 def NATO(w):
-    w_copy = w
+
     words = {
             "a":"alfa",
             "b":"bravo",
@@ -31,17 +31,23 @@ def NATO(w):
             "z":"zulu",
             " ":" "
         }
-        
+
+
+
     for i in range(len(w)):
+        if(w[i].isalpha() or w[i] == ' '):
+            normal_w = normalize_str(w[i])   
+            normal_w = normal_w.lower()    
+            if(w[i].istitle()):
+                print(words[normal_w].title() + " ")
 
-        normal_w = normalize_str(w[i])   
-        normal_w = normal_w.lower()    
-
-        if(w[i].istitle()):
-            print(words[normal_w].title() + " ")
+            elif(w[i] == ' '):
+                print(words[w[i]])
+            else:
+                print(words[normal_w] + " ")
 
         else:
-            print(words[normal_w] + " ")
+            continue
 
 def normalize_str(w):
     nfkd_form = unicodedata.normalize('NFKD', w)
