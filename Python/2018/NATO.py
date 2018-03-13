@@ -29,7 +29,7 @@ def NATO(w):
             "x":"x-ray",
             "y":"yankee",
             "z":"zulu",
-            " ":"\n"
+            " ":" "
         }
 
 
@@ -42,7 +42,7 @@ def NATO(w):
                 print(words[normal_w].title() + " ")
 
             elif(w[i] == ' '):
-                continue
+                print(words[w[i]])
             else:
                 print(words[normal_w] + " ")
 
