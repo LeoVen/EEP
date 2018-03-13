@@ -1,6 +1,0 @@
-﻿  SinglyLinkedListTests.cpp
-c:\users\leona\documents\github\eep\c++\datastructures\datastructures\tests\singlylinkedlisttests.cpp(186): fatal error C1010: fim de arquivo inesperado durante procura por cabeçalho pré-compilado. Você esqueceu de adicionar '#include "stdafx.h"' à sua fonte?
-  stdafx.cpp
-  DataStructures.cpp
-c:\users\leona\documents\github\eep\c++\datastructures\datastructures\datastructures.cpp(11): fatal error C1854: não é possível substituir informação formada durante a criação do cabeçalho pré-compilado no arquivo de objeto: 'c:\users\leona\documents\github\eep\c++\datastructures\datastructures\debug\datastructures.obj'
-  Gerando Código...
