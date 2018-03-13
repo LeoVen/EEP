@@ -1,4 +1,9 @@
-*.class
 *.exe
 *.~sql
 *.pyc
+
+# Java
+*.class
+*.jar
+*.ear
+*.war
