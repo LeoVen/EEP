@@ -42,7 +42,7 @@ def NATO(w):
                 print(words[normal_w].title() + " ")
 
             elif(w[i] == ' '):
-                print('')
+                continue
             else:
                 print(words[normal_w] + " ")
 
