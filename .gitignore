@@ -7,3 +7,6 @@
 *.jar
 *.ear
 *.war
+
+# Unwanted vs folder
+C++/DataStructures/DataStructures/.vs/
