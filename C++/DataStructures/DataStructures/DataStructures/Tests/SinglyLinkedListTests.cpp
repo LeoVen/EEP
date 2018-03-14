@@ -1,15 +1,15 @@
 /*
-* SinglyLinkedListTests.cpp
-*
-* Author: Leonardo Vencovsky
-* Created on 13/03/2018
-*
-* Test Cases for Singly Linked Lists
-*
-* Feel free to break any of my implementations!
-* Just make sure to open an issue :D
-*
-*/
+ * SinglyLinkedListTests.cpp
+ *
+ * Author: Leonardo Vencovsky
+ * Created on 13/03/2018
+ *
+ * Test Cases for Singly Linked Lists
+ *
+ * Feel free to break any of my implementations!
+ * Just make sure to open an issue :D
+ *
+ */
 
 // Ignore "Cannot open file"
 #include "stdafx.h"
