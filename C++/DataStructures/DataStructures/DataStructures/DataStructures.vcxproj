@@ -143,6 +143,8 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClInclude Include="Headers\DoublyLinkedList.hpp" />
+    <ClInclude Include="Headers\DoublyLinkedListTests.hpp" />
     <ClInclude Include="Headers\SinglyLinkedList.hpp" />
     <ClInclude Include="Headers\SinglyLinkedListTests.hpp" />
     <ClInclude Include="stdafx.h" />
@@ -156,7 +158,9 @@
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">Create</PrecompiledHeader>
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|x64'">Create</PrecompiledHeader>
     </ClCompile>
+    <ClCompile Include="Structures\DoublyLinkedList.cpp" />
     <ClCompile Include="Structures\SinglyLinkedList.cpp" />
+    <ClCompile Include="Tests\DoublyLinkedListTests.cpp" />
     <ClCompile Include="Tests\SinglyLinkedListTests.cpp" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />

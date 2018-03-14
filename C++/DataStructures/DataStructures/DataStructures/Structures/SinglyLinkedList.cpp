@@ -5,9 +5,13 @@
  * Created on 11/03/2018
  *
  * Singly Linked List Implementations
+ *
  */
 
+// Ignore "Cannot open file"
 #include "stdafx.h"
+
+// Used to log current time
 #include <time.h>
 #include <string>
 
@@ -252,6 +256,19 @@ SinglyLinkedList * SinglyLinkedList::copyList()
 	}
 }
 
+int SinglyLinkedList::eraseList()
+{
+	if (head == nullptr) return 2;
+	while (head != nullptr)
+	{
+		tail = head;
+		head = head->next;
+		tail = nullptr;
+	}
+	size = 0;
+	return 9;
+}
+
 void SinglyLinkedList::displayMessage(int returnCode)
 {
 	time_t result = time(NULL);
@@ -325,23 +342,8 @@ SinglyLinkedNode * SinglyLinkedList::getTail()
 
 int SinglyLinkedList::toggleFix()
 {
-	if (fix == 0) {
-		fix = 1;
-	}
-	else {
-		fix = 0;
-	}
+	if (fix == 0) fix = 1;
+	else fix = 0;
 	return 0;
 }
 
-int SinglyLinkedList::eraseList()
-{
-	if (head == nullptr) return 2;
-	while (head != nullptr)
-	{
-		tail = head;
-		head = head->next;
-		tail = nullptr;
-	}
-	return 9;
-}
