@@ -1,12 +1,12 @@
 /*
-* DoublyLinkedList.hpp
-*
-* Author: Leonardo Vencovsky
-* Created on 13/03/2018
-*
-* Doubly Linked List Implementations
-*
-*/
+ * DoublyLinkedList.hpp
+ *
+ * Author: Leonardo Vencovsky
+ * Created on 13/03/2018
+ *
+ * Header for Doubly Linked List Implementations in C++
+ *
+ */
 
 #pragma once
 

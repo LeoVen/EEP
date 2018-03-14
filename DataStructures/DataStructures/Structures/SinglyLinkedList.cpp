@@ -4,7 +4,7 @@
  * Author: Leonardo Vencovsky
  * Created on 11/03/2018
  *
- * Singly Linked List Implementations
+ * Singly Linked List Implementations in C++
  *
  */
 

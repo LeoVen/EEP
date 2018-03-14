@@ -4,7 +4,7 @@
  * Author: Leonardo Vencovsky
  * Created on 13/03/2018
  *
- * Doubly Linked List Implementations
+ * Doubly Linked List Implementations in C++
  *
  */
 

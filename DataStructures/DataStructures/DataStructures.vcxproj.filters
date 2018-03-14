@@ -33,6 +33,9 @@
     <ClInclude Include="Headers\DoublyLinkedListTests.hpp">
       <Filter>Arquivos de Cabeçalho</Filter>
     </ClInclude>
+    <ClInclude Include="C\Headers\SinglyLinkedList.h">
+      <Filter>Arquivos de Cabeçalho</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="stdafx.cpp">
@@ -53,5 +56,11 @@
     <ClCompile Include="Tests\DoublyLinkedListTests.cpp">
       <Filter>Arquivos de Origem</Filter>
     </ClCompile>
+    <ClCompile Include="C\Structures\SinglyLinkedList.c">
+      <Filter>Arquivos de Origem</Filter>
+    </ClCompile>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Instructions.md" />
   </ItemGroup>
 </Project>

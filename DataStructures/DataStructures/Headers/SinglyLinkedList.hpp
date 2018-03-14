@@ -4,7 +4,7 @@
  * Author: Leonardo Vencovsky
  * Created on 11/03/2018
  *
- * Singly Linked List Header
+ * Header for Singly Linked List implementations in C++
  *
  */
 
@@ -15,6 +15,7 @@ struct SinglyLinkedNode;
 class SinglyLinkedList {
 private:
 	SinglyLinkedNode *head, *tail;
+	long size;
 public:
 	void displayMessage(int returnCode);
 	SinglyLinkedList(void);
