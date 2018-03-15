@@ -9,4 +9,4 @@
 *.war
 
 # Unwanted vs folder
-C++/DataStructures/DataStructures/.vs/
+DataStructures/.vs/
