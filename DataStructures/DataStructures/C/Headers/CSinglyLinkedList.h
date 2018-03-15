@@ -10,26 +10,32 @@
 
 #pragma once
 
+#include <stdbool.h>
+
 #ifdef __cplusplus
 extern "C" {
 #endif
 
-	struct CSinglyLinkedNode
-	{
+	typedef struct CSinglyLinkedNode {
 		int data;
-		CSinglyLinkedNode *next;
-	};
+		struct CSinglyLinkedNode *next;
+	} CSinglyLinkedNode;
 
-	struct CSinglyLinkedList
-	{
+	typedef struct CSinglyLinkedList {
+		bool initialized;
 		int size;
 		CSinglyLinkedNode *head;
 		CSinglyLinkedNode *tail;
-	};
+	} CSinglyLinkedList;
 
 	// Functions
-	int initListSLL(CSinglyLinkedList **sll);
-	CSinglyLinkedNode * getSinglyLinkedNode(int value);
+	int initListSLL(CSinglyLinkedList **SinglyLinkedList);
+	int insertHeadSLL(CSinglyLinkedList **SinglyLinkedList, int value);
+
+	int displayListSLL(CSinglyLinkedList *SinglyLinkedList);
+
+	void resetTail(CSinglyLinkedList *SinglyLinkedList);
+	CSinglyLinkedNode * getCSinglyLinkedNode(int value);
 
 #ifdef __cplusplus
 }

@@ -144,6 +144,7 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClInclude Include="C\Headers\CSinglyLinkedList.h" />
+    <ClInclude Include="C\Headers\CSinglyLinkedListTests.h" />
     <ClInclude Include="Headers\DoublyLinkedList.hpp" />
     <ClInclude Include="Headers\DoublyLinkedListTests.hpp" />
     <ClInclude Include="Headers\SinglyLinkedList.hpp" />
@@ -158,6 +159,9 @@
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">NotUsing</PrecompiledHeader>
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|x64'">Use</PrecompiledHeader>
       <CompileAs Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Default</CompileAs>
+    </ClCompile>
+    <ClCompile Include="C\Tests\CSinglyLinkedListTests.c">
+      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">NotUsing</PrecompiledHeader>
     </ClCompile>
     <ClCompile Include="DataStructures.cpp" />
     <ClCompile Include="stdafx.cpp">

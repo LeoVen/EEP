@@ -44,7 +44,8 @@ public:
 	SinglyLinkedList * copyList();
 	SinglyLinkedNode * getNode(int position);
 	int insertNode(SinglyLinkedNode *newNode, int position);
-	int reverseList();
+	int reverseList(); // Needs to be implemented
+	// TODO void resetTail() - set tail to last node automatically
 };
 
 SinglyLinkedList::SinglyLinkedList(void)

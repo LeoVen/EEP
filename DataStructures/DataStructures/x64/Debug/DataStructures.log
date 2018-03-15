@@ -1,5 +1,2 @@
 ﻿  CSinglyLinkedList.c
-c:\users\leona\documents\github\eep\datastructures\datastructures\c\structures\csinglylinkedlist.c(56): warning C4013: 'malloc' undefined; assuming extern returning int
-c:\users\leona\documents\github\eep\datastructures\datastructures\c\structures\csinglylinkedlist.c(56): warning C4312: 'type cast': conversion from 'int' to 'CSinglyLinkedNode *' of greater size
-  DataStructures.cpp
-  DataStructures.vcxproj -> C:\Users\leona\Documents\GitHub\EEP\DataStructures\x64\Debug\DataStructures.exe
+  DataStructures.vcxproj -> C:\Users\lvenk\Documents\GitHub\EEP\DataStructures\x64\Debug\DataStructures.exe
