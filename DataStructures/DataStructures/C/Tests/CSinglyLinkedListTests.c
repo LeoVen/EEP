@@ -28,7 +28,7 @@ int CSinglyLinkedListTests()
 	CSinglyLinkedList *csll = (CSinglyLinkedList *) malloc (sizeof(CSinglyLinkedList));
 	initListSLL(&csll);
 	if (csll->size == 0) {
-		printf("\n YAY! It's Working!");
+		printf("\n YAY! It's Working!\n");
 	}
 
 	insertHeadSLL(&csll, 2);

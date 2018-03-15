@@ -69,9 +69,11 @@ int displayListSLL(CSinglyLinkedList *SinglyLinkedList)
 		if (SinglyLinkedList->head != NULL) {
 			// Get reference of first node
 			CSinglyLinkedNode *scanner = SinglyLinkedList->head;
+			printf("\nC Singly Linked List\n");
 			while (scanner != NULL) // Can NULL just not be 0....... error in this line, loop is infinite
 			{
 				printf("%d -> ", scanner->data);
+				scanner = scanner->next;
 			}
 			printf("NULL\n");
 			return 0; // OK
