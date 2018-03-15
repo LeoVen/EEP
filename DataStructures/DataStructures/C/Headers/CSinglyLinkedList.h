@@ -30,10 +30,17 @@ extern "C" {
 
 	// Functions
 	int initListSLL(CSinglyLinkedList **SinglyLinkedList);
+	// Insertion
 	int insertHeadSLL(CSinglyLinkedList **SinglyLinkedList, int value);
-
+	int insertMiddleSLL(CSinglyLinkedList **SinglyLinkedList, int value, int position);
+	int insertTailSLL(CSinglyLinkedList **SinglyLinkedList, int value);
+	// Removal
+	int removeHeadSLL(CSinglyLinkedList **SinglyLinkedList);
+	int removeMiddleSLL(CSinglyLinkedList **SinglyLinkedList, int position);
+	int removeTailSLL(CSinglyLinkedList **SinglyLinkedList);
+	// Display
 	int displayListSLL(CSinglyLinkedList *SinglyLinkedList);
-
+	// Ohters
 	void resetTail(CSinglyLinkedList *SinglyLinkedList);
 	CSinglyLinkedNode * getCSinglyLinkedNode(int value);
 

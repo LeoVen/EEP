@@ -1,27 +1,22 @@
 /*
-* CSinglyLinkedList.c
-*
-* Author: Leonardo Vencovsky
-* Created on 14/03/2018
-*
-* Singly Linked List Implementations in C
-*
-*/
+ * CSinglyLinkedList.c
+ *
+ * Author: Leonardo Vencovsky
+ * Created on 14/03/2018
+ *
+ * Singly Linked List Implementations in C
+ *
+ * Observation:
+ * To use the list you must ALWAYS initListSLL(&yourList)
+ * before using other functions or you'll compare a variable
+ * not initialized and it might crash your program.
+ *
+ */
 
 #include <stdio.h>
 #include <stdlib.h>
 #include <stdbool.h>
 #include "..\Headers\CSinglyLinkedList.h"
-
-
-// Functions
-int initListSLL(CSinglyLinkedList **SinglyLinkedList);
-int insertHeadSLL(CSinglyLinkedList **SinglyLinkedList, int value);
-
-int displayListSLL(CSinglyLinkedList *SinglyLinkedList);
-
-void resetTail(CSinglyLinkedList *SinglyLinkedList);
-CSinglyLinkedNode * getCSinglyLinkedNode(int value);
 
 int initListSLL(CSinglyLinkedList **SinglyLinkedList)
 {
@@ -33,7 +28,38 @@ int initListSLL(CSinglyLinkedList **SinglyLinkedList)
 	return 0;
 }
 
-// To be implemented
+/* INSERT
+ *
+ * Interval [0, size]
+ * Assuming lists starts at the zeroth (0) position.
+ *
+ * There are three cases:
+ *
+ * Always:
+ *     Check if structure was initialized. Initialization is obligatory!
+ *
+ * Insert head:
+ *     Node->next = head
+ *     Reposition head to new Node
+ *
+ * Insert tail:
+ *     Insert new Node to tail->next
+ *     Reposition tail to new Node
+ *
+ * Insert middle:
+ *     Position can be the same as the size
+ *     This allows you to insert at the last non-existing (yet) position
+ *     if (position == 0) - Insert at head
+ *     if (position == size - 1) - Insert at tail
+ *     else  Insert middle with (possibly) double pointer
+ *         - interval [0 , size]
+ *         - Position tmp pointer one before chosen node
+ *         - new Node->next = tmp->next
+ *         - tmp->next = new Node
+ *     reposition tail
+ *
+ */
+
 int insertHeadSLL(CSinglyLinkedList **SinglyLinkedList, int value)
 {
 	CSinglyLinkedList *sll = *SinglyLinkedList;
@@ -55,6 +81,133 @@ int insertHeadSLL(CSinglyLinkedList **SinglyLinkedList, int value)
 	return 1; // List not initialized
 }
 
+int insertMiddleSLL(CSinglyLinkedList **SinglyLinkedList, int value, int position)
+{
+	CSinglyLinkedList *sll = *SinglyLinkedList;
+	if (sll->initialized) {
+		// [0, size]
+		if (position < 0 || position > sll->size) return 2; // Invalid Position
+		if (position == 0) {
+			// OK
+			return insertHeadSLL(SinglyLinkedList, value);
+		}
+		else if (position == sll->size) {
+			// OK
+			return insertTailSLL(SinglyLinkedList, value);
+		}
+		else {
+			int i;
+			CSinglyLinkedNode *scanner = sll->head;
+			// i starts at 1 so scanner stops one before
+			// TODO what if position is 1 ?
+			for (i = 1; i < position; i++) {
+				scanner = scanner->next;
+			}
+			// Allocate memory for new Node
+			CSinglyLinkedNode *sln = getCSinglyLinkedNode(value);
+			// TODO
+			// 
+			// 
+			// 
+		}
+		(sll->size)++;
+		resetTail(sll);
+		return 0; // OK
+	}
+	return 1; // List not initialized
+}
+
+int insertTailSLL(CSinglyLinkedList **SinglyLinkedList, int value)
+{
+	CSinglyLinkedList *sll = *SinglyLinkedList;
+	if (sll->initialized) {
+		CSinglyLinkedNode *sln = getCSinglyLinkedNode(value);
+		// Careful with head == NULL
+		if (sll->head == NULL) {
+			sll->head = sln; // OK
+		}
+		else {
+			(sll->tail)->next = sln;
+		}
+		(sll->size)++;
+		resetTail(sll);
+		return 0; // OK
+	}
+	return 1; // List not initialized
+}
+
+/* REMOVE
+ *
+ * Interval [0, size)
+ * Assuming lists starts at the zeroth (0) position.
+ *
+ * There are three cases:
+ *
+ * Always:
+ *     Check if structure was initialized. Initialization is obligatory!
+ *     Check if head == null or if size == 0. If yes, list is empty.
+ *
+ * Remove head:
+ *     Get reference to head
+ *     Reposition head = head->next
+ *     Remove reference to head
+ *
+ * Remove tail:
+ *     Go to one before tail
+ *     Remove next node
+ *     Reposition tail ()
+ *
+ * Remove middle:
+ *     Position has to be smaller then size
+ *         Because lists also start with 0!
+ *     if (position == 0) - Insert at head
+ *     if (position == size - 1) - Insert at tail
+ *     else - Remove middle with (possibly?) double pointer
+ *         - interval [0 , size)
+ *         - Position tmp pointer one before chosen node
+ *         - tmp->next = (tmp->next)->next // Skipps node to be removed
+ *     Reposition tail
+ *
+ */
+
+int removeHeadSLL(CSinglyLinkedList **SinglyLinkedList)
+{
+	CSinglyLinkedList *sll = *SinglyLinkedList;
+	if (sll->initialized) {
+		// TODO
+		//
+		//
+		//
+	}
+	return 1; // List not initialized
+}
+
+int removeMiddleSLL(CSinglyLinkedList **SinglyLinkedList, int position)
+{
+	CSinglyLinkedList *sll = *SinglyLinkedList;
+	if (sll->initialized) {
+		// [0, size)
+		if (position < 0 || position > sll->size - 1) return 2; // Invalid position
+		// TODO
+		//
+		//
+		//
+	}
+	return 1; // List not initialized
+}
+
+int removeTailSLL(CSinglyLinkedList **SinglyLinkedList)
+{
+	CSinglyLinkedList *sll = *SinglyLinkedList;
+	if (sll->initialized) {
+		// TODO
+		//
+		//
+		//
+	}
+	return 1; // List not initialized
+}
+
 CSinglyLinkedNode * getCSinglyLinkedNode(int value)
 {
 	CSinglyLinkedNode *sln = (CSinglyLinkedNode *) malloc(sizeof(*sln));
@@ -70,7 +223,7 @@ int displayListSLL(CSinglyLinkedList *SinglyLinkedList)
 			// Get reference of first node
 			CSinglyLinkedNode *scanner = SinglyLinkedList->head;
 			printf("\nC Singly Linked List\n");
-			while (scanner != NULL) // Can NULL just not be 0....... error in this line, loop is infinite
+			while (scanner != NULL)
 			{
 				printf("%d -> ", scanner->data);
 				scanner = scanner->next;

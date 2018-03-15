@@ -60,7 +60,7 @@ int SinglyLinkedList::displayList()
 	SinglyLinkedNode *run = new SinglyLinkedNode;
 	run = head;
 	if (run == nullptr) return 2;
-	cout << "\nSingly Linked List\n";
+	cout << "\nC++ Singly Linked List\n";
 
 	while (run != nullptr)
 	{
