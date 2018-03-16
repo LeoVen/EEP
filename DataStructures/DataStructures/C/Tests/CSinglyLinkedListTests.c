@@ -27,18 +27,54 @@ int CSinglyLinkedListTests()
 
 	CSinglyLinkedList *csll = (CSinglyLinkedList *) malloc (sizeof(CSinglyLinkedList));
 	initListSLL(&csll);
-	if (csll->size == 0) {
-		printf("\n YAY! It's Working!\n");
-	}
+	
+	removeHeadSLL(&csll);
 	insertTailSLL(&csll, -1);
+	// removeTailSLL(&csll);
 	insertHeadSLL(&csll, 3);
 	insertHeadSLL(&csll, 2);
 	insertHeadSLL(&csll, 1);
 	insertHeadSLL(&csll, 0);
 	insertTailSLL(&csll, 4);
 	insertTailSLL(&csll, 5);
-	insertTailSLL(&csll, 6);
-	displayListSLL(csll);
+	insertTailSLL(&csll, 7);
+	insertTailSLL(&csll, 8);
+	insertTailSLL(&csll, 9);
 
+	displayListSLL(&csll);
+	printf("\nSize: %d\n", getListSizeSLL(&csll));
+
+	removeHeadSLL(&csll);
+	removeTailSLL(&csll);
+	removeTailSLL(&csll);
+	removeMiddleSLL(&csll, 3);
+
+	insertMiddleSLL(&csll, 6, 5);
+
+	displayListSLL(&csll);
+	printf("\nSize: %d\n", getListSizeSLL(&csll));
+
+	removeTailSLL(&csll);
+	removeTailSLL(&csll);
+	removeTailSLL(&csll);
+
+	printf("\nSize: %d\n", getListSizeSLL(&csll));
+	displayListSLL(&csll);
+
+	printf("\n---------- ---------- C List Deleted ---------- ----------\n");
+	deleteListSLL(&csll);
+	int i;
+	srand(time(NULL));
+	for (i = 0; i < 100; i++) {
+		insertTailSLL(&csll, rand() % 10); // Numbers from 0 to 9
+	}
+	for (i = 0; i < 10; i++) {
+		printf("\nThere are %3d number %d in the list", searchValueSLL(&csll, i), i);
+	}
+
+	printf("\n");
+	//
+	// 
+	free(csll);
 	return 0;
 }

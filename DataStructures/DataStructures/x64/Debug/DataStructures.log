@@ -1,4 +1,3 @@
 ﻿  CSinglyLinkedListTests.c
-  CSinglyLinkedList.c
-  Generating Code...
+c:\users\leona\documents\github\eep\datastructures\datastructures\c\tests\csinglylinkedlisttests.c(67): warning C4013: 'time' undefined; assuming extern returning int
   DataStructures.vcxproj -> C:\Users\leona\Documents\GitHub\EEP\DataStructures\x64\Debug\DataStructures.exe

@@ -39,10 +39,13 @@ extern "C" {
 	int removeMiddleSLL(CSinglyLinkedList **SinglyLinkedList, int position);
 	int removeTailSLL(CSinglyLinkedList **SinglyLinkedList);
 	// Display
-	int displayListSLL(CSinglyLinkedList *SinglyLinkedList);
+	int displayListSLL(CSinglyLinkedList **SinglyLinkedList);
+	int getListSizeSLL(CSinglyLinkedList **SinglyLinkedList);
 	// Ohters
 	void resetTail(CSinglyLinkedList *SinglyLinkedList);
+	int deleteListSLL(CSinglyLinkedList **SinglyLinkedList);
 	CSinglyLinkedNode * getCSinglyLinkedNode(int value);
+	int searchValueSLL(CSinglyLinkedList **SinglyLinkedList, int value);
 
 #ifdef __cplusplus
 }
