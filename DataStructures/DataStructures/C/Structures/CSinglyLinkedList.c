@@ -62,6 +62,7 @@ int initListSLL(CSinglyLinkedList **SinglyLinkedList)
 
 int insertHeadSLL(CSinglyLinkedList **SinglyLinkedList, int value)
 {
+	// TODO, Check if this de-reference is needed to access struct variables
 	CSinglyLinkedList *sll = *SinglyLinkedList;
 	if (sll->initialized) {
 		CSinglyLinkedNode *sln = getCSinglyLinkedNode(value);
