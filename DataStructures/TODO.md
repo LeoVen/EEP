@@ -9,6 +9,7 @@
 ## Singly Linked List (SLL)
 
 * __Re-do function implementations \*__
+* Implement functions with node insertion
 * Add functions:
 	* ~~Insert [head, middle, tail]~~ *
 	* ~~Remove [head, middle, tail]~~ *
@@ -17,17 +18,31 @@
 
 ## Doubly Linked List (DLL)
 
-* TODO all
+* Implement with struct
+* Implement functions with node insertion
+* Add functions:
+	* Insert [head, middle, tail]
+	* Remove [head, middle, tail]
+	* Search (if data exists)
+	* Get value of a certain node
 
 # C
 
 ## Array
 
 * TODO almost all
+* Prototype:
+```C
+struct Array {
+	int *array;
+	int size;
+}
+```
 
 ## Singly Linked List (SLL)
 
 * ~~Implement with struct~~
+* Implement functions with node insertion
 * Add functions:
 	* ~~Insert [head, middle, tail]~~ __needs testing__
 	* ~~Remove [head, middle, tail]~~ __needs testing__
@@ -36,4 +51,10 @@
 
 ## Doubly Linked List (DLL)
 
-* TODO all
+* Implement with struct
+* Implement functions with node insertion
+* Add functions:
+	* Insert [head, middle, tail]
+	* Remove [head, middle, tail]
+	* Search (if data exists)
+	* Get value of a certain node

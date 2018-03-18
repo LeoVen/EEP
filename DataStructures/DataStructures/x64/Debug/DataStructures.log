@@ -1,3 +1,13 @@
-﻿  CSinglyLinkedListTests.c
-c:\users\leona\documents\github\eep\datastructures\datastructures\c\tests\csinglylinkedlisttests.c(67): warning C4013: 'time' undefined; assuming extern returning int
-  DataStructures.vcxproj -> C:\Users\leona\Documents\GitHub\EEP\DataStructures\x64\Debug\DataStructures.exe
+﻿  stdafx.cpp
+  CSinglyLinkedListTests.c
+c:\users\lvenk\documents\github\eep\datastructures\datastructures\c\tests\csinglylinkedlisttests.c(67): warning C4013: 'time' indefinido; assumindo extern retornando int
+  CSinglyLinkedList.c
+  Gerando Código...
+  SinglyLinkedListTests.cpp
+  DoublyLinkedListTests.cpp
+  SinglyLinkedList.cpp
+  DoublyLinkedList.cpp
+  DataStructures.cpp
+  Gerando Código...
+  LINK : C:\Users\lvenk\Documents\GitHub\EEP\DataStructures\x64\Debug\DataStructures.exe não encontrado ou não compilado pelo o último link incremental; executando link completo
+  DataStructures.vcxproj -> C:\Users\lvenk\Documents\GitHub\EEP\DataStructures\x64\Debug\DataStructures.exe
