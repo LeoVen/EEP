@@ -1,12 +1,12 @@
 /*
-* CSinglyLinkedList.h
-*
-* Author: Leonardo Vencovsky
-* Created on 14/03/2018
-*
-* Header for Singly Linked List Implementations in C
-*
-*/
+ * CSinglyLinkedList.h
+ *
+ * Author: Leonardo Vencovsky
+ * Created on 14/03/2018
+ *
+ * Header for Singly Linked List Implementations in C
+ *
+ */
 
 #pragma once
 
@@ -34,6 +34,7 @@ extern "C" {
 	int insertHeadSLL(CSinglyLinkedList **SinglyLinkedList, int value);
 	int insertMiddleSLL(CSinglyLinkedList **SinglyLinkedList, int value, int position);
 	int insertTailSLL(CSinglyLinkedList **SinglyLinkedList, int value);
+	int insertNodeSLL(CSinglyLinkedNode *node, int position);
 	// Removal
 	int removeHeadSLL(CSinglyLinkedList **SinglyLinkedList);
 	int removeMiddleSLL(CSinglyLinkedList **SinglyLinkedList, int position);
@@ -41,9 +42,10 @@ extern "C" {
 	// Display
 	int displayListSLL(CSinglyLinkedList **SinglyLinkedList);
 	int getListSizeSLL(CSinglyLinkedList **SinglyLinkedList);
-	// Ohters
+	// Resets
 	void resetTail(CSinglyLinkedList *SinglyLinkedList);
 	int deleteListSLL(CSinglyLinkedList **SinglyLinkedList);
+	// Others
 	CSinglyLinkedNode * getCSinglyLinkedNode(int value);
 	int searchValueSLL(CSinglyLinkedList **SinglyLinkedList, int value);
 

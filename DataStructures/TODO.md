@@ -15,6 +15,7 @@
 	* ~~Remove [head, middle, tail]~~ *
 	* Search (if data exists)
 	* Get (get value of certain node)
+	* Reverse List
 
 ## Doubly Linked List (DLL)
 
@@ -25,6 +26,7 @@
 	* Remove [head, middle, tail]
 	* Search (if data exists)
 	* Get value of a certain node
+	* Reverse List
 
 # C
 
@@ -48,6 +50,7 @@ struct Array {
 	* ~~Remove [head, middle, tail]~~ __needs testing__
 	* ~~Search (if data exists)~~
 	* Get (get value of certain node)
+	* Reverse List
 
 ## Doubly Linked List (DLL)
 
@@ -58,3 +61,4 @@ struct Array {
 	* Remove [head, middle, tail]
 	* Search (if data exists)
 	* Get value of a certain node
+	* Reverse List

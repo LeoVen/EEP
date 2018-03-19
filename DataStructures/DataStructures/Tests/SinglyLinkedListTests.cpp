@@ -13,7 +13,7 @@
 
 // Ignore "Cannot open file"
 #include "stdafx.h"
-#include "..\Headers\SinglyLinkedList.hpp"
+#include "..\Headers\Structures.hpp"
 
 using namespace std;
 
@@ -22,7 +22,7 @@ int SinglyLinkedListTest()
 	cout << endl;
 	cout << " +-------------------------------------+" << endl;
 	cout << " |                                     |" << endl;
-	cout << " |         Singly Linked List          |" << endl;
+	cout << " |       C++ Singly Linked List        |" << endl;
 	cout << " |                                     |" << endl;
 	cout << " +-------------------------------------+" << endl;
 	cout << endl;

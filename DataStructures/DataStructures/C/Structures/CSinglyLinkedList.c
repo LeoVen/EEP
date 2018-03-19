@@ -15,10 +15,20 @@
  *
  */
 
+/*
+	Return Codes
+
+   -1 - List Erased
+    0 - Success
+    1 - List not Initialized
+    2 - Invalid Position
+    3 - List is Empty
+
+*/
+
 #include <stdio.h>
 #include <stdlib.h>
 #include <stdbool.h>
-#include <assert.h>
 #include "..\Headers\CSinglyLinkedList.h"
 
 int initListSLL(CSinglyLinkedList **SinglyLinkedList)
@@ -175,7 +185,6 @@ int removeHeadSLL(CSinglyLinkedList **SinglyLinkedList)
 	CSinglyLinkedList *sll = *SinglyLinkedList;
 	if (sll->initialized) {
 		if (sll->head == NULL) return 3; // List is empty
-		// assert(sll->head != NULL);
 		CSinglyLinkedNode *kill = sll->head;
 		sll->head = sll->head->next;
 		free(kill);
@@ -276,17 +285,6 @@ int displayListSLL(CSinglyLinkedList **SinglyLinkedList)
 	return 1; // List not initialized
 }
 
-void resetTail(CSinglyLinkedList *SinglyLinkedList)
-{
-	SinglyLinkedList->tail = SinglyLinkedList->head;
-	if (SinglyLinkedList->tail != NULL) {
-		while (SinglyLinkedList->tail->next != NULL)
-		{
-			SinglyLinkedList->tail = SinglyLinkedList->tail->next;
-		}
-	}
-}
-
 int deleteListSLL(CSinglyLinkedList **SinglyLinkedList)
 {
 	CSinglyLinkedList *sll = *SinglyLinkedList;
@@ -330,4 +328,45 @@ int searchValueSLL(CSinglyLinkedList **SinglyLinkedList, int value)
 		scanner = scanner->next;
 	}
 	return count;
+}
+
+int insertNodeSLL(CSinglyLinkedList **SinglyLinkedList, CSinglyLinkedNode *node, int position)
+{
+	CSinglyLinkedList *sll = *SinglyLinkedList;
+	if (sll->initialized) {
+		// [0, size]
+		if (position < 0 || position > sll->size) return 2; // Invalid Position
+		if (sll->head == NULL) {
+			// Insert at head
+			// TODO
+			//
+		}
+		else if (position == 0) {
+			// Insert at head
+			// TODO
+			//
+		}
+		else if (position == sll->size) {
+			// Insert at tail
+			// TODO
+			//
+		}
+		else {
+			// Insert at middle
+			// TODO
+			//
+		}
+	}
+	return 1; // List not initialized
+}
+
+void resetTail(CSinglyLinkedList *SinglyLinkedList)
+{
+	SinglyLinkedList->tail = SinglyLinkedList->head;
+	if (SinglyLinkedList->tail != NULL) {
+		while (SinglyLinkedList->tail->next != NULL)
+		{
+			SinglyLinkedList->tail = SinglyLinkedList->tail->next;
+		}
+	}
 }

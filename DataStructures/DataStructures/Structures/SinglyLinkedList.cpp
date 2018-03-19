@@ -17,8 +17,7 @@
 
 using namespace std;
 
-struct SinglyLinkedNode
-{
+struct SinglyLinkedNode {
 	int data;
 	SinglyLinkedNode *next;
 };
