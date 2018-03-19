@@ -15,6 +15,14 @@
 
 int SortingTests() {
 
+	printf("\n");
+	printf(" +-------------------------------------+\n");
+	printf(" |                                     |\n");
+	printf(" |              C Sorting              |\n");
+	printf(" |                                     |\n");
+	printf(" +-------------------------------------+\n");
+	printf("\n");
+
 	int i;
 
 	// Testing limits of Insertion Sort

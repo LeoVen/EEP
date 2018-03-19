@@ -19,25 +19,44 @@ extern "C" {
 		int size;
 	} CArray;
 
-	// Returns array
+	// +-------------------------------------+
+	// |           Returns array             |
+	// +-------------------------------------+
 	CArray * getCArray(int size);
 	CArray * getCopyCArray(CArray *array);
-	// IO
+	// +-------------------------------------+
+	// |           Input / Output            |
+	// +-------------------------------------+
 	int insertValueCArray(CArray *array, int position, int value);
 	int removeValueCArray(CArray *array, int position);
 	int pushValueCArray(CArray *array, int value);
 	int updateValueCArray(CArray *array, int position, int value);
-	// Erase
+	// +-------------------------------------+
+	// |               Erase                 |
+	// +-------------------------------------+
 	int eraseCArray(CArray *array);
-	// Switch
+	// +-------------------------------------+
+	// |             Switching               |
+	// +-------------------------------------+
 	int switchValuesCArray(CArray *array, int position1, int position2);
 	int reverseCArray(CArray *array);
-	// Sorting
+	// +-------------------------------------+
+	// |              Sorting                |
+	// +-------------------------------------+
 	int bubbleSortCArray(CArray *array);
 	int selectionSortCArray(CArray *array);
 	int insertionSortCArray(CArray *array);
 	int blenderCArray(CArray *array);
-	// Others
+	// +-------------------------------------+
+	// |             Searching               |
+	// +-------------------------------------+
+	int valueOcurranceCArray(CArray *array, int value);
+	CArray * valuePositionsCArray(CArray *array, int value);
+	int findMaxCArray(CArray *array);
+	int findMinCArray(CArray *array);
+	// +-------------------------------------+
+	// |              Display                |
+	// +-------------------------------------+
 	int displayCArray(CArray *array);
 	
 

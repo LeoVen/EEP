@@ -116,6 +116,35 @@ int CArrayTests()
 	printf("\nTotal time spent for selection sort: %lf seconds", time_spent2);
 	printf("\nTotal time spent for insertion sort: %lf seconds", time_spent3);
 
+	// Searching
+	CArray *aarray = getCArray(1000);
+	for (i = 0; i < aarray->size; i++) {
+		insertValueCArray(aarray, i, rand() % 100);
+	}
+
+	int j = 24;
+	printf("\nOccurrences of the number %d in the array: %d", j, 
+		valueOcurranceCArray(aarray, j));
+	printf("\nAnd its positions:\n");
+	CArray *positions = valuePositionsCArray(aarray, j);
+	displayCArray(positions);
+	// This should all give value of j
+	printf("\nAll %d s", j);
+	for (i = 0; i < positions->size; i++) {
+		printf("\nPosition %d has a value of %d", 
+			positions->array[i], aarray->array[positions->array[i]]);
+	}
+	printf("\nThe list has a minimum value of %d and a maximum value of %d", 
+		findMinCArray(aarray), findMaxCArray(aarray));
+	insertionSortCArray(aarray);
+	// displayCArray(aarray);
+
+	free(arr);
+	free(array);
+	free(aarray);
+	free(barray);
+	free(carray);
+	free(darray);
 	printf("\n");
 	return 0;
 }
