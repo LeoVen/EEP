@@ -25,6 +25,8 @@
 #include <stdlib.h>
 #include "..\Headers\CArray.h"
 
+void swap(CArray *array, int position1, int position2);
+
 CArray * getCArray(int size)
 {
 	CArray *array = (CArray *) malloc(sizeof(CArray));
@@ -66,7 +68,7 @@ int pushValueCArray(CArray *array, int value)
 	int ok = 0;
 	for (i = 0; i < array->size; i++) {
 		if (array->array[i] == 0) {
-			array->array[i] == value;
+			array->array[i] = value;
 			ok = 1;
 			break;
 		}
@@ -110,7 +112,7 @@ int reverseCArray(CArray *array)
 {
 	int i;
 	for (i = 0; i < array->size / 2; i++) {
-		switchValuesCArray(array, i, array->size - i - 1);
+		swap(array, i, array->size - i - 1);
 	}
 	return 0;
 }
@@ -132,9 +134,16 @@ int bubbleSortCArray(CArray *array)
 	for (i = 0; i < array->size - 1; i++) {
 		for (j = 0; j < array->size - i - 1; j++) {
 			if (array->array[j] > array->array[j + 1]) {
-				switchValuesCArray(array, j, j + 1);
+				swap(array, j, j + 1);
 			}
 		}
 	}
 	return 0;
+}
+
+void swap(CArray *array, int position1, int position2)
+{
+	int temp = array->array[position1];
+	array->array[position1] = array->array[position2];
+	array->array[position2] = temp;
 }
