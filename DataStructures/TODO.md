@@ -32,14 +32,8 @@
 
 ## Array
 
-* TODO almost all
-* Prototype:
-```C
-struct Array {
-	int *array;
-	int size;
-}
-```
+* Test functions
+* Implement Sorting algorithms
 
 ## Singly Linked List (SLL)
 

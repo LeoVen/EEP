@@ -45,6 +45,9 @@
     <ClInclude Include="Headers\Tests.hpp">
       <Filter>Arquivos de Cabeçalho</Filter>
     </ClInclude>
+    <ClInclude Include="C\Headers\CArray.h">
+      <Filter>Arquivos de Cabeçalho</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="stdafx.cpp">
@@ -75,6 +78,12 @@
       <Filter>Arquivos de Origem</Filter>
     </ClCompile>
     <ClCompile Include="C\Tests\CDoublyLinkedListTests.c">
+      <Filter>Arquivos de Origem</Filter>
+    </ClCompile>
+    <ClCompile Include="C\Structures\CArray.c">
+      <Filter>Arquivos de Origem</Filter>
+    </ClCompile>
+    <ClCompile Include="C\Tests\CArrayTests.c">
       <Filter>Arquivos de Origem</Filter>
     </ClCompile>
   </ItemGroup>

@@ -1,5 +1,3 @@
-﻿  CDoublyLinkedList.c
-  DoublyLinkedListTests.cpp
-  DataStructures.cpp
-  Gerando Código...
-  DataStructures.vcxproj -> C:\Users\lvenk\Documents\GitHub\EEP\DataStructures\x64\Debug\DataStructures.exe
+﻿  CArray.c
+c:\users\leona\documents\github\eep\datastructures\datastructures\c\structures\carray.c(69): warning C4553: '==': operator has no effect; did you intend '='?
+  DataStructures.vcxproj -> C:\Users\leona\Documents\GitHub\EEP\DataStructures\x64\Debug\DataStructures.exe
