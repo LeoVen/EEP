@@ -21,6 +21,7 @@ extern "C" {
 
 	// Returns array
 	CArray * getCArray(int size);
+	CArray * getCopyCArray(CArray *array);
 	// IO
 	int insertValueCArray(CArray *array, int position, int value);
 	int removeValueCArray(CArray *array, int position);
@@ -28,13 +29,17 @@ extern "C" {
 	int updateValueCArray(CArray *array, int position, int value);
 	// Erase
 	int eraseCArray(CArray *array);
-	// Others
-	int displayCArray(CArray *array);
 	// Switch
 	int switchValuesCArray(CArray *array, int position1, int position2);
 	int reverseCArray(CArray *array);
 	// Sorting
 	int bubbleSortCArray(CArray *array);
+	int selectionSortCArray(CArray *array);
+	int insertionSortCArray(CArray *array);
+	int blenderCArray(CArray *array);
+	// Others
+	int displayCArray(CArray *array);
+	
 
 #ifdef __cplusplus
 }

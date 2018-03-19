@@ -17,6 +17,7 @@ extern "C" {
 	int CSinglyLinkedListTests();
 	int CDoublyLinkedListTests();
 	int CArrayTests();
+	int SortingTests();
 
 #ifdef __cplusplus
 }

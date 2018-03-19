@@ -128,6 +128,36 @@ int displayCArray(CArray *array)
 	return 0;
 }
 
+int blenderCArray(CArray *array)
+{
+	srand(time(NULL) * array->size);
+	int i;
+	int total = array->size * 100;
+	for (i = 0; i < total; i++) {
+		swap(array, rand() % array->size, rand() % array->size);
+	}
+	return 0;
+}
+
+CArray * getCopyCArray(CArray *arr)
+{
+	CArray *array = (CArray *)malloc(sizeof(CArray));
+	array->array = (int *)malloc(sizeof(int) * arr->size);
+	array->size = arr->size;
+	int i;
+	for (i = 0; i < arr->size; i++) {
+		array->array[i] = arr->array[i];
+	}
+	return array;
+}
+
+void swap(CArray *array, int position1, int position2)
+{
+	int temp = array->array[position1];
+	array->array[position1] = array->array[position2];
+	array->array[position2] = temp;
+}
+
 int bubbleSortCArray(CArray *array)
 {
 	int i, j;
@@ -141,9 +171,30 @@ int bubbleSortCArray(CArray *array)
 	return 0;
 }
 
-void swap(CArray *array, int position1, int position2)
+int selectionSortCArray(CArray *array)
 {
-	int temp = array->array[position1];
-	array->array[position1] = array->array[position2];
-	array->array[position2] = temp;
+	int i, j, min;
+	for (i = 0; i < array->size - 1; i++) {
+		min = i;
+		for (j = i + 1; j < array->size; j++)
+			if (array->array[j] < array->array[min]) min = j;
+		swap(array, min, i);
+	}
+	return 0;
+}
+
+int insertionSortCArray(CArray *array)
+{
+	int i, j, num;
+	for (i = 1; i < array->size; i++) {
+		num = array->array[i];
+		j = i - 1;
+		while (j >= 0 && array->array[j] > num)
+		{
+			array->array[j + 1] = array->array[j];
+			j--;
+		}
+		array->array[j + 1] = num;
+	}
+	return 0;
 }

@@ -13,6 +13,7 @@
 
 #include <stdio.h>
 #include <stdlib.h>
+#include <time.h>
 #include "..\Headers\CArray.h"
 
 int CArrayTests()
@@ -74,12 +75,46 @@ int CArrayTests()
 	for (i = 0; i < barray->size; i++) {
 		insertValueCArray(barray, i, rand());
 	}
+	CArray *carray = getCopyCArray(barray);
+	CArray *darray = getCopyCArray(barray);
 	printf("\nNot sorted Array:");
 	displayCArray(barray);
 
-	printf("\nSorted Array (Bubble Sort):");
+	printf("\nBubble Sort:");
+	clock_t begin1 = clock();
+	// Timing bubble sort
 	bubbleSortCArray(barray);
+	clock_t end1 = clock();
+	double time_spent1 = (double)(end1 - begin1) / CLOCKS_PER_SEC;
 	displayCArray(barray);
+
+	printf("\nSelection Sort:");
+	clock_t begin2 = clock();
+	// Timing selection sort
+	selectionSortCArray(carray);
+	clock_t end2 = clock();
+	double time_spent2 = (double)(end2 - begin2) / CLOCKS_PER_SEC;
+	displayCArray(carray);
+
+	printf("\nInsertion Sort:");
+	clock_t begin3 = clock();
+	// Timing insertion sort
+	insertionSortCArray(darray);
+	clock_t end3 = clock();
+	double time_spent3 = (double)(end3 - begin3) / CLOCKS_PER_SEC;
+	displayCArray(carray);
+
+	// Descending order
+	reverseCArray(barray);
+	// displayCArray(barray);
+
+//	printf("\nBlender:");
+//	blenderCArray(barray);
+//	displayCArray(barray);
+
+	printf("\nTotal time spent for bubble sort: %lf seconds", time_spent1);
+	printf("\nTotal time spent for selection sort: %lf seconds", time_spent2);
+	printf("\nTotal time spent for insertion sort: %lf seconds", time_spent3);
 
 	printf("\n");
 	return 0;

@@ -94,14 +94,6 @@ int SinglyLinkedList::insertMiddle(int value, int position)
 	SinglyLinkedNode *newNode = new SinglyLinkedNode;
 	newNode->data = value;
 	if (position < 0 || position > size) return 1;
-	else if (head == nullptr) {
-		// Insert at head
-		newNode->next = nullptr;
-		head = newNode;
-		tail = newNode;
-		size++;
-		return 11;
-	}
 	else if (position == 0) {
 		// Insert at head
 		newNode->next = head;

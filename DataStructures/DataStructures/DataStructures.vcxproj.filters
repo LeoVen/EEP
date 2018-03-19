@@ -86,6 +86,9 @@
     <ClCompile Include="C\Tests\CArrayTests.c">
       <Filter>Arquivos de Origem</Filter>
     </ClCompile>
+    <ClCompile Include="C\Tests\CSortingTests.c">
+      <Filter>Arquivos de Origem</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <None Include="Instructions.md" />
