@@ -4,40 +4,49 @@
 
 ## Array
 
-* TODO all
+* ~~Implement with Class~~
+* Implement CRUD Functions
+* Implement Sorting Algorithms
+* Implement Search Algorithms
 
 ## Singly Linked List (SLL)
 
+* ~~Implement with Class~~
 * __Re-do function implementations \*__
 * Implement functions with node insertion
 * Add functions:
-	* ~~Insert [head, middle, tail]~~ *
-	* ~~Remove [head, middle, tail]~~ *
-	* Search (if data exists)
-	* Get (get value of certain node)
+	* ~~Insert [head, middle, tail]~~ \*
+	* ~~Remove [head, middle, tail]~~ \*
+	* Search if data exists
+	* Get value of a certain node
 	* Reverse List
+* Sorting Algorithms
 
 ## Doubly Linked List (DLL)
 
-* Implement with struct
+* Implement with Class
 * Implement functions with node insertion
 * Add functions:
 	* Insert [head, middle, tail]
 	* Remove [head, middle, tail]
-	* Search (if data exists)
+	* Search if data exists
 	* Get value of a certain node
 	* Reverse List
+* Sorting Algorithms
 
 # C
 
 ## Array
 
+* ~~Implement with Struct~~
+* ~~Implement CRUD Functions~~
+* ~~Implement Sorting Algorithms~~
+* ~~Implement Search Algorithms~~
 * Test functions
-* Implement Sorting algorithms
 
 ## Singly Linked List (SLL)
 
-* ~~Implement with struct~~
+* ~~Implement with Struct~~
 * Implement functions with node insertion
 * Add functions:
 	* ~~Insert [head, middle, tail]~~ __needs testing__
@@ -45,10 +54,11 @@
 	* ~~Search (if data exists)~~
 	* Get (get value of certain node)
 	* Reverse List
+* Sorting Algorithms
 
 ## Doubly Linked List (DLL)
 
-* Implement with struct
+* Implement with Struct
 * Implement functions with node insertion
 * Add functions:
 	* Insert [head, middle, tail]
@@ -56,3 +66,4 @@
 	* Search (if data exists)
 	* Get value of a certain node
 	* Reverse List
+* Sorting Algorithms
