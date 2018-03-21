@@ -17,6 +17,7 @@ extern "C" {
 #include "CSinglyLinkedList.h"
 #include "CDoublyLinkedList.h"
 #include "CArray.h"
+#include "DArray.h"
 
 #ifdef __cplusplus
 }

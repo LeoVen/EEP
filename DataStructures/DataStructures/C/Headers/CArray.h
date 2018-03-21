@@ -24,22 +24,26 @@ extern "C" {
 	// +-------------------------------------+
 	CArray * getCArray(int size);
 	CArray * getCopyCArray(CArray *array);
+
 	// +-------------------------------------+
-	// |           Input / Output            |
+	// |                CRUD                 |
 	// +-------------------------------------+
 	int insertValueCArray(CArray *array, int position, int value);
 	int removeValueCArray(CArray *array, int position);
 	int pushValueCArray(CArray *array, int value);
 	int updateValueCArray(CArray *array, int position, int value);
+
 	// +-------------------------------------+
 	// |               Erase                 |
 	// +-------------------------------------+
 	int eraseCArray(CArray *array);
+
 	// +-------------------------------------+
 	// |             Switching               |
 	// +-------------------------------------+
 	int switchValuesCArray(CArray *array, int position1, int position2);
 	int reverseCArray(CArray *array);
+
 	// +-------------------------------------+
 	// |              Sorting                |
 	// +-------------------------------------+
@@ -47,6 +51,7 @@ extern "C" {
 	int selectionSortCArray(CArray *array);
 	int insertionSortCArray(CArray *array);
 	int blenderCArray(CArray *array);
+
 	// +-------------------------------------+
 	// |             Searching               |
 	// +-------------------------------------+
@@ -54,11 +59,11 @@ extern "C" {
 	CArray * valuePositionsCArray(CArray *array, int value);
 	int findMaxCArray(CArray *array);
 	int findMinCArray(CArray *array);
+
 	// +-------------------------------------+
 	// |              Display                |
 	// +-------------------------------------+
 	int displayCArray(CArray *array);
-	
 
 #ifdef __cplusplus
 }

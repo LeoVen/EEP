@@ -20,6 +20,7 @@
 	* Search if data exists
 	* Get value of a certain node
 	* Reverse List
+	* Copy
 * Sorting Algorithms
 
 ## Doubly Linked List (DLL)
@@ -32,9 +33,18 @@
 	* Search if data exists
 	* Get value of a certain node
 	* Reverse List
+	* Copy
 * Sorting Algorithms
 
 # C
+
+## Vector
+
+* Vector Sum
+* Vector Subtraction
+* Vector Scalar Product
+* Vector Product
+* Implement Plane and Point
 
 ## Array
 
@@ -43,6 +53,11 @@
 * ~~Implement Sorting Algorithms~~
 * ~~Implement Search Algorithms~~
 * Test functions
+
+## Dynamic Array
+
+* Implement with Struct
+* Implement CRUD Functions
 
 ## Singly Linked List (SLL)
 
@@ -54,6 +69,7 @@
 	* ~~Search (if data exists)~~
 	* Get (get value of certain node)
 	* Reverse List
+	* Copy
 * Sorting Algorithms
 
 ## Doubly Linked List (DLL)
@@ -66,4 +82,5 @@
 	* Search (if data exists)
 	* Get value of a certain node
 	* Reverse List
+	* Copy
 * Sorting Algorithms
