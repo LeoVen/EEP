@@ -16,6 +16,9 @@
 extern "C" {
 #endif
 
+#include <stdio.h>
+#include <stdlib.h>
+
 	typedef struct CSinglyLinkedNode {
 		int data;
 		struct CSinglyLinkedNode *next;

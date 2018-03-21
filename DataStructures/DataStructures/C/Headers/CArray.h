@@ -14,6 +14,9 @@
 extern "C" {
 #endif
 
+#include <stdio.h>
+#include <stdlib.h>
+
 	typedef struct CArray {
 		int *array;
 		int size;

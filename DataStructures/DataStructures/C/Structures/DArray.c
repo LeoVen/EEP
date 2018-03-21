@@ -9,8 +9,6 @@
 * Dynamic Array grows and shrinks as you add and remove values
 */
 
-#include <stdio.h>
-#include <stdlib.h>
 #include "..\Headers\DArray.h"
 
 DArray * getDArray(int maxSize, int minSize)

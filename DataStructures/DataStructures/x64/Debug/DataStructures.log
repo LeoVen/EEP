@@ -1,2 +1,19 @@
-﻿  VectorTests.c
-  DataStructures.vcxproj -> C:\Users\lvenk\Documents\GitHub\EEP\DataStructures\x64\Debug\DataStructures.exe
+﻿  CArray.c
+c:\users\leona\documents\github\eep\datastructures\datastructures\c\structures\carray.c(131): warning C4013: 'time' undefined; assuming extern returning int
+  CDoublyLinkedList.c
+  CSinglyLinkedList.c
+c:\users\leona\documents\github\eep\datastructures\datastructures\c\structures\csinglylinkedlist.c(331): warning C4028: formal parameter 1 different from declaration
+c:\users\leona\documents\github\eep\datastructures\datastructures\c\structures\csinglylinkedlist.c(331): warning C4028: formal parameter 2 different from declaration
+c:\users\leona\documents\github\eep\datastructures\datastructures\c\structures\csinglylinkedlist.c(331): warning C4029: declared formal parameter list different from definition
+  DArray.c
+  Vector.c
+  CArrayTests.c
+c:\users\leona\documents\github\eep\datastructures\datastructures\c\tests\carraytests.c(71): warning C4244: 'function': conversion from 'time_t' to 'unsigned int', possible loss of data
+  CDoublyLinkedListTests.c
+  CSinglyLinkedListTests.c
+c:\users\leona\documents\github\eep\datastructures\datastructures\c\tests\csinglylinkedlisttests.c(65): warning C4013: 'time' undefined; assuming extern returning int
+  CSortingTests.c
+  DArrayTests.c
+  VectorTests.c
+  Generating Code...
+  DataStructures.vcxproj -> C:\Users\leona\Documents\GitHub\EEP\DataStructures\x64\Debug\DataStructures.exe

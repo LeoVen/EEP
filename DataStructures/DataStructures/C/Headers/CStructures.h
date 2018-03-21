@@ -18,6 +18,7 @@ extern "C" {
 #include "CDoublyLinkedList.h"
 #include "CArray.h"
 #include "DArray.h"
+#include "Vector.h"
 
 #ifdef __cplusplus
 }

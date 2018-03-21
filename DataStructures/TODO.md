@@ -40,11 +40,13 @@
 
 ## Vector
 
-* Vector Sum
-* Vector Subtraction
-* Vector Scalar Product
-* Vector Product
+* ~~Vector Modulus~~
+* ~~Vector Sum~~
+* ~~Vector Subtraction~~
+* ~~Vector Scalar Product~~
+* ~~Vector Dot Product~~
 * Implement Plane and Point
+* Implement Vector with different bases
 
 ## Array
 

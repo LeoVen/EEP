@@ -11,8 +11,6 @@
  *
  */
 
-#include <stdio.h>
-#include <stdlib.h>
 #include "..\Headers\CSinglyLinkedList.h"
 
 int CSinglyLinkedListTests()

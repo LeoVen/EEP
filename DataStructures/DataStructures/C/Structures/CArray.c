@@ -21,8 +21,6 @@
 
  */
 
-#include <stdio.h>
-#include <stdlib.h>
 #include "..\Headers\CArray.h"
 
 void swap(CArray *array, int position1, int position2);

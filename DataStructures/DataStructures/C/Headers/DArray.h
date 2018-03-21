@@ -14,6 +14,10 @@
 extern "C" {
 #endif
 
+#include <stdio.h>
+#include <stdlib.h>
+#include <stdbool.h>
+
 	typedef struct DArray {
 		int *array;  // Array of integers
 		int size;    // Actual Size
