@@ -8,15 +8,6 @@
 *
 */
 
-/* Build Vector
- * Sum two vectors
- *
- *
- *
- *
- *
- */
-
 #include "..\Headers\Vector.h"
 
 Vector* buildVector(double x, double y, double z)

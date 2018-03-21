@@ -33,8 +33,8 @@ extern "C" {
 	// +-------------------------------------+
 	// |             Push / Pop              |
 	// +-------------------------------------+
-	int pushDArray(DArray **array);
-	int popDArray(DArray **array);
+	int pushDArray(DArray *array, int value);
+	int popDArray(DArray *array, int value);
 
 	// +-------------------------------------+
 	// |          Insert / Remove            |
@@ -55,7 +55,7 @@ extern "C" {
 	// +-------------------------------------+
 	// |              Resize                 |
 	// +-------------------------------------+
-	int checkSizeDArray();
+	DArray * checkSizeDArray(DArray *array);
 	// Shrink
 	// Grow
 

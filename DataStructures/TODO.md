@@ -86,3 +86,21 @@
 	* Reverse List
 	* Copy
 * Sorting Algorithms
+
+## Stack
+
+* Implement with Struct
+* Implement functions with boxes (DLL or SLL)
+* Functions:
+	* Push
+	* Pop
+	* Peek
+
+## Queue
+
+* Implement with Struct
+* Implement functions with boxes (DLL or SLL)
+* Functions:
+	* Enqueue
+	* Dequeue
+	* Peek (front / rear)

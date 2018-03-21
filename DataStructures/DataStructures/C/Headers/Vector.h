@@ -40,6 +40,7 @@ extern "C" {
 	void vectorScalarProduct(Vector *v, double scalar);
 	double vectorDotProduct(Vector *v1, Vector *v2);
 	double vectorAngle(Vector *v1, Vector *v2);
+	// Cross Product
 
 	// +-------------------------------------+
 	// |                Misc                 |

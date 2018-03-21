@@ -20,3 +20,19 @@ DArray * getDArray(int maxSize, int minSize)
 	newArr->array = (int *)malloc(sizeof(int) * maxSize);
 	return newArr;
 }
+
+int pushDArray(DArray *array, int value)
+{
+	array = checkSizeDArray(array);
+}
+
+DArray * checkSizeDArray(DArray *arr)
+{
+	if (arr->size < arr->maxSize) return arr;
+	else if (arr->size < arr->maxSize / 4) {
+		// Shrink
+	}
+	else {
+		// Grow
+	}
+}
