@@ -36,6 +36,8 @@ extern "C" {
 	// +-------------------------------------+
 	/* Initializes List. Obligatory! Or your application will crash.
 	 *
+	 * @see getCSinglyLinkedList() as an alternative
+	 *
 	 * @Param [ CSinglyLinkedList **SinglyLinkedList ] Reference to list
 	 *
 	 * @Returns [ int ] Return Code (see code table)
@@ -167,6 +169,12 @@ extern "C" {
 	// +-------------------------------------+
 	// |           Returns Struct            |
 	// +-------------------------------------+
+	/* Get a new Singly Linked List
+	*
+	* @Returns [ CSinglyLinkedList * ] Pointer to new Singly Linked List
+	*/
+	CSinglyLinkedList * getCSinglyLinkedList();
+
 	/* Get a SLL Node
 	 *
 	 * @Param [ int value ] Node value
@@ -184,6 +192,7 @@ extern "C" {
 	// +-------------------------------------+
 	// |              Sorting                |
 	// +-------------------------------------+
+	int reverseListSLL(CSinglyLinkedList **SinglyLinkedList);
 	// BubbleSort
 	// SelectionSort
 	// InsertionSort

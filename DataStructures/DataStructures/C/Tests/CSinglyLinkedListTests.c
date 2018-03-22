@@ -70,6 +70,14 @@ int CSinglyLinkedListTests()
 		printf("\nThere are %3d number %d in the list", searchValueSLL(&csll, i), i);
 	}
 
+	CSinglyLinkedList *list = getCSinglyLinkedList();
+	for (i = 0; i < 10; i++) {
+		insertTailSLL(&list, i);
+	}
+	printf("\n---------- ---------- Reverse List ---------- ----------\n");
+	displayListSLL(&list);
+	reverseListSLL(&list);
+
 	printf("\n");
 	//
 	// 

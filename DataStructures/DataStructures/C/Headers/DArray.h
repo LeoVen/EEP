@@ -22,7 +22,7 @@ extern "C" {
 		int *array;  // Array of integers
 		int size;    // Actual Size
 		int maxSize; // Maximum size. Past this - grow
-		int minSize; // Minimum size. Past this - shrink
+		int minSize; // Minimum size. Don't shrink past this
 	} DArray;
 
 	// +-------------------------------------+
@@ -33,8 +33,8 @@ extern "C" {
 	// +-------------------------------------+
 	// |             Push / Pop              |
 	// +-------------------------------------+
-	int pushDArray(DArray *array, int value);
-	int popDArray(DArray *array, int value);
+	int pushValueDArray(DArray *array, int value);
+	int popValueDArray(DArray *array);
 
 	// +-------------------------------------+
 	// |          Insert / Remove            |
@@ -55,9 +55,10 @@ extern "C" {
 	// +-------------------------------------+
 	// |              Resize                 |
 	// +-------------------------------------+
-	DArray * checkSizeDArray(DArray *array);
-	// Shrink
-	// Grow
+	DArray * checkGrow(DArray *array);
+	DArray * checkShrink(DArray *array);
+	DArray * growDArray(DArray *array);
+	DArray * shrinkDArray(DArray *array);
 
 #ifdef __cplusplus
 }

@@ -23,7 +23,12 @@ int DArrayTests()
 	printf(" +-------------------------------------+\n");
 	printf("\n");
 
-	DArray *array = getDArray(100, 4);
+	DArray *array = getDArray(100, 2);
+	int i;
+	for (i = 0; i < 100; i++) {
+		pushValueDArray(array, i);
+	}
+	displayDArray(array);
 
 	return 0;
 }

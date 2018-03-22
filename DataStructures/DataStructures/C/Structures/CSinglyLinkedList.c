@@ -38,6 +38,16 @@ int initListSLL(CSinglyLinkedList **SinglyLinkedList)
 	return 0;
 }
 
+CSinglyLinkedList * getCSinglyLinkedList()
+{
+	CSinglyLinkedList *sll = (CSinglyLinkedList *)malloc(sizeof(CSinglyLinkedList));
+	sll->initialized = true;
+	sll->size = 0;
+	sll->head = NULL;
+	sll->tail = NULL;
+	return sll;
+}
+
 /* INSERT
  *
  * Interval [0, size]
@@ -355,6 +365,11 @@ int insertNodeSLL(CSinglyLinkedList **SinglyLinkedList, CSinglyLinkedNode *node,
 		}
 	}
 	return 1; // List not initialized
+}
+
+int reverseListSLL(CSinglyLinkedList **SinglyLinkedList)
+{
+	CSinglyLinkedList *sll = *SinglyLinkedList;
 }
 
 void resetTail(CSinglyLinkedList *SinglyLinkedList)
