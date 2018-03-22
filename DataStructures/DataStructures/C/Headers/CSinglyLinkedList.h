@@ -186,7 +186,7 @@ extern "C" {
 	/*
 	 *
 	 */
-	// CSinglyLinkedList * copyCSLL(CSinglyLinkedList **SinglyLinkedList)
+	CSinglyLinkedList * copyCSLL(CSinglyLinkedList **SinglyLinkedList);
 	// TODO Get Copy of List
 
 	// +-------------------------------------+

@@ -30,3 +30,22 @@ int initListDLL(CDoublyLinkedList **DoublyLinkedList)
 	dll->tail = NULL;
 	return 0;
 }
+
+CDoublyLinkedList * getCDoublyLinkedList()
+{
+	CDoublyLinkedList *dll = (CDoublyLinkedList *)malloc(sizeof(CDoublyLinkedList));
+	dll->initialized = true;
+	dll->size = 0;
+	dll->head = NULL;
+	dll->tail = NULL;
+	return dll;
+}
+
+CDoublyLinkedNode * getCDoublyLinkedNode(int value)
+{
+	CDoublyLinkedNode *dln = (CDoublyLinkedNode *)malloc(sizeof(CDoublyLinkedNode));
+	dln->data = value;
+	dln->prev = NULL;
+	dln->next = NULL;
+	return dln;
+}

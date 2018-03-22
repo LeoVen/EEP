@@ -367,6 +367,11 @@ int insertNodeSLL(CSinglyLinkedList **SinglyLinkedList, CSinglyLinkedNode *node,
 	return 1; // List not initialized
 }
 
+CSinglyLinkedList * copyCSLL(CSinglyLinkedList **SinglyLinkedList)
+{
+
+}
+
 int reverseListSLL(CSinglyLinkedList **SinglyLinkedList)
 {
 	CSinglyLinkedList *sll = *SinglyLinkedList;

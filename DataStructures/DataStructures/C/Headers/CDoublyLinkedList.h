@@ -31,6 +31,36 @@ extern "C" {
 		CDoublyLinkedNode *tail;
 	} CDoublyLinkedList;
 
+	// +-------------------------------------+
+	// |             Initialize              |
+	// +-------------------------------------+
+	/* Initializes List. Obligatory! Or your application will crash.
+	*
+	* @see getCDoublyLinkedList() as an alternative
+	*
+	* @Param [ CDoublyLinkedList **DoublyLinkedList ] Reference to list
+	*
+	* @Returns [ int ] Return Code (see code table)
+	*/
+	int initListDLL(CDoublyLinkedList **DoublyLinkedList);
+
+	// +-------------------------------------+
+	// |           Returns Struct            |
+	// +-------------------------------------+
+	/* Get a new Doubly Linked List
+	*
+	* @Returns [ CDoublyLinkedList * ] Pointer to new Singly Linked List
+	*/
+	CDoublyLinkedList * getCDoublyLinkedList();
+
+	/* Get a DLL Node
+	*
+	* @Param [ int value ] Node value
+	*
+	* @Returns [ CDoublyLinkedNode * ] Pointer to new node with data
+	*/
+	CDoublyLinkedNode * getCDoublyLinkedNode(int value);
+
 #ifdef __cplusplus
 }
 #endif
