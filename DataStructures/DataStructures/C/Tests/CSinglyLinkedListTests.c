@@ -75,8 +75,16 @@ int CSinglyLinkedListTests()
 		insertTailSLL(&list, i);
 	}
 	printf("\n---------- ---------- Reverse List ---------- ----------\n");
+	// Reversing new List in hopes that the original one does not change
+	CSinglyLinkedList *newList = copyCSinglyLinkedList(&list);
+	printf("\nOld List:\n");
 	displayListSLL(&list);
-	reverseListSLL(&list);
+	printf("\nNew copied and reversed list:\n");
+	// Reverse
+	reverseListSLL(&newList);
+	displayListSLL(&newList);
+	printf("\nOld list not modified:\n");
+	displayListSLL(&list);
 
 	printf("\n");
 	//

@@ -23,6 +23,7 @@
     1 - List not Initialized
     2 - Invalid Position
     3 - List is Empty
+	4 - Only one node -> won't reverse list
 
 */
 
@@ -367,14 +368,52 @@ int insertNodeSLL(CSinglyLinkedList **SinglyLinkedList, CSinglyLinkedNode *node,
 	return 1; // List not initialized
 }
 
-CSinglyLinkedList * copyCSLL(CSinglyLinkedList **SinglyLinkedList)
+CSinglyLinkedNode * copyCSinglyLinkedNode(CSinglyLinkedNode *node)
 {
+	return getCSinglyLinkedNode(node->data);
+}
 
+CSinglyLinkedList * copyCSinglyLinkedList(CSinglyLinkedList **SinglyLinkedList)
+{
+	CSinglyLinkedList *sll = *SinglyLinkedList;
+	CSinglyLinkedList *newList = getCSinglyLinkedList();
+	int i;
+	for (i = 0; i < sll->size; i++) {
+		insertTailSLL(&newList, getNodeValueSLL(&sll, i));
+	}
+	return newList;
+}
+
+int getNodeValueSLL(CSinglyLinkedList **SinglyLinkedList, int position)
+{
+	CSinglyLinkedList *sll = *SinglyLinkedList;
+	// Error!!
+	if (position < 0 || position >= sll->size) return 1337.0;
+	int i, value = sll->head->data;
+	CSinglyLinkedNode *scanner = sll->head;
+	for (i = 0; i < position; i++) {
+		scanner = scanner->next;
+	}
+	value = scanner->data;
+	return value;
 }
 
 int reverseListSLL(CSinglyLinkedList **SinglyLinkedList)
 {
 	CSinglyLinkedList *sll = *SinglyLinkedList;
+	if (sll->size == 0) return 3; // List is empty
+	else if (sll->size == 1) return 4; // Only one node
+	CSinglyLinkedNode *prev = NULL;
+	CSinglyLinkedNode *curr = sll->head;
+	CSinglyLinkedNode * next = NULL;
+	while (curr != NULL) {
+		next = curr->next;
+		curr->next = prev;
+		prev = curr;
+		curr = next;
+	}
+	sll->head = prev;
+	return 0;
 }
 
 void resetTail(CSinglyLinkedList *SinglyLinkedList)

@@ -167,7 +167,7 @@ extern "C" {
 	// TODO Get array with positions of matched values
 
 	// +-------------------------------------+
-	// |           Returns Struct            |
+	// |               Returns               |
 	// +-------------------------------------+
 	/* Get a new Singly Linked List
 	*
@@ -183,15 +183,39 @@ extern "C" {
 	 */
 	CSinglyLinkedNode * getCSinglyLinkedNode(int value);
 
-	/*
-	 *
-	 */
-	CSinglyLinkedList * copyCSLL(CSinglyLinkedList **SinglyLinkedList);
-	// TODO Get Copy of List
+	/* Copy a SLL Node
+	*
+	* @Param [ CSinglyLinkedNode *node ] Node to be copied
+	*
+	* @Returns [ CSinglyLinkedNode * ] Pointer to new node with data
+	*/
+	CSinglyLinkedNode * copyCSinglyLinkedNode(CSinglyLinkedNode *node);
+
+	/* Get node value
+	*
+	* @Param [ int position ] Position of node to get value from
+	*
+	* @Returns [ int ] Value of node
+	*/
+	int getNodeValueSLL(CSinglyLinkedList **SinglyLinkedList, int position);
+
+	/* Get copy of a list
+	*
+	* @Param [ CSinglyLinkedList **SinglyLinkedList ] List to be copied
+	*
+	* @Returns [ CSinglyLinkedList * ] New copied list
+	*/
+	CSinglyLinkedList * copyCSinglyLinkedList(CSinglyLinkedList **SinglyLinkedList);
 
 	// +-------------------------------------+
 	// |              Sorting                |
 	// +-------------------------------------+
+	/* Reverse list using three pointers method
+	*
+	* @Param [ CSinglyLinkedList **SinglyLinkedList ] List to be reversed
+	*
+	* @Returns [ int ] Return Code (see code table)
+	*/
 	int reverseListSLL(CSinglyLinkedList **SinglyLinkedList);
 	// BubbleSort
 	// SelectionSort
