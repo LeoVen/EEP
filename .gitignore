@@ -1,7 +1,11 @@
-*.exe
 *.~sql
 *.pyc
+
+
+# C/C++
 *.obj
+*.exe
+*.o
 
 # Java
 *.class
