@@ -20,7 +20,7 @@
 	* Search if data exists
 	* Get value of a certain node
 	* Reverse List
-	* Copy
+	* Copy List
 * Sorting Algorithms
 
 ## Doubly Linked List (DLL)
@@ -33,7 +33,7 @@
 	* Search if data exists
 	* Get value of a certain node
 	* Reverse List
-	* Copy
+	* Copy List
 * Sorting Algorithms
 
 # C
@@ -69,9 +69,9 @@
 	* ~~Insert [head, middle, tail]~~ __needs testing__
 	* ~~Remove [head, middle, tail]~~ __needs testing__
 	* ~~Search (if data exists)~~
-	* Get (get value of certain node)
-	* Reverse List
-	* Copy
+	* ~~Get (get value of certain node)~~
+	* ~~Reverse List~~
+	* ~~Copy List~~
 * Sorting Algorithms
 
 ## Doubly Linked List (DLL)

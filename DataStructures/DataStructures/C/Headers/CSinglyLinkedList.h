@@ -10,7 +10,7 @@
 
 #pragma once
 
-#include <stdbool.h>
+
 
 #ifdef __cplusplus
 extern "C" {
@@ -18,6 +18,7 @@ extern "C" {
 
 #include <stdio.h>
 #include <stdlib.h>
+#include <stdbool.h>
 
 	typedef struct CSinglyLinkedNode {
 		int data;
@@ -79,7 +80,7 @@ extern "C" {
 	 * TODO insert pre-made node
 	 *
 	 */
-	int insertNodeSLL(CSinglyLinkedNode *node, int position);
+	int insertNodeSLL(CSinglyLinkedList **SinglyLinkedList, CSinglyLinkedNode *node, int position);
 
 	// +-------------------------------------+
 	// |                Remove               |
@@ -170,9 +171,9 @@ extern "C" {
 	// |               Returns               |
 	// +-------------------------------------+
 	/* Get a new Singly Linked List
-	*
-	* @Returns [ CSinglyLinkedList * ] Pointer to new Singly Linked List
-	*/
+	 *
+	 * @Returns [ CSinglyLinkedList * ] Pointer to new Singly Linked List
+	 */
 	CSinglyLinkedList * getCSinglyLinkedList();
 
 	/* Get a SLL Node
@@ -184,38 +185,38 @@ extern "C" {
 	CSinglyLinkedNode * getCSinglyLinkedNode(int value);
 
 	/* Copy a SLL Node
-	*
-	* @Param [ CSinglyLinkedNode *node ] Node to be copied
-	*
-	* @Returns [ CSinglyLinkedNode * ] Pointer to new node with data
-	*/
+	 *
+	 * @Param [ CSinglyLinkedNode *node ] Node to be copied
+	 *
+	 * @Returns [ CSinglyLinkedNode * ] Pointer to new node with data
+	 */
 	CSinglyLinkedNode * copyCSinglyLinkedNode(CSinglyLinkedNode *node);
 
 	/* Get node value
-	*
-	* @Param [ int position ] Position of node to get value from
-	*
-	* @Returns [ int ] Value of node
-	*/
+	 *
+	 * @Param [ int position ] Position of node to get value from
+	 *
+	 * @Returns [ int ] Value of node
+	 */
 	int getNodeValueSLL(CSinglyLinkedList **SinglyLinkedList, int position);
 
 	/* Get copy of a list
-	*
-	* @Param [ CSinglyLinkedList **SinglyLinkedList ] List to be copied
-	*
-	* @Returns [ CSinglyLinkedList * ] New copied list
-	*/
+	 *
+	 * @Param [ CSinglyLinkedList **SinglyLinkedList ] List to be copied
+	 *
+	 * @Returns [ CSinglyLinkedList * ] New copied list
+	 */
 	CSinglyLinkedList * copyCSinglyLinkedList(CSinglyLinkedList **SinglyLinkedList);
 
 	// +-------------------------------------+
 	// |              Sorting                |
 	// +-------------------------------------+
 	/* Reverse list using three pointers method
-	*
-	* @Param [ CSinglyLinkedList **SinglyLinkedList ] List to be reversed
-	*
-	* @Returns [ int ] Return Code (see code table)
-	*/
+	 *
+	 * @Param [ CSinglyLinkedList **SinglyLinkedList ] List to be reversed
+	 *
+	 * @Returns [ int ] Return Code (see code table)
+	 */
 	int reverseListSLL(CSinglyLinkedList **SinglyLinkedList);
 	// BubbleSort
 	// SelectionSort

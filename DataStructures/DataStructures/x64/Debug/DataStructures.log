@@ -1,3 +1,9 @@
-﻿  CSinglyLinkedListTests.c
+﻿  CSinglyLinkedList.c
+c:\users\leona\documents\github\eep\datastructures\datastructures\c\structures\csinglylinkedlist.c(342): warning C4028: formal parameter 1 different from declaration
+c:\users\leona\documents\github\eep\datastructures\datastructures\c\structures\csinglylinkedlist.c(342): warning C4028: formal parameter 2 different from declaration
+c:\users\leona\documents\github\eep\datastructures\datastructures\c\structures\csinglylinkedlist.c(342): warning C4029: declared formal parameter list different from definition
+c:\users\leona\documents\github\eep\datastructures\datastructures\c\structures\csinglylinkedlist.c(391): warning C4244: 'return': conversion from 'double' to 'int', possible loss of data
+  CSinglyLinkedListTests.c
 c:\users\leona\documents\github\eep\datastructures\datastructures\c\tests\csinglylinkedlisttests.c(65): warning C4013: 'time' undefined; assuming extern returning int
+  Generating Code...
   DataStructures.vcxproj -> C:\Users\leona\Documents\GitHub\EEP\DataStructures\x64\Debug\DataStructures.exe
