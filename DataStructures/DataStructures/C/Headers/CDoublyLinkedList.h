@@ -20,8 +20,8 @@ extern "C" {
 
 	typedef struct CDoublyLinkedNode {
 		int data;
-		struct CSinglyLinkedNode *next;
-		struct CSinglyLinkedNode *prev;
+		struct CDoublyLinkedNode *next;
+		struct CDoublyLinkedNode *prev;
 	} CDoublyLinkedNode;
 
 	typedef struct CDoublyLinkedList {
