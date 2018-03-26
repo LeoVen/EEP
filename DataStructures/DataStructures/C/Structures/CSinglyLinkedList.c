@@ -29,6 +29,10 @@
 
 #include "..\Headers\CSinglyLinkedList.h"
 
+// +-------------------------------------------------------------------------------------------------+
+// |                                           Initialize                                            |
+// +-------------------------------------------------------------------------------------------------+
+
 int initListSLL(CSinglyLinkedList **SinglyLinkedList)
 {
 	CSinglyLinkedList *sll = *SinglyLinkedList;
@@ -39,15 +43,9 @@ int initListSLL(CSinglyLinkedList **SinglyLinkedList)
 	return 0;
 }
 
-CSinglyLinkedList * getCSinglyLinkedList()
-{
-	CSinglyLinkedList *sll = (CSinglyLinkedList *)malloc(sizeof(CSinglyLinkedList));
-	sll->initialized = true;
-	sll->size = 0;
-	sll->head = NULL;
-	sll->tail = NULL;
-	return sll;
-}
+// +-------------------------------------------------------------------------------------------------+
+// |                                            Insertion                                            |
+// +-------------------------------------------------------------------------------------------------+
 
 /* INSERT
  *
@@ -153,6 +151,40 @@ int insertTailSLL(CSinglyLinkedList **SinglyLinkedList, int value)
 	}
 	return 1; // List not initialized
 }
+
+int insertNodeSLL(CSinglyLinkedList **SinglyLinkedList, CSinglyLinkedNode *node, int position)
+{
+	CSinglyLinkedList *sll = *SinglyLinkedList;
+	if (sll->initialized) {
+		// [0, size]
+		if (position < 0 || position > sll->size) return 2; // Invalid Position
+		if (sll->head == NULL) {
+			// Insert at head
+			// TODO
+			//
+		}
+		else if (position == 0) {
+			// Insert at head
+			// TODO
+			//
+		}
+		else if (position == sll->size) {
+			// Insert at tail
+			// TODO
+			//
+		}
+		else {
+			// Insert at middle
+			// TODO
+			//
+		}
+	}
+	return 1; // List not initialized
+}
+
+// +-------------------------------------------------------------------------------------------------+
+// |                                             Removal                                             |
+// +-------------------------------------------------------------------------------------------------+
 
 /* REMOVE
  *
@@ -264,13 +296,9 @@ int removeTailSLL(CSinglyLinkedList **SinglyLinkedList)
 	return 1; // List not initialized
 }
 
-CSinglyLinkedNode * getCSinglyLinkedNode(int value)
-{
-	CSinglyLinkedNode *sln = (CSinglyLinkedNode *) malloc(sizeof(*sln));
-	sln->next = NULL;
-	sln->data = value;
-	return sln;
-}
+// +-------------------------------------------------------------------------------------------------+
+// |                                             Display                                             |
+// +-------------------------------------------------------------------------------------------------+
 
 int displayListSLL(CSinglyLinkedList **SinglyLinkedList)
 {
@@ -293,6 +321,35 @@ int displayListSLL(CSinglyLinkedList **SinglyLinkedList)
 	return 1; // List not initialized
 }
 
+int getListSizeSLL(CSinglyLinkedList **SinglyLinkedList)
+{
+	CSinglyLinkedList *sll = *SinglyLinkedList;
+	CSinglyLinkedNode *scanner = sll->head;
+	int listSize = 0;
+	if (scanner == NULL) return listSize;
+	while (scanner != NULL)
+	{
+		scanner = scanner->next;
+		listSize++;
+	}
+	return listSize;
+}
+
+// +-------------------------------------------------------------------------------------------------+
+// |                                             Resets                                              |
+// +-------------------------------------------------------------------------------------------------+
+
+void resetTail(CSinglyLinkedList *SinglyLinkedList)
+{
+	SinglyLinkedList->tail = SinglyLinkedList->head;
+	if (SinglyLinkedList->tail != NULL) {
+		while (SinglyLinkedList->tail->next != NULL)
+		{
+			SinglyLinkedList->tail = SinglyLinkedList->tail->next;
+		}
+	}
+}
+
 int deleteListSLL(CSinglyLinkedList **SinglyLinkedList)
 {
 	CSinglyLinkedList *sll = *SinglyLinkedList;
@@ -310,19 +367,9 @@ int deleteListSLL(CSinglyLinkedList **SinglyLinkedList)
 	return -1; // List erased
 }
 
-int getListSizeSLL(CSinglyLinkedList **SinglyLinkedList)
-{
-	CSinglyLinkedList *sll = *SinglyLinkedList;
-	CSinglyLinkedNode *scanner = sll->head;
-	int listSize = 0;
-	if (scanner == NULL) return listSize;
-	while (scanner != NULL)
-	{
-		scanner = scanner->next;
-		listSize++;
-	}
-	return listSize;
-}
+// +-------------------------------------------------------------------------------------------------+
+// |                                             Search                                              |
+// +-------------------------------------------------------------------------------------------------+
 
 int searchValueSLL(CSinglyLinkedList **SinglyLinkedList, int value)
 {
@@ -338,50 +385,28 @@ int searchValueSLL(CSinglyLinkedList **SinglyLinkedList, int value)
 	return count;
 }
 
-int insertNodeSLL(CSinglyLinkedList **SinglyLinkedList, CSinglyLinkedNode *node, int position)
+// TODO Get array with positions of matched values
+
+// +-------------------------------------------------------------------------------------------------+
+// |                                            Getters                                              |
+// +-------------------------------------------------------------------------------------------------+
+
+CSinglyLinkedList * getCSinglyLinkedList()
 {
-	CSinglyLinkedList *sll = *SinglyLinkedList;
-	if (sll->initialized) {
-		// [0, size]
-		if (position < 0 || position > sll->size) return 2; // Invalid Position
-		if (sll->head == NULL) {
-			// Insert at head
-			// TODO
-			//
-		}
-		else if (position == 0) {
-			// Insert at head
-			// TODO
-			//
-		}
-		else if (position == sll->size) {
-			// Insert at tail
-			// TODO
-			//
-		}
-		else {
-			// Insert at middle
-			// TODO
-			//
-		}
-	}
-	return 1; // List not initialized
+	CSinglyLinkedList *sll = (CSinglyLinkedList *)malloc(sizeof(CSinglyLinkedList));
+	sll->initialized = true;
+	sll->size = 0;
+	sll->head = NULL;
+	sll->tail = NULL;
+	return sll;
 }
 
-CSinglyLinkedNode * copyCSinglyLinkedNode(CSinglyLinkedNode *node)
+CSinglyLinkedNode * getCSinglyLinkedNode(int value)
 {
-	return getCSinglyLinkedNode(node->data);
-}
-
-CSinglyLinkedList * copyCSinglyLinkedList(CSinglyLinkedList **SinglyLinkedList)
-{
-	CSinglyLinkedList *sll = *SinglyLinkedList;
-	CSinglyLinkedList *newList = getCSinglyLinkedList();
-	int i;
-	for (i = 0; i < sll->size; i++) {
-		insertTailSLL(&newList, getNodeValueSLL(&sll, i));
-	}
-	return newList;
+	CSinglyLinkedNode *sln = (CSinglyLinkedNode *)malloc(sizeof(*sln));
+	sln->next = NULL;
+	sln->data = value;
+	return sln;
 }
 
 int getNodeValueSLL(CSinglyLinkedList **SinglyLinkedList, int position)
@@ -397,6 +422,30 @@ int getNodeValueSLL(CSinglyLinkedList **SinglyLinkedList, int position)
 	value = scanner->data;
 	return value;
 }
+
+// +-------------------------------------------------------------------------------------------------+
+// |                                             Copy                                                |
+// +-------------------------------------------------------------------------------------------------+
+
+CSinglyLinkedList * copyCSinglyLinkedList(CSinglyLinkedList **SinglyLinkedList)
+{
+	CSinglyLinkedList *sll = *SinglyLinkedList;
+	CSinglyLinkedList *newList = getCSinglyLinkedList();
+	int i;
+	for (i = 0; i < sll->size; i++) {
+		insertTailSLL(&newList, getNodeValueSLL(&sll, i));
+	}
+	return newList;
+}
+
+CSinglyLinkedNode * copyCSinglyLinkedNode(CSinglyLinkedNode *node)
+{
+	return getCSinglyLinkedNode(node->data);
+}
+
+// +-------------------------------------------------------------------------------------------------+
+// |                                           Sorting                                               |
+// +-------------------------------------------------------------------------------------------------+
 
 int reverseListSLL(CSinglyLinkedList **SinglyLinkedList)
 {
@@ -416,13 +465,6 @@ int reverseListSLL(CSinglyLinkedList **SinglyLinkedList)
 	return 0;
 }
 
-void resetTail(CSinglyLinkedList *SinglyLinkedList)
-{
-	SinglyLinkedList->tail = SinglyLinkedList->head;
-	if (SinglyLinkedList->tail != NULL) {
-		while (SinglyLinkedList->tail->next != NULL)
-		{
-			SinglyLinkedList->tail = SinglyLinkedList->tail->next;
-		}
-	}
-}
+// BubbleSort
+// SelectionSort
+// InsertionSort

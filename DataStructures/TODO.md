@@ -47,6 +47,7 @@
 * ~~Vector Dot Product~~
 * Implement Plane and Point
 * Implement Vector with different bases
+* Detailed description of every function
 
 ## Array
 
@@ -55,6 +56,7 @@
 * ~~Implement Sorting Algorithms~~
 * ~~Implement Search Algorithms~~
 * Test functions
+* Detailed description of every function
 
 ## Dynamic Array
 
@@ -64,7 +66,6 @@
 ## Singly Linked List (SLL)
 
 * ~~Implement with Struct~~
-* Implement functions with node insertion
 * Add functions:
 	* ~~Insert [head, middle, tail]~~ __needs testing__
 	* ~~Remove [head, middle, tail]~~ __needs testing__
@@ -72,7 +73,10 @@
 	* ~~Get (get value of certain node)~~
 	* ~~Reverse List~~
 	* ~~Copy List~~
+	* Insert pre-made node
+	* Get array with positions of matched values
 * Sorting Algorithms
+* Detailed description of every function
 
 ## Doubly Linked List (DLL)
 
@@ -85,7 +89,10 @@
 	* Get value of a certain node
 	* Reverse List
 	* Copy
+	* Insert pre-made node
+	* Get array with positions of matched values
 * Sorting Algorithms
+* Detailed description of every function
 
 ## Stack
 
@@ -95,6 +102,7 @@
 	* Push
 	* Pop
 	* Peek
+* Detailed description of every function
 
 ## Queue
 
@@ -104,3 +112,4 @@
 	* Enqueue
 	* Dequeue
 	* Peek (front / rear)
+* Detailed description of every function
