@@ -145,7 +145,9 @@ int removeMiddleDLL(CDoublyLinkedList **DoublyLinkedList, int position)
 {
 	CDoublyLinkedList *dll = *DoublyLinkedList;
 	if (dll->initialized) {
-
+		// TODO
+		//
+		//
 	}
 	return 1; // List not initialized or locked
 }
@@ -231,5 +233,42 @@ void resetHeadTail(CDoublyLinkedList *DoublyLinkedList)
 			DoublyLinkedList->tail = DoublyLinkedList->tail->next;
 		}
 	}
+	else if (DoublyLinkedList->head == NULL && DoublyLinkedList->tail == NULL) {}
 	else printf("\nRESET FAILED\n");
 }
+
+int deleteListDLL(CDoublyLinkedList **DoublyLinkedList)
+{
+	CDoublyLinkedList *dll = *DoublyLinkedList;
+	CDoublyLinkedNode *kill;
+	if (dll->head == NULL) return 3;
+	while (dll->head != NULL) {
+		// TODO
+		//
+		//
+	}
+	return -1; // List erased
+}
+
+// +-------------------------------------------------------------------------------------------------+
+// |                                             Search                                              |
+// +-------------------------------------------------------------------------------------------------+
+
+// TODO Search value
+// TODO Get array with positions of matched values
+
+// +-------------------------------------------------------------------------------------------------+
+// |                                             Copy                                                |
+// +-------------------------------------------------------------------------------------------------+
+
+// TODO copy List
+// TODO copy Node
+
+// +-------------------------------------------------------------------------------------------------+
+// |                                           Sorting                                               |
+// +-------------------------------------------------------------------------------------------------+
+
+// Reverse
+// BubbleSort
+// SelectionSort
+// InsertionSort

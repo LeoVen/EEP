@@ -1,3 +1,5 @@
 ﻿  CDoublyLinkedList.c
-c:\users\leona\documents\github\eep\datastructures\datastructures\c\structures\cdoublylinkedlist.c(161): warning C4013: 'removeHeadSLL' undefined; assuming extern returning int
+c:\users\leona\documents\github\eep\datastructures\datastructures\c\structures\cdoublylinkedlist.c(163): warning C4013: 'removeHeadSLL' undefined; assuming extern returning int
+  CDoublyLinkedListTests.c
+  Generating Code...
   DataStructures.vcxproj -> C:\Users\leona\Documents\GitHub\EEP\DataStructures\x64\Debug\DataStructures.exe

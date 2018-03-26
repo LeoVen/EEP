@@ -24,7 +24,6 @@ int CDoublyLinkedListTests()
 	printf("\n");
 
 	CDoublyLinkedList *dll = getCDoublyLinkedList();
-
 	CDoublyLinkedNode *node = getCDoublyLinkedNode(2);
 	int i;
 	for (i = 0; i < 10; i++) {
@@ -33,18 +32,45 @@ int CDoublyLinkedListTests()
 	for (i = 0; i < 10; i++) {
 		insertHeadDLL(&dll, i);
 	}
-
 	displayListDLL(&dll);
-
-	for (i = 0; 0 < getListSizeDLL(&dll); i++) {
+	int size = getListSizeDLL(&dll);
+	for (i = 0; i < size / 2; i++) {
 		removeTailDLL(&dll);
 	}
-
-	for (i = 0; 0 < getListSizeDLL(&dll); i++) {
+	displayListDLL(&dll);
+	for (i = 0; i < size / 2; i++) {
 		removeHeadDLL(&dll);
 	}
-
 	displayListDLL(&dll);
+
+	// Test cases
+
+	insertHeadDLL(&dll, 1);
+	removeHeadDLL(&dll);
+	insertHeadDLL(&dll, 1);
+	removeTailDLL(&dll);
+	// insertHeadDLL(&dll, 1);
+	// removeMiddleDLL(&dll, 0);
+
+	insertTailDLL(&dll, 1);
+	removeHeadDLL(&dll);
+	insertTailDLL(&dll, 1);
+	removeTailDLL(&dll);
+	// insertTailDLL(&dll, 1);
+	// removeMiddleDLL(&dll, 0);
+
+	// insertMiddle(&dll, 0, 1);
+	// removeHeadDLL(&dll);
+	// insertMiddle(&dll, 0, 1);
+	// removeTailDLL(&dll);
+	// insertMiddle(&dll, 0, 1);
+	// removeMiddleDLL(&dll, 0);
+
+	removeHeadDLL(&dll);
+	removeTailDLL(&dll);
+	// removeMiddleDLL(&dll, 0);
+
+	displayListDLL(&dll); // Should give Empty
 
 	free(dll);
 	printf("\n");

@@ -102,28 +102,28 @@ extern "C" {
 	// |               Removal               |
 	// +-------------------------------------+
 	/* Removes first node
-	*
-	* @Param [ CDoublyLinkedList **DoublyLinkedList ] Reference to list
-	*
-	* @Returns [ int ] Return Code (see code table)
-	*/
+	 *
+	 * @Param [ CDoublyLinkedList **DoublyLinkedList ] Reference to list
+	 *
+	 * @Returns [ int ] Return Code (see code table)
+	 */
 	int removeHeadDLL(CDoublyLinkedList **DoublyLinkedList);
 
 	/* Removes middle node (or chosen node)
-	*
-	* @Param [ CDoublyLinkedList **DoublyLinkedList ] Reference to list
-	* @Param [ int position ] Node at position to be removed
-	*
-	* @Returns [ int ] Return Code (see code table)
-	*/
+	 *
+	 * @Param [ CDoublyLinkedList **DoublyLinkedList ] Reference to list
+	 * @Param [ int position ] Node at position to be removed
+	 *
+	 * @Returns [ int ] Return Code (see code table)
+	 */
 	int removeMiddleDLL(CDoublyLinkedList **DoublyLinkedList, int position);
 
 	/* Removes last node
-	*
-	* @Param [ CDoublyLinkedList **DoublyLinkedList ] Reference to list
-	*
-	* @Returns [ int ] Return Code (see code table)
-	*/
+	 *
+	 * @Param [ CDoublyLinkedList **DoublyLinkedList ] Reference to list
+	 *
+	 * @Returns [ int ] Return Code (see code table)
+	 */
 	int removeTailDLL(CDoublyLinkedList **DoublyLinkedList);
 
 	// +-------------------------------------+
@@ -138,24 +138,32 @@ extern "C" {
 	int displayListDLL(CDoublyLinkedList **DoublyLinkedList);
 
 	/* Gets length of a list
-	*
-	* @Param [ CDoublyLinkedList **DoublyLinkedList ] Reference to list
-	*
-	* @Returns [ int ] List length
-	*/
+	 *
+	 * @Param [ CDoublyLinkedList **DoublyLinkedList ] Reference to list
+	 *
+	 * @Returns [ int ] List length
+	 */
 	int getListSizeDLL(CDoublyLinkedList **DoublyLinkedList);
 
 	// +-------------------------------------+
 	// |               Resets                |
 	// +-------------------------------------+
 	/*
-	* Utility function to reposition head and tail whenever needed
-	*
-	* @Param [ CDoublyLinkedList *DoublyLinkedList ] Reference to list
-	*
-	* @Returns [ void ]
-	*/
+	 * Utility function to reposition head and tail whenever needed
+	 *
+	 * @Param [ CDoublyLinkedList *DoublyLinkedList ] Reference to list
+	 *
+	 * @Returns [ void ]
+	 */
 	void resetHeadTail(CDoublyLinkedList *DoublyLinkedList);
+
+	/* Delets list completely
+	 *
+	 * @Param [ CDoublyLinkedList *DoublyLinkedList ] Reference to list
+	 *
+	 * @Returns [ int ] Return Code (see code table)
+	 */
+	// TODO int deleteListDLL(CDoublyLinkedList **DoublyLinkedList);
 
 	// +-------------------------------------+
 	// |               Search                |
