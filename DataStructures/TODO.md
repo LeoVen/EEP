@@ -75,6 +75,7 @@
 	* ~~Copy List~~
 	* Insert pre-made node
 	* Get array with positions of matched values
+	* findMin & findMax
 * Sorting Algorithms
 * Detailed description of every function
 
@@ -91,6 +92,7 @@
 	* Copy
 	* Insert pre-made node
 	* Get array with positions of matched values
+	* findMin & findMax
 * Sorting Algorithms
 * Detailed description of every function
 

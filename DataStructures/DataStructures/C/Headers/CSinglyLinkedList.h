@@ -50,7 +50,7 @@ extern "C" {
 	// +-------------------------------------+
 	/* Inserts new node at first position
 	 *
-	 * @Param [ CSinglyLinkedList *SinglyLinkedList ] Reference to list
+	 * @Param [ CSinglyLinkedList **SinglyLinkedList ] Reference to list
 	 * @Param [ int value ] Value to be inserted to new node
 	 *
 	 * @Returns [ int ] Return Code (see code table)
@@ -59,7 +59,7 @@ extern "C" {
 
 	/*
 	 *
-	 * @Param [ CSinglyLinkedList *SinglyLinkedList ] Reference to list
+	 * @Param [ CSinglyLinkedList **SinglyLinkedList ] Reference to list
 	 * @Param [ int value ] Value to be inserted to new node
 	 * @Param [ int position ] Position for new node
 	 *
@@ -69,7 +69,7 @@ extern "C" {
 
 	/*
 	 *
-	 * @Param [ CSinglyLinkedList *SinglyLinkedList ] Reference to list
+	 * @Param [ CSinglyLinkedList **SinglyLinkedList ] Reference to list
 	 * @Param [ int value ] Value to be inserted to new node
 	 *
 	 * @Returns [ int ] Return Code (see code table)
@@ -87,7 +87,7 @@ extern "C" {
 	// +-------------------------------------+
 	/* Removes first node
 	 *
-	 * @Param [ CSinglyLinkedList *SinglyLinkedList ] Reference to list
+	 * @Param [ CSinglyLinkedList **SinglyLinkedList ] Reference to list
 	 *
 	 * @Returns [ int ] Return Code (see code table)
 	 */
@@ -95,7 +95,7 @@ extern "C" {
 
 	/* Removes middle node (or chosen node)
 	 *
-	 * @Param [ CSinglyLinkedList *SinglyLinkedList ] Reference to list
+	 * @Param [ CSinglyLinkedList **SinglyLinkedList ] Reference to list
 	 * @Param [ int position ] Node at position to be removed
 	 *
 	 * @Returns [ int ] Return Code (see code table)
@@ -104,7 +104,7 @@ extern "C" {
 
 	/* Removes last node
 	 *
-	 * @Param [ CSinglyLinkedList *SinglyLinkedList ] Reference to list
+	 * @Param [ CSinglyLinkedList **SinglyLinkedList ] Reference to list
 	 *
 	 * @Returns [ int ] Return Code (see code table)
 	 */
@@ -115,7 +115,7 @@ extern "C" {
 	// +-------------------------------------+
 	/* Displays list in console
 	 *
-	 * @Param [ CSinglyLinkedList *SinglyLinkedList ] Reference to list
+	 * @Param [ CSinglyLinkedList **SinglyLinkedList ] Reference to list
 	 *
 	 * @Returns [ int ] Return Code (see code table)
 	 */
@@ -166,6 +166,22 @@ extern "C" {
 	 *
 	 */
 	// TODO Get array with positions of matched values
+
+	/* Gets the highest value in the list
+	 *
+	 * @Param [ CSinglyLinkedList **SinglyLinkedList ] Reference to list
+	 *
+	 * @Returns [ int ] Minimum value
+	 */
+	// int findMin(CSinglyLinkedList **SinglyLinkedList);
+
+	/* Gets the highest value in the list
+	 *
+	 * @Param [ CSinglyLinkedList **SinglyLinkedList ] Reference to list
+	 *
+	 * @Returns [ int ] Maximum value
+	 */
+	// int findMax(CSinglyLinkedList **SinglyLinkedList);
 
 	// +-------------------------------------+
 	// |               Getters               |
@@ -227,19 +243,19 @@ extern "C" {
 	 *
 	 *
 	 */
-	// BubbleSort
+	// TODO BubbleSort
 
 	/*
 	 *
 	 *
 	 */
-	// SelectionSort
+	// TODO SelectionSort
 
 	/*
 	 *
 	 *
 	 */
-	// InsertionSort
+	// TODO InsertionSort
 
 #ifdef __cplusplus
 }

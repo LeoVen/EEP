@@ -23,6 +23,30 @@ int CDoublyLinkedListTests()
 	printf(" +-------------------------------------+\n");
 	printf("\n");
 
+	CDoublyLinkedList *dll = getCDoublyLinkedList();
+
+	CDoublyLinkedNode *node = getCDoublyLinkedNode(2);
+	int i;
+	for (i = 0; i < 10; i++) {
+		insertTailDLL(&dll, i);
+	}
+	for (i = 0; i < 10; i++) {
+		insertHeadDLL(&dll, i);
+	}
+
+	displayListDLL(&dll);
+
+	for (i = 0; 0 < getListSizeDLL(&dll); i++) {
+		removeTailDLL(&dll);
+	}
+
+	for (i = 0; 0 < getListSizeDLL(&dll); i++) {
+		removeHeadDLL(&dll);
+	}
+
+	displayListDLL(&dll);
+
+	free(dll);
 	printf("\n");
 	return 0;
 }

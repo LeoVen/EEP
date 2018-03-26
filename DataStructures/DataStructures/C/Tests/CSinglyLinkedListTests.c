@@ -83,8 +83,18 @@ int CSinglyLinkedListTests()
 	// Reverse
 	reverseListSLL(&newList);
 	displayListSLL(&newList);
-	printf("\nOld list not modified:\n");
-	displayListSLL(&list);
+
+	int a = getListSizeSLL(&newList);
+	for (i = 0; 0 < getListSizeSLL(&newList); i++) {
+		removeHeadSLL(&newList);
+	}
+
+	printf("\nNew List erased\n");
+	displayListSLL(&newList);
+
+	insertTailSLL(&newList, 10);
+
+	printf("\nOld %d, New %d", getListSizeSLL(&list), getListSizeSLL(&newList));
 
 	printf("\n");
 	//

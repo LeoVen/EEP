@@ -20,7 +20,7 @@
 
    -1 - List Erased
     0 - Success
-    1 - List not Initialized
+    1 - List not Initialized or locked
     2 - Invalid Position
     3 - List is Empty
 	4 - Only one node -> won't reverse list
@@ -84,7 +84,6 @@ int insertHeadSLL(CSinglyLinkedList **SinglyLinkedList, int value)
 	CSinglyLinkedList *sll = *SinglyLinkedList;
 	if (sll->initialized) {
 		CSinglyLinkedNode *sln = getCSinglyLinkedNode(value);
-
 		if (sll->head == NULL) {
 			sll->head = sln;
 		}
@@ -92,12 +91,11 @@ int insertHeadSLL(CSinglyLinkedList **SinglyLinkedList, int value)
 			sln->next = sll->head;
 			sll->head = sln;
 		}
-
 		resetTail(sll);
 		sll->size++;
 		return 0;
 	}
-	return 1; // List not initialized
+	return 1; // List not initialized or locked
 }
 
 int insertMiddleSLL(CSinglyLinkedList **SinglyLinkedList, int value, int position)
@@ -130,7 +128,7 @@ int insertMiddleSLL(CSinglyLinkedList **SinglyLinkedList, int value, int positio
 		resetTail(sll);
 		return 0; // OK
 	}
-	return 1; // List not initialized
+	return 1; // List not initialized or locked
 }
 
 int insertTailSLL(CSinglyLinkedList **SinglyLinkedList, int value)
@@ -149,7 +147,7 @@ int insertTailSLL(CSinglyLinkedList **SinglyLinkedList, int value)
 		resetTail(sll);
 		return 0; // OK
 	}
-	return 1; // List not initialized
+	return 1; // List not initialized or locked
 }
 
 int insertNodeSLL(CSinglyLinkedList **SinglyLinkedList, CSinglyLinkedNode *node, int position)
@@ -179,7 +177,7 @@ int insertNodeSLL(CSinglyLinkedList **SinglyLinkedList, CSinglyLinkedNode *node,
 			//
 		}
 	}
-	return 1; // List not initialized
+	return 1; // List not initialized or locked
 }
 
 // +-------------------------------------------------------------------------------------------------+
@@ -232,7 +230,7 @@ int removeHeadSLL(CSinglyLinkedList **SinglyLinkedList)
 		// resetTail(sll);
 		return 0;
 	}
-	return 1; // List not initialized
+	return 1; // List not initialized or locked
 }
 
 int removeMiddleSLL(CSinglyLinkedList **SinglyLinkedList, int position)
@@ -266,7 +264,7 @@ int removeMiddleSLL(CSinglyLinkedList **SinglyLinkedList, int position)
 		(sll->size)--;
 		resetTail(sll);
 	}
-	return 1; // List not initialized
+	return 1; // List not initialized or locked
 }
 
 int removeTailSLL(CSinglyLinkedList **SinglyLinkedList)
@@ -278,6 +276,7 @@ int removeTailSLL(CSinglyLinkedList **SinglyLinkedList)
 			// Only one node to be removed. Use removeHeadSLL()
 			// to better handle the situation
 			removeHeadSLL(SinglyLinkedList);
+			return 0; // OK
 		}
 		else {
 			CSinglyLinkedNode *scanner = sll->head;
@@ -293,7 +292,7 @@ int removeTailSLL(CSinglyLinkedList **SinglyLinkedList)
 		resetTail(sll);
 		return 0; // OK
 	}
-	return 1; // List not initialized
+	return 1; // List not initialized or locked
 }
 
 // +-------------------------------------------------------------------------------------------------+
@@ -316,9 +315,10 @@ int displayListSLL(CSinglyLinkedList **SinglyLinkedList)
 			printf("NULL\n");
 			return 0; // OK
 		}
+		printf("\nC Singly Linked List\n[ EMPTY ]\n");
 		return 2; // List is empty
 	}
-	return 1; // List not initialized
+	return 1; // List not initialized or locked
 }
 
 int getListSizeSLL(CSinglyLinkedList **SinglyLinkedList)
