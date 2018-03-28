@@ -76,6 +76,7 @@
 	* Insert pre-made node
 	* Get array with positions of matched values
 	* findMin & findMax
+	* Contains
 * Sorting Algorithms
 * Detailed description of every function
 
@@ -93,6 +94,7 @@
 	* Insert pre-made node
 	* Get array with positions of matched values
 	* findMin & findMax
+	* Contains
 * Sorting Algorithms
 * Detailed description of every function
 

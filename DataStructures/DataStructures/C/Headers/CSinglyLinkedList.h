@@ -48,7 +48,7 @@ extern "C" {
 	// +-------------------------------------+
 	// |              Insertion              |
 	// +-------------------------------------+
-	/* Inserts new node at first position
+	/* Inserts new node at the first position
 	 *
 	 * @Param [ CSinglyLinkedList **SinglyLinkedList ] Reference to list
 	 * @Param [ int value ] Value to be inserted to new node
@@ -57,7 +57,7 @@ extern "C" {
 	 */
 	int insertHeadSLL(CSinglyLinkedList **SinglyLinkedList, int value);
 
-	/*
+	/* Insert new node at chosen position
 	 *
 	 * @Param [ CSinglyLinkedList **SinglyLinkedList ] Reference to list
 	 * @Param [ int value ] Value to be inserted to new node
@@ -67,7 +67,7 @@ extern "C" {
 	 */
 	int insertMiddleSLL(CSinglyLinkedList **SinglyLinkedList, int value, int position);
 
-	/*
+	/* Insert new node at the last position
 	 *
 	 * @Param [ CSinglyLinkedList **SinglyLinkedList ] Reference to list
 	 * @Param [ int value ] Value to be inserted to new node
@@ -159,7 +159,9 @@ extern "C" {
 	 *
 	 * @Returns [ int ] The frequency count of that value
 	 */
-	int searchValueSLL(CSinglyLinkedList **SinglyLinkedList, int value);
+	int frequencyCountSLL(CSinglyLinkedList **SinglyLinkedList, int value);
+
+	bool containsValueSLL(CSinglyLinkedList **SinglyLinkedList, int value);
 
 	/*
 	 *

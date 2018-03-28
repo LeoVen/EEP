@@ -371,7 +371,7 @@ int deleteListSLL(CSinglyLinkedList **SinglyLinkedList)
 // |                                             Search                                              |
 // +-------------------------------------------------------------------------------------------------+
 
-int searchValueSLL(CSinglyLinkedList **SinglyLinkedList, int value)
+int frequencyCountSLL(CSinglyLinkedList **SinglyLinkedList, int value)
 {
 	CSinglyLinkedList *sll = *SinglyLinkedList;
 	CSinglyLinkedNode *scanner = sll->head;
@@ -383,6 +383,19 @@ int searchValueSLL(CSinglyLinkedList **SinglyLinkedList, int value)
 		scanner = scanner->next;
 	}
 	return count;
+}
+
+bool containsValueSLL(CSinglyLinkedList **SinglyLinkedList, int value)
+{
+	CSinglyLinkedList *sll = *SinglyLinkedList;
+	CSinglyLinkedNode *scanner = sll->head;
+	if (sll->head == NULL) return false;
+	while (scanner != NULL)
+	{
+		if (scanner->data == value) return true;
+		scanner = scanner->next;
+	}
+	return false;
 }
 
 // TODO Get array with positions of matched values

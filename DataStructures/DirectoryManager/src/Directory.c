@@ -1,21 +1,24 @@
 /*
-* Directory.c
-*
-* EEP
-*
-* Created on 27/03/2018
-* by Leonardo Vencovsky 201710276
-* by Guilherme Pinazza  201710351
-* by Vitor Facioli      201710292
-*
-* Last modified on 27/03/2018
-* by Leonardo Vencovsky
-*
-* Directory Structure implementations for Directory Manager Project
-*
-* Compiled in Visual Studio 2017
-*
-*/
+ * Directory.c
+ *
+ * EEP
+ *
+ * Created on 27/03/2018
+ * by Leonardo Vencovsky 201710276
+ * by Guilherme Pinazza  201710351
+ * by Vitor Facioli      201710292
+ *
+ * Last modified on 27/03/2018
+ * by Leonardo Vencovsky
+ *
+ * Directory Structure implementations for Directory Manager Project
+ *
+ * Compiled in Visual Studio 2017
+ *
+ */
+
+// For Visual Studio (strcpy)
+#pragma warning(disable : 4996)
 
 #include "..\include\Directory.h"
 
@@ -32,10 +35,11 @@ Directory * getDirectoryByName(char *name)
 void changeDirName(Directory *dir, char *name)
 {
 	dir->name = (char *)malloc(sizeof(char) * strlen(name) + 1);
-	int i;
-	for (i = 0; i <= strlen(name); i++) {
-		dir->name[i] = name[i];
-	}
+	strcpy(dir->name, name);
+	//int i;
+	//for (i = 0; i <= strlen(name); i++) {
+	//	dir->name[i] = name[i];
+	//}
 }
 
 int makeDirectory(Directory **current, char *name)

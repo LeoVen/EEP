@@ -60,6 +60,7 @@ int CSinglyLinkedListTests()
 	displayListSLL(&csll);
 
 	printf("\n---------- ---------- C List Deleted ---------- ----------\n");
+	printf("\n---------- ---------- C List New Ones ---------- ----------\n");
 	deleteListSLL(&csll);
 	int i;
 	srand(time(NULL));
@@ -67,7 +68,7 @@ int CSinglyLinkedListTests()
 		insertTailSLL(&csll, rand() % 10); // Numbers from 0 to 9
 	}
 	for (i = 0; i < 10; i++) {
-		printf("\nThere are %3d number %d in the list", searchValueSLL(&csll, i), i);
+		printf("\nThere are %3d number %d in the list", frequencyCountSLL(&csll, i), i);
 	}
 
 	CSinglyLinkedList *list = getCSinglyLinkedList();
@@ -94,7 +95,14 @@ int CSinglyLinkedListTests()
 
 	insertTailSLL(&newList, 10);
 
-	printf("\nOld %d, New %d", getListSizeSLL(&list), getListSizeSLL(&newList));
+	printf("\nOld %d, New %d\n", getListSizeSLL(&list), getListSizeSLL(&newList));
+
+	for (i = 5; i < 15; i++) {
+		if (containsValueSLL(&list, i)) printf("\nContains %2d : True", i);
+		else printf("\nContains %2d : False", i);
+	}
+	printf("\n");
+	displayListSLL(&list);
 
 	printf("\n");
 	//
