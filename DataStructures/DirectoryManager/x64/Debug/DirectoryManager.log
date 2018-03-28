@@ -1,4 +1,2 @@
-﻿  Directory.c
-c:\users\leona\documents\github\eep\datastructures\directorymanager\src\directory.c(22): warning C4013: 'malloc' undefined; assuming extern returning int
-c:\users\leona\documents\github\eep\datastructures\directorymanager\src\directory.c(22): warning C4312: 'type cast': conversion from 'int' to 'Directory *' of greater size
-  DirectoryManager.vcxproj -> C:\Users\leona\Documents\GitHub\EEP\DataStructures\x64\Debug\DirectoryManager.exe
+﻿  Main.c
+  DirectoryManager.vcxproj -> C:\Users\lvenk\Documents\GitHub\EEP\DataStructures\x64\Debug\DirectoryManager.exe
