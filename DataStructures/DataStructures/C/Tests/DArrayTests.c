@@ -23,12 +23,20 @@ int DArrayTests()
 	printf(" +-------------------------------------+\n");
 	printf("\n");
 
-	DArray *array = getDArray(100, 2);
+	DArray *array = getDArray(100);
 	int i;
-	for (i = 0; i < 100; i++) {
+	for (i = 0; i < 2000; i++) {
 		pushValueDArray(array, i);
 	}
+	for (i = 0; i < 2000; i++) {
+		popValueDArray(array);
+	}
+
+	printf("\nPrintando");
+
 	displayDArray(array);
+
+	printf("\nsize %d", array->size);
 
 	return 0;
 }

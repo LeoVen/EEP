@@ -1,12 +1,12 @@
 /*
-* DArray.h
-*
-* Author: Leonardo Vencovsky
-* Created on 20/03/2018
-*
-* Header for Dynamic Array in C
-*
-*/
+ * DArray.h
+ *
+ * Author: Leonardo Vencovsky
+ * Created on 20/03/2018
+ *
+ * Header for Dynamic Array in C
+ *
+ */
 
 #pragma once
 
@@ -19,22 +19,22 @@ extern "C" {
 #include <stdbool.h>
 
 	typedef struct DArray {
-		int *array;  // Array of integers
-		int size;    // Actual Size
-		int maxSize; // Maximum size. Past this - grow
-		int minSize; // Minimum size. Don't shrink past this
+		int *array;     // Array of integers
+		int size;       // Actual Size
+		int maxSize;    // Maximum size.
+		bool threshold; // maxSize / 2
 	} DArray;
 
 	// +-------------------------------------+
 	// |           Returns array             |
 	// +-------------------------------------+
-	DArray * getDArray(int maxSize, int minSize);
+	DArray * getDArray(int maxSize);
 
 	// +-------------------------------------+
 	// |             Push / Pop              |
 	// +-------------------------------------+
-	int pushValueDArray(DArray *array, int value);
-	int popValueDArray(DArray *array);
+	int pushValueDArray(DArray **array, int value);
+	int popValueDArray(DArray **array);
 
 	// +-------------------------------------+
 	// |          Insert / Remove            |
@@ -50,7 +50,7 @@ extern "C" {
 	// +-------------------------------------+
 	// |              Display                |
 	// +-------------------------------------+
-	int displayDArray(DArray *array);
+	int displayDArray(DArray **array);
 
 	// +-------------------------------------+
 	// |              Resize                 |
@@ -59,6 +59,8 @@ extern "C" {
 	DArray * checkShrink(DArray *array);
 	DArray * growDArray(DArray *array);
 	DArray * shrinkDArray(DArray *array);
+
+	int adjustSize(DArray **array);
 
 #ifdef __cplusplus
 }

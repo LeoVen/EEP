@@ -548,6 +548,12 @@ int switchNodeWithTail(CSinglyLinkedList **SinglyLinkedList, int position)
 	//
 }
 
+int switchNodeHeadTail(CSinglyLinkedList **SinglyLinkedList)
+{
+	// TODO Switch head node with tail node
+	CSinglyLinkedList *sll = *SinglyLinkedList;
+}
+
 int bubbleSortSLL(CSinglyLinkedList **SinglyLinkedList)
 {
 	CSinglyLinkedList *sll = *SinglyLinkedList;

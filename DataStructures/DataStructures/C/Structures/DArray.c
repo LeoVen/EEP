@@ -1,33 +1,33 @@
 /*
-* DArray.c
-*
-* Author: Leonardo Vencovsky
-* Created on 20/03/2018
-*
-* Dynamic Array Implementations in C
-*
-* Dynamic Array grows and shrinks as you add and remove values
-*/
+ * DArray.c
+ *
+ * Author: Leonardo Vencovsky
+ * Created on 20/03/2018
+ *
+ * Dynamic Array Implementations in C
+ *
+ * Dynamic Array grows and shrinks as you add and remove values
+ */
 
 #include "..\Headers\DArray.h"
 
-DArray * getDArray(int maxSize, int minSize)
+DArray * getDArray(int maxSize)
 {
-	if (maxSize < minSize || maxSize < 0 || minSize < 0) {
+	if (maxSize < 0) {
 		printf("\nFATAL ERROR\n");
 		return NULL;
 	}
 	DArray *newArr = (DArray *)malloc(sizeof(DArray));
 	newArr->size = 0;
 	newArr->maxSize = maxSize;
-	newArr->minSize = minSize;
+	newArr->threshold = false;
 	newArr->array = (int *)malloc(sizeof(int) * maxSize);
 	return newArr;
 }
 
 int pushValueDArray(DArray *array, int value)
 {
-	array = checkGrow(array);
+	adjustSize(&array);
 	array->array[array->size] = value;
 	(array->size)++;
 	return 0;
@@ -35,7 +35,7 @@ int pushValueDArray(DArray *array, int value)
 
 int popValueDArray(DArray *array)
 {
-	array = checkShrink(array);
+	adjustSize(&array);
 	array->array[array->size] = 0;
 	(array->size)--;
 	return 0;
@@ -56,37 +56,37 @@ int displayDArray(DArray *array)
 	return 0;
 }
 
-DArray * checkGrow(DArray *array)
+int adjustSize(DArray **arr)
 {
-	if (array->size >= array->maxSize - 1) return growDArray(array);
-	else return array;
-}
-
-DArray * checkShrink(DArray *array)
-{
-	if (array->size <= array->minSize) return growDArray(array);
-	else return array;
-}
-
-DArray * growDArray(DArray *array)
-{
-	DArray *newArr = getDArray(array->maxSize * 2, array->minSize * 2);
-	newArr->size = array->size;
+	DArray *array = *arr;
 	int i;
-	for (i = 0; i < array->size; i++) {
-		newArr->array[i] = array->array[i];
+	if (array->size > array->maxSize / 2) array->threshold = true;
+	if (array->size >= array->maxSize - 1) {
+		// Grow
+		DArray *nArray = getDArray(array->maxSize * 2);
+		for (i = 0; i < array->size; i++) {
+			nArray->array[i] = array->array[i];
+		}
+		nArray->size = array->size;
+		nArray->threshold = false;
+		*arr = nArray;
+		//free(array);
+		return 0; // OK
 	}
-	free(array);
-	return newArr;
-}
-
-DArray * shrinkDArray(DArray *array)
-{
-	DArray *newArr = getDArray(array->maxSize / 2, array->minSize / 2);
-	newArr->size = array->size;
-	int i;
-	for (i = 0; i < array->size; i++) {
-		newArr->array[i] = array->array[i];
+	else if (array->threshold && array->size < array->maxSize / 2) {
+		// Shrink
+		DArray *nArray = getDArray(array->maxSize / 2 + 1);
+		for (i = 0; i < array->size; i++) {
+			nArray->array[i] = array->array[i];
+		}
+		nArray->size = array->size;
+		nArray->threshold = false;
+		*arr = nArray;
+		//free(array);
+		return 0; // OK
 	}
-	return newArr;
+	else {
+		// OK
+		return 0;
+	}
 }

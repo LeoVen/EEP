@@ -162,7 +162,7 @@ extern "C" {
 	 */
 	bool containsValueSLL(CSinglyLinkedList **SinglyLinkedList, int value);
 
-	/*
+	/* Returns a list with the positions of searched value
 	 *
 	 *
 	 */
@@ -275,6 +275,14 @@ extern "C" {
 	 * @Returns [ int ] Return Code (see code table)
 	 */
 	int switchNodeWithTail(CSinglyLinkedList **SinglyLinkedList, int position);
+
+	/* Switch head node with tail node
+	 *
+	 * @Param [ CSinglyLinkedList **SinglyLinkedList ] Reference to list
+	 *
+	 * @Returns [ int ] Return Code (see code table)
+	 */
+	int switchNodeHeadTail(CSinglyLinkedList **SinglyLinkedList);
 
 	/* Uses BubbleSort-like algorithm to sort list
 	 *
