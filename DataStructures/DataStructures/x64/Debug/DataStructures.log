@@ -1,3 +1,9 @@
-﻿  CSinglyLinkedListTests.c
-c:\users\leona\documents\github\eep\datastructures\datastructures\c\tests\csinglylinkedlisttests.c(66): warning C4013: 'time' undefined; assuming extern returning int
-  DataStructures.vcxproj -> C:\Users\leona\Documents\GitHub\EEP\DataStructures\x64\Debug\DataStructures.exe
+﻿  CSinglyLinkedList.c
+c:\users\lvenk\documents\github\eep\datastructures\datastructures\c\structures\csinglylinkedlist.c(457): warning C4244: 'return': conversão de 'double' para 'int', possível perda de dados
+  CSinglyLinkedListTests.c
+c:\users\lvenk\documents\github\eep\datastructures\datastructures\c\tests\csinglylinkedlisttests.c(66): warning C4013: 'time' indefinido; assumindo extern retornando int
+  Gerando Código...
+c:\users\lvenk\documents\github\eep\datastructures\datastructures\c\structures\csinglylinkedlist.c(549): warning C4716: 'switchNodeWithTail': deve retornar um valor
+c:\users\lvenk\documents\github\eep\datastructures\datastructures\c\structures\csinglylinkedlist.c(565): warning C4715: 'bubbleSortSLL': nem todos os caminhos de controle retornam um valor
+c:\users\lvenk\documents\github\eep\datastructures\datastructures\c\structures\csinglylinkedlist.c(542): warning C4716: 'switchNodeWithHead': deve retornar um valor
+  DataStructures.vcxproj -> C:\Users\lvenk\Documents\GitHub\EEP\DataStructures\x64\Debug\DataStructures.exe

@@ -93,7 +93,7 @@ extern "C" {
 	 */
 	int removeHeadSLL(CSinglyLinkedList **SinglyLinkedList);
 
-	/* Removes middle node (or chosen node)
+	/* Removes chosen node
 	 *
 	 * @Param [ CSinglyLinkedList **SinglyLinkedList ] Reference to list
 	 * @Param [ int position ] Node at position to be removed
@@ -120,14 +120,6 @@ extern "C" {
 	 * @Returns [ int ] Return Code (see code table)
 	 */
 	int displayListSLL(CSinglyLinkedList **SinglyLinkedList);
-
-	/* Gets length of a list
-	 *
-	 * @Param [ CSinglyLinkedList **SinglyLinkedList ] Reference to list
-	 *
-	 * @Returns [ int ] List length
-	 */
-	int getListSizeSLL(CSinglyLinkedList **SinglyLinkedList);
 
 	// +-------------------------------------+
 	// |               Resets                |
@@ -161,6 +153,13 @@ extern "C" {
 	 */
 	int frequencyCountSLL(CSinglyLinkedList **SinglyLinkedList, int value);
 
+	/* Returns true if a certain value exists
+	 *
+	 * @Param [ CSinglyLinkedList **SinglyLinkedList ] Reference to list
+	 * @Param [ int value ] Value to be searched
+	 *
+	 * @Returns [ bool ] True if the value is in the list, else returns false
+	 */
 	bool containsValueSLL(CSinglyLinkedList **SinglyLinkedList, int value);
 
 	/*
@@ -175,7 +174,7 @@ extern "C" {
 	 *
 	 * @Returns [ int ] Minimum value
 	 */
-	// int findMin(CSinglyLinkedList **SinglyLinkedList);
+	int findMin(CSinglyLinkedList **SinglyLinkedList);
 
 	/* Gets the highest value in the list
 	 *
@@ -183,7 +182,7 @@ extern "C" {
 	 *
 	 * @Returns [ int ] Maximum value
 	 */
-	// int findMax(CSinglyLinkedList **SinglyLinkedList);
+	int findMax(CSinglyLinkedList **SinglyLinkedList);
 
 	// +-------------------------------------+
 	// |               Getters               |
@@ -202,12 +201,20 @@ extern "C" {
 	 */
 	CSinglyLinkedNode * getCSinglyLinkedNode(int value);
 
+	/* Gets length of a list
+	 *
+	 * @Param [ CSinglyLinkedList **SinglyLinkedList ] Reference to list
+	 *
+	 * @Returns [ int ] List length
+	 */
+	int getListSizeSLL(CSinglyLinkedList **SinglyLinkedList);
+
 	/* Get node value
-	*
-	* @Param [ int position ] Position of node to get value from
-	*
-	* @Returns [ int ] Value of node
-	*/
+	 *
+	 * @Param [ int position ] Position of node to get value from
+	 *
+	 * @Returns [ int ] Value of node
+	 */
 	int getNodeValueSLL(CSinglyLinkedList **SinglyLinkedList, int position);
 
 	// +-------------------------------------+
@@ -226,7 +233,7 @@ extern "C" {
 	 *
 	 * @Param [ CSinglyLinkedList **SinglyLinkedList ] List to be copied
 	 *
-	 * @Returns [ CSinglyLinkedList * ] New copied list
+	 * @Returns [ CSinglyLinkedList * ] Pointer to new copied list
 	 */
 	CSinglyLinkedList * copyCSinglyLinkedList(CSinglyLinkedList **SinglyLinkedList);
 
@@ -241,11 +248,41 @@ extern "C" {
 	 */
 	int reverseListSLL(CSinglyLinkedList **SinglyLinkedList);
 
-	/*
+	/* Switch two nodes given their position
 	 *
+	 * @Param [ CSinglyLinkedList **SinglyLinkedList ] Reference to list
+	 * @Param [ int position1 ] Position of node 1
+	 * @Param [ int position2 ] Position of node 2
 	 *
+	 * @Returns [ int ] Return Code (see code table)
 	 */
-	// TODO BubbleSort
+	int switchNodesSLL(CSinglyLinkedList **SinglyLinkedList, int position1, int position2);
+
+	/* Switch the first node with node of given position
+	 *
+	 * @Param [ CSinglyLinkedList **SinglyLinkedList ] Reference to list
+	 * @Param [ int position ] Position of node to be switched with head
+	 *
+	 * @Returns [ int ] Return Code (see code table)
+	 */
+	int switchNodeWithHead(CSinglyLinkedList **SinglyLinkedList, int position);
+
+	/* Switch the last node with node of given position
+	 *
+	 * @Param [ CSinglyLinkedList **SinglyLinkedList ] Reference to list
+	 * @Param [ int position ] Position of node to be switched with tail
+	 *
+	 * @Returns [ int ] Return Code (see code table)
+	 */
+	int switchNodeWithTail(CSinglyLinkedList **SinglyLinkedList, int position);
+
+	/* Uses BubbleSort-like algorithm to sort list
+	 *
+	 * @Param [ CSinglyLinkedList **SinglyLinkedList ] Reference to list
+	 *
+	 * @Returns [ int ] Return Code (see code table)
+	 */
+	int bubbleSortSLL(CSinglyLinkedList **SinglyLinkedList);
 
 	/*
 	 *

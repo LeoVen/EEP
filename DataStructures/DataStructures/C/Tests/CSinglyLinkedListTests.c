@@ -104,9 +104,21 @@ int CSinglyLinkedListTests()
 	printf("\n");
 	displayListSLL(&list);
 
+	printf("\n---------- ---------- Min and Max ---------- ----------\n");
+	deleteListSLL(&list);
+	for (i = 0; i < 10; i++) {
+		insertHeadSLL(&list, rand());
+	}
+
+	printf("\nRandom list with Min/Max :");
+	printf("\nMin : %d", findMin(&list));
+	printf("\nMax : %d", findMax(&list));
+	displayListSLL(&list);
+
+
 	printf("\n");
-	//
-	// 
 	free(csll);
+	free(list);
+	free(newList);
 	return 0;
 }

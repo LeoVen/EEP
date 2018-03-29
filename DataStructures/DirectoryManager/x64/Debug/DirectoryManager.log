@@ -1,4 +1,1 @@
-﻿  Directory.c
-c:\users\leona\documents\github\eep\datastructures\directorymanager\src\directory.c(51): warning C4716: 'makeDirectory': must return a value
-  LINK : C:\Users\leona\Documents\GitHub\EEP\DataStructures\x64\Debug\DirectoryManager.exe not found or not built by the last incremental link; performing full link
-  DirectoryManager.vcxproj -> C:\Users\leona\Documents\GitHub\EEP\DataStructures\x64\Debug\DirectoryManager.exe
+﻿  DirectoryManager.vcxproj -> C:\Users\lvenk\Documents\GitHub\EEP\DataStructures\x64\Debug\DirectoryManager.exe

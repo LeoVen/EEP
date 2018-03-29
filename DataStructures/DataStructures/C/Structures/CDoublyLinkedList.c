@@ -9,16 +9,16 @@
  */
 
  /*
- Return Codes
+    Return Codes
 
-	-1 - List Erased
-	0 - Success
-	1 - List not Initialized or locked
-	2 - Invalid Position
-	3 - List is Empty
-	4 - Only one node -> won't reverse list
+   -1 - List Erased
+    0 - Success
+    1 - List not Initialized or locked
+    2 - Invalid Position
+    3 - List is Empty
+    4 - Only one node -> won't reverse list
 
- */
+  */
 
 #include "..\Headers\CDoublyLinkedList.h"
 
@@ -88,7 +88,9 @@ int insertMiddleDLL(CDoublyLinkedList **DoublyLinkedList, int value, int positio
 {
 	CDoublyLinkedList *dll = *DoublyLinkedList;
 	if (dll->initialized) {
-
+		// TODO
+		//
+		//
 	}
 	return 1; // List not initialized or locked
 }
@@ -117,6 +119,9 @@ int insertTailDLL(CDoublyLinkedList **DoublyLinkedList, int value)
 
 int insertNodeDLL(CDoublyLinkedList **DoublyLinkedList, CDoublyLinkedNode *node, int position)
 {
+	// TODO
+	//
+	//
 	return 1;
 }
 

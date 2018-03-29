@@ -23,7 +23,7 @@
     1 - List not Initialized or locked
     2 - Invalid Position
     3 - List is Empty
-	4 - Only one node -> won't reverse list
+	4 - Only one node -> won't reverse/sort list
 
 */
 
@@ -398,6 +398,34 @@ bool containsValueSLL(CSinglyLinkedList **SinglyLinkedList, int value)
 	return false;
 }
 
+int findMin(CSinglyLinkedList **SinglyLinkedList)
+{
+	CSinglyLinkedList *sll = *SinglyLinkedList;
+	CSinglyLinkedNode *scanner = sll->head;
+	if (scanner == NULL) return 3; // List is empty
+	int min = scanner->data;
+	while (scanner != NULL)
+	{
+		if (scanner->data < min) min = scanner->data;
+		scanner = scanner->next;
+	}
+	return min;
+}
+
+int findMax(CSinglyLinkedList **SinglyLinkedList)
+{
+	CSinglyLinkedList *sll = *SinglyLinkedList;
+	CSinglyLinkedNode *scanner = sll->head;
+	if (scanner == NULL) return 3; // List is empty
+	int max = scanner->data;
+	while (scanner != NULL)
+	{
+		if (scanner->data > max) max = scanner->data;
+		scanner = scanner->next;
+	}
+	return max;
+}
+
 // TODO Get array with positions of matched values
 
 // +-------------------------------------------------------------------------------------------------+
@@ -464,7 +492,7 @@ int reverseListSLL(CSinglyLinkedList **SinglyLinkedList)
 {
 	CSinglyLinkedList *sll = *SinglyLinkedList;
 	if (sll->size == 0) return 3; // List is empty
-	else if (sll->size == 1) return 4; // Only one node
+	if (sll->size == 1) return 4; // Only one node
 	CSinglyLinkedNode *prev = NULL;
 	CSinglyLinkedNode *curr = sll->head;
 	CSinglyLinkedNode * next = NULL;
@@ -478,6 +506,63 @@ int reverseListSLL(CSinglyLinkedList **SinglyLinkedList)
 	return 0;
 }
 
-// BubbleSort
+int switchNodesSLL(CSinglyLinkedList **SinglyLinkedList, int position1, int position2)
+{
+	CSinglyLinkedList *sll = *SinglyLinkedList;
+	if (position1 < 0 || position2 < 0 || position1 >= sll->size || position2 >= sll->size)
+		return 2; // Invalid Position
+	if (sll->size == 1) return 4; // Only one node
+	if (position1 == position2) return 2; // Invalid Position
+	int i;
+	CSinglyLinkedNode *beforeNode1 = sll->head;
+	CSinglyLinkedNode *beforeNode2 = sll->head;
+	// Since nodes are already pointing to position 0 :
+	// TODO Special case for position == 0
+	// TODO Special case for position == size - 1 (last position)
+	//
+	//
+	if (position1 != 0) {
+		for (i = 0; i < position1 - 1; i++) {
+			beforeNode1 = beforeNode1->next;
+		}
+	}
+	if (position2 != 0) {
+		for (i = 0; i < position2 - 1; i++) {
+			beforeNode2 = beforeNode2->next;
+		}
+	}
+	return 0;
+}
+
+int switchNodeWithHead(CSinglyLinkedList **SinglyLinkedList, int position)
+{
+	// TODO Switch node at position with first node
+	//
+	//
+}
+
+int switchNodeWithTail(CSinglyLinkedList **SinglyLinkedList, int position)
+{
+	// TODO Switch node at position with first node
+	//
+	//
+}
+
+int bubbleSortSLL(CSinglyLinkedList **SinglyLinkedList)
+{
+	CSinglyLinkedList *sll = *SinglyLinkedList;
+	if (sll->head == NULL) return 3; // List is empty
+	if (sll->size == 1) return 4; // Only one node
+	CSinglyLinkedNode *scanner = sll->head;
+	int i = 0;
+	while (scanner != NULL)
+	{
+		// TODO Switch function
+		//
+		//
+		scanner = scanner->next;
+	}
+}
+
 // SelectionSort
 // InsertionSort

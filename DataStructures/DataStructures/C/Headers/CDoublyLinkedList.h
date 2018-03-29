@@ -64,7 +64,7 @@ extern "C" {
 	// +-------------------------------------+
 	// |              Insertion              |
 	// +-------------------------------------+
-	/* Inserts new node at first position
+	/* Inserts new node at the first position
 	 *
 	 * @Param [ CDoublyLinkedList **DoublyLinkedList ] Reference to list
 	 * @Param [ int value ] Value to be inserted to new node
@@ -73,7 +73,7 @@ extern "C" {
 	 */
 	int insertHeadDLL(CDoublyLinkedList **DoublyLinkedList, int value);
 
-	/*
+	/* Inserts node at chosen position
 	 *
 	 * @Param [ CDoublyLinkedList **DoublyLinkedList ] Reference to list
 	 * @Param [ int value ] Value to be inserted to new node
@@ -83,7 +83,7 @@ extern "C" {
 	 */
 	int insertMiddleDLL(CDoublyLinkedList **DoublyLinkedList, int value, int position);
 
-	/*
+	/* Inserts node at the last position
 	 *
 	 * @Param [ CDoublyLinkedList **DoublyLinkedList ] Reference to list
 	 * @Param [ int value ] Value to be inserted to new node
@@ -109,7 +109,7 @@ extern "C" {
 	 */
 	int removeHeadDLL(CDoublyLinkedList **DoublyLinkedList);
 
-	/* Removes middle node (or chosen node)
+	/* Removes chosen node
 	 *
 	 * @Param [ CDoublyLinkedList **DoublyLinkedList ] Reference to list
 	 * @Param [ int position ] Node at position to be removed

@@ -65,55 +65,167 @@
 
 ## Singly Linked List (SLL)
 
-* ~~Implement with Struct~~
-* Add functions:
-	* ~~Insert [head, middle, tail]~~ __needs testing__
-	* ~~Remove [head, middle, tail]~~ __needs testing__
-	* ~~Search (if data exists)~~
-	* ~~Get (get value of certain node)~~
-	* ~~Reverse List~~
-	* ~~Copy List~~
-	* Insert pre-made node
-	* Get array with positions of matched values
-	* findMin & findMax
-	* Contains
-* Sorting Algorithms
+### To-Do
+
+* ~~Implement with struct~~
 * Detailed description of every function
+
+### Functions
+
+#### Initialization
+
+* ~~Initialize~~
+
+#### Insertion
+
+* ~~Insert Head~~
+* ~~Insert Middle~~
+* ~~Insert Tail~~
+* Insert Node
+
+#### Removal
+
+* ~~Remove Head~~
+* ~~Remove Middle~~
+* ~~Remove Tail~~
+
+#### Display
+
+* ~~Display List~~
+
+#### Resets
+
+* ~~Reset Tail~~ (utility)
+* ~~Delete List~~
+
+#### Search
+
+* ~~Value Frequency~~
+* ~~Contains~~
+* ~~Find Min~~
+* ~~Find Max~~
+* Array of positions for matched value
+
+#### Getters
+
+* ~~Get SinglyLinkedList~~
+* ~~Get SinglyLinkedNode~~
+* ~~Get NodeValue~~
+* ~~Get List Size~~
+
+#### Copy
+
+* ~~Copy Node~~
+* ~~Copy List~~
+
+#### Sorting
+
+* ~~Reverse List~~
+* Switch Nodes
+* Switch with Head
+* Switch with Tail
+* Switch head and tail (if needed)
+* Bubble Sort
+* Selection Sort
+* Insertion Sort
 
 ## Doubly Linked List (DLL)
 
-* Implement with Struct
-* Implement functions with node insertion
-* Add functions:
-	* Insert [head, middle, tail]
-	* Remove [head, middle, tail]
-	* Search (if data exists)
-	* Get value of a certain node
-	* Reverse List
-	* Copy
-	* Insert pre-made node
-	* Get array with positions of matched values
-	* findMin & findMax
-	* Contains
-* Sorting Algorithms
+### To-Do
+
+* ~~Implement with struct~~
 * Detailed description of every function
+
+### Functions
+
+#### Initialization
+
+* Initialize
+
+#### Getters
+
+* ~~Get DoublyLinkedList~~
+* ~~Get DoublyLinkedNode~~
+* Get NodeValue
+* Get List Size
+
+#### Insertion
+
+* ~~Insert Head~~
+* Insert Middle
+* ~~Insert Tail~~
+* Insert Node
+
+#### Removal
+
+* ~~Remove Head~~
+* Remove Middle
+* ~~Remove Tail~~
+
+#### Display
+
+* ~~Display List~~
+
+#### Resets
+
+* ~~Reset Head & Tail~~ (utility)
+* Delete List
+
+#### Search
+
+* Value Frequency
+* Contains
+* Find Min
+* Find Max
+* Array of positions for matched value
+
+#### Copy
+
+* Copy Node
+* Copy List
+
+#### Sorting
+
+* Reverse List
+* Switch Nodes
+* Switch with Head
+* Switch with Tail
+* Switch head and tail (if needed)
+* Bubble Sort
+* Selection Sort
+* Insertion Sort
 
 ## Stack
 
+### To-Do
+
 * Implement with Struct
-* Implement functions with boxes (DLL or SLL)
-* Functions:
-	* Push
-	* Pop
-	* Peek
 * Detailed description of every function
+* Implement functions with "boxes" (DLL or SLL)
+
+### Functions
+
+* Push
+* Pop
+* Peek
 
 ## Queue
 
+### To-Do
+
 * Implement with Struct
-* Implement functions with boxes (DLL or SLL)
-* Functions:
-	* Enqueue
-	* Dequeue
-	* Peek (front / rear)
 * Detailed description of every function
+* Implement functions with DLL or SLL
+
+* Enqueue
+* Dequeue
+* Peek (front / rear)
+
+## Combine Structure Functions
+
+* Singly Linked List to Array
+* Array to Singly Linked List
+* Doubly Linked List to Array
+* Array to Doubly Linked List
+* Singly Linked List to Doubly Linked List
+* Doubly Linked List to Singly Linked List
