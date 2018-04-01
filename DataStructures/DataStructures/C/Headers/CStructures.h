@@ -14,8 +14,10 @@
 extern "C" {
 #endif
 
+#include "Common.h"
 #include "CSinglyLinkedList.h"
 #include "CDoublyLinkedList.h"
+#include "CStack.h"
 #include "CArray.h"
 #include "DArray.h"
 #include "Vector.h"

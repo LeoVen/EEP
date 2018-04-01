@@ -14,9 +14,7 @@
 extern "C" {
 #endif
 
-#include <stdio.h>
-#include <stdlib.h>
-#include <stdbool.h>
+#include "Common.h"
 
 	typedef struct CDoublyLinkedNode {
 		int data;
@@ -26,7 +24,7 @@ extern "C" {
 
 	typedef struct CDoublyLinkedList {
 		bool initialized;
-		int size;
+		int length;
 		CDoublyLinkedNode *head;
 		CDoublyLinkedNode *tail;
 	} CDoublyLinkedList;
@@ -60,6 +58,14 @@ extern "C" {
 	 * @Returns [ CDoublyLinkedNode * ] Pointer to new node with data
 	 */
 	CDoublyLinkedNode * getCDoublyLinkedNode(int value);
+
+	/* Gets length of a list
+	 *
+	 * @Param [ CDoublyLinkedList **DoublyLinkedList ] Reference to list
+	 *
+	 * @Returns [ int ] List length
+	 */
+	int getListSizeDLL(CDoublyLinkedList **DoublyLinkedList);
 
 	// +-------------------------------------+
 	// |              Insertion              |
@@ -137,13 +143,13 @@ extern "C" {
 	 */
 	int displayListDLL(CDoublyLinkedList **DoublyLinkedList);
 
-	/* Gets length of a list
+	/* Displays raw list in console
 	 *
 	 * @Param [ CDoublyLinkedList **DoublyLinkedList ] Reference to list
 	 *
-	 * @Returns [ int ] List length
+	 * @Returns [ int ] Return Code (see code table)
 	 */
-	int getListSizeDLL(CDoublyLinkedList **DoublyLinkedList);
+	int displayRawListDLL(CDoublyLinkedList **DoublyLinkedList);
 
 	// +-------------------------------------+
 	// |               Resets                |

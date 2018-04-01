@@ -14,9 +14,7 @@
 extern "C" {
 #endif
 
-#include <stdio.h>
-#include <stdlib.h>
-#include <math.h>
+#include "Common.h"
 
 	typedef struct VectorBase {
 		double i;

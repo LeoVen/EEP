@@ -28,13 +28,10 @@ int DArrayTests()
 	for (i = 0; i < 2000; i++) {
 		pushValueDArray(array, i);
 	}
+	displayDArray(array);
 	for (i = 0; i < 2000; i++) {
 		popValueDArray(array);
 	}
-
-	printf("\nPrintando");
-
-	displayDArray(array);
 
 	printf("\nsize %d", array->size);
 

@@ -1,5 +1,2 @@
-﻿  DArray.c
-c:\users\leona\documents\github\eep\datastructures\datastructures\c\structures\darray.c(29): warning C4028: formal parameter 1 different from declaration
-c:\users\leona\documents\github\eep\datastructures\datastructures\c\structures\darray.c(37): warning C4028: formal parameter 1 different from declaration
-c:\users\leona\documents\github\eep\datastructures\datastructures\c\structures\darray.c(45): warning C4028: formal parameter 1 different from declaration
-  DataStructures.vcxproj -> C:\Users\leona\Documents\GitHub\EEP\DataStructures\x64\Debug\DataStructures.exe
+﻿  CStackTests.c
+  DataStructures.vcxproj -> C:\Users\lvenk\Documents\GitHub\EEP\DataStructures\x64\Debug\DataStructures.exe

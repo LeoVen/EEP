@@ -113,7 +113,8 @@ int CSinglyLinkedListTests()
 	printf("\nRandom list with Min/Max :");
 	printf("\nMin : %d", findMin(&list));
 	printf("\nMax : %d", findMax(&list));
-	displayListSLL(&list);
+	printf("\n\nRaw Display:\n");
+	displayRawListSLL(&list);
 
 
 	printf("\n");

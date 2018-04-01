@@ -45,6 +45,7 @@
 * ~~Vector Subtraction~~
 * ~~Vector Scalar Product~~
 * ~~Vector Dot Product~~
+* Vector with Base
 * Implement Plane and Point
 * Implement Vector with different bases
 * Detailed description of every function
@@ -205,9 +206,10 @@
 
 ### Functions
 
-* Push
-* Pop
-* Peek
+* Push (add to the top)
+* Pop  (remove from the top)
+* Peek (look into value of top box)
+* Pile (put stack on top of another)
 
 ## Queue
 

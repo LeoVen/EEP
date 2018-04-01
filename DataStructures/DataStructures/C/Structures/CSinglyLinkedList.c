@@ -35,11 +35,10 @@
 
 int initListSLL(CSinglyLinkedList **SinglyLinkedList)
 {
-	CSinglyLinkedList *sll = *SinglyLinkedList;
-	sll->initialized = true;
-	sll->size = 0;
-	sll->head = NULL;
-	sll->tail = NULL;
+	(*SinglyLinkedList)->initialized = true;
+	(*SinglyLinkedList)->length = 0;
+	(*SinglyLinkedList)->head = NULL;
+	(*SinglyLinkedList)->tail = NULL;
 	return 0;
 }
 
@@ -92,7 +91,7 @@ int insertHeadSLL(CSinglyLinkedList **SinglyLinkedList, int value)
 			sll->head = sln;
 		}
 		resetTail(sll);
-		sll->size++;
+		sll->length++;
 		return 0;
 	}
 	return 1; // List not initialized or locked
@@ -103,12 +102,12 @@ int insertMiddleSLL(CSinglyLinkedList **SinglyLinkedList, int value, int positio
 	CSinglyLinkedList *sll = *SinglyLinkedList;
 	if (sll->initialized) {
 		// [0, size]
-		if (position < 0 || position > sll->size) return 2; // Invalid Position
+		if (position < 0 || position > sll->length) return 2; // Invalid Position
 		if (position == 0) {
 			// OK
 			return insertHeadSLL(SinglyLinkedList, value);
 		}
-		else if (position == sll->size) {
+		else if (position == sll->length) {
 			// OK
 			return insertTailSLL(SinglyLinkedList, value);
 		}
@@ -124,7 +123,7 @@ int insertMiddleSLL(CSinglyLinkedList **SinglyLinkedList, int value, int positio
 			sln->next = scanner->next;
 			scanner->next = sln;
 		}
-		(sll->size)++;
+		(sll->length)++;
 		resetTail(sll);
 		return 0; // OK
 	}
@@ -143,7 +142,7 @@ int insertTailSLL(CSinglyLinkedList **SinglyLinkedList, int value)
 		else {
 			(sll->tail)->next = sln;
 		}
-		(sll->size)++;
+		(sll->length)++;
 		resetTail(sll);
 		return 0; // OK
 	}
@@ -155,7 +154,7 @@ int insertNodeSLL(CSinglyLinkedList **SinglyLinkedList, CSinglyLinkedNode *node,
 	CSinglyLinkedList *sll = *SinglyLinkedList;
 	if (sll->initialized) {
 		// [0, size]
-		if (position < 0 || position > sll->size) return 2; // Invalid Position
+		if (position < 0 || position > sll->length) return 2; // Invalid Position
 		if (sll->head == NULL) {
 			// Insert at head
 			// TODO
@@ -166,7 +165,7 @@ int insertNodeSLL(CSinglyLinkedList **SinglyLinkedList, CSinglyLinkedNode *node,
 			// TODO
 			//
 		}
-		else if (position == sll->size) {
+		else if (position == sll->length) {
 			// Insert at tail
 			// TODO
 			//
@@ -220,13 +219,12 @@ int insertNodeSLL(CSinglyLinkedList **SinglyLinkedList, CSinglyLinkedNode *node,
 
 int removeHeadSLL(CSinglyLinkedList **SinglyLinkedList)
 {
-	CSinglyLinkedList *sll = *SinglyLinkedList;
-	if (sll->initialized) {
-		if (sll->head == NULL) return 3; // List is empty
-		CSinglyLinkedNode *kill = sll->head;
-		sll->head = sll->head->next;
+	if ((*SinglyLinkedList)->initialized) {
+		if ((*SinglyLinkedList)->head == NULL) return 3; // List is empty
+		CSinglyLinkedNode *kill = (*SinglyLinkedList)->head;
+		(*SinglyLinkedList)->head = (*SinglyLinkedList)->head->next;
 		free(kill);
-		(sll->size)--;
+		((*SinglyLinkedList)->length)--;
 		// resetTail(sll);
 		return 0;
 	}
@@ -235,22 +233,23 @@ int removeHeadSLL(CSinglyLinkedList **SinglyLinkedList)
 
 int removeMiddleSLL(CSinglyLinkedList **SinglyLinkedList, int position)
 {
-	CSinglyLinkedList *sll = *SinglyLinkedList;
-	if (sll->initialized) {
+	if ((*SinglyLinkedList)->initialized) {
 		// [0, size)
-		if (position < 0 || position > sll->size - 1) return 2; // Invalid position
-		if (sll->head == NULL) return 3; // List is empty
-		if (sll->head->next == NULL || position == 0) {
+		if (position < 0 || position >(*SinglyLinkedList)->length - 1)
+			return 2; // Invalid position
+		if ((*SinglyLinkedList)->head == NULL)
+			return 3; // List is empty
+		if ((*SinglyLinkedList)->head->next == NULL || position == 0) {
 			// OK
 			removeHeadSLL(SinglyLinkedList);
 		}
-		else if (position == sll->size - 1) {
+		else if (position == (*SinglyLinkedList)->length - 1) {
 			// OK
 			removeTailSLL(SinglyLinkedList);
 		}
 		else {
-			CSinglyLinkedNode *previous = sll->head;
-			CSinglyLinkedNode *after = sll->head->next;
+			CSinglyLinkedNode *previous = (*SinglyLinkedList)->head;
+			CSinglyLinkedNode *after = (*SinglyLinkedList)->head->next;
 			int i;
 			// i = 1 to stop one before the node to be deleted
 			for (i = 1; i < position ; i++) {
@@ -261,25 +260,24 @@ int removeMiddleSLL(CSinglyLinkedList **SinglyLinkedList, int position)
 			previous->next = after->next;
 			free(after);
 		}
-		(sll->size)--;
-		resetTail(sll);
+		((*SinglyLinkedList)->length)--;
+		resetTail((*SinglyLinkedList));
 	}
 	return 1; // List not initialized or locked
 }
 
 int removeTailSLL(CSinglyLinkedList **SinglyLinkedList)
 {
-	CSinglyLinkedList *sll = *SinglyLinkedList;
-	if (sll->initialized) {
-		if (sll->head == NULL) return 3; // List is empty
-		if (sll->head->next == NULL) {
+	if ((*SinglyLinkedList)->initialized) {
+		if ((*SinglyLinkedList)->head == NULL) return 3; // List is empty
+		if ((*SinglyLinkedList)->head->next == NULL) {
 			// Only one node to be removed. Use removeHeadSLL()
 			// to better handle the situation
 			removeHeadSLL(SinglyLinkedList);
 			return 0; // OK
 		}
 		else {
-			CSinglyLinkedNode *scanner = sll->head;
+			CSinglyLinkedNode *scanner = (*SinglyLinkedList)->head;
 			while (scanner->next->next != NULL)
 			{
 				scanner = scanner->next;
@@ -288,8 +286,8 @@ int removeTailSLL(CSinglyLinkedList **SinglyLinkedList)
 			scanner->next = NULL;
 			free(kill);
 		}
-		(sll->size)--;
-		resetTail(sll);
+		((*SinglyLinkedList)->length)--;
+		resetTail((*SinglyLinkedList));
 		return 0; // OK
 	}
 	return 1; // List not initialized or locked
@@ -301,11 +299,10 @@ int removeTailSLL(CSinglyLinkedList **SinglyLinkedList)
 
 int displayListSLL(CSinglyLinkedList **SinglyLinkedList)
 {
-	CSinglyLinkedList *sll = *SinglyLinkedList;
-	if (sll->initialized) {
-		if (sll->head != NULL) {
+	if ((*SinglyLinkedList)->initialized) {
+		if ((*SinglyLinkedList)->head != NULL) {
 			// Get reference of first node
-			CSinglyLinkedNode *scanner = sll->head;
+			CSinglyLinkedNode *scanner = (*SinglyLinkedList)->head;
 			printf("\nC Singly Linked List\n");
 			while (scanner != NULL)
 			{
@@ -321,18 +318,24 @@ int displayListSLL(CSinglyLinkedList **SinglyLinkedList)
 	return 1; // List not initialized or locked
 }
 
-int getListSizeSLL(CSinglyLinkedList **SinglyLinkedList)
+int displayRawListSLL(CSinglyLinkedList **SinglyLinkedList)
 {
-	CSinglyLinkedList *sll = *SinglyLinkedList;
-	CSinglyLinkedNode *scanner = sll->head;
-	int listSize = 0;
-	if (scanner == NULL) return listSize;
-	while (scanner != NULL)
-	{
-		scanner = scanner->next;
-		listSize++;
+	if ((*SinglyLinkedList)->initialized) {
+		if ((*SinglyLinkedList)->head != NULL) {
+			// Get reference of first node
+			CSinglyLinkedNode *scanner = (*SinglyLinkedList)->head;
+			printf("\n");
+			while (scanner != NULL)
+			{
+				printf("%d ", scanner->data);
+				scanner = scanner->next;
+			}
+			return 0; // OK
+		}
+		printf("\n[ EMPTY ]\n");
+		return 2; // List is empty
 	}
-	return listSize;
+	return 1; // List not initialized or locked
 }
 
 // +-------------------------------------------------------------------------------------------------+
@@ -352,14 +355,13 @@ void resetTail(CSinglyLinkedList *SinglyLinkedList)
 
 int deleteListSLL(CSinglyLinkedList **SinglyLinkedList)
 {
-	CSinglyLinkedList *sll = *SinglyLinkedList;
 	CSinglyLinkedNode *kill;
-	sll->tail = sll->head;
-	while (sll->tail != NULL)
+	(*SinglyLinkedList)->tail = (*SinglyLinkedList)->head;
+	while ((*SinglyLinkedList)->tail != NULL)
 	{
 		// Free memory from heap
-		kill = sll->tail;
-		sll->tail = sll->tail->next;
+		kill = (*SinglyLinkedList)->tail;
+		(*SinglyLinkedList)->tail = (*SinglyLinkedList)->tail->next;
 		free(kill);
 	}
 	// If user wishes to use the list again
@@ -373,9 +375,8 @@ int deleteListSLL(CSinglyLinkedList **SinglyLinkedList)
 
 int frequencyCountSLL(CSinglyLinkedList **SinglyLinkedList, int value)
 {
-	CSinglyLinkedList *sll = *SinglyLinkedList;
-	CSinglyLinkedNode *scanner = sll->head;
-	if (sll->head == NULL) return 0;
+	CSinglyLinkedNode *scanner = (*SinglyLinkedList)->head;
+	if ((*SinglyLinkedList)->head == NULL) return 0;
 	int count = 0;
 	while (scanner != NULL)
 	{
@@ -387,9 +388,8 @@ int frequencyCountSLL(CSinglyLinkedList **SinglyLinkedList, int value)
 
 bool containsValueSLL(CSinglyLinkedList **SinglyLinkedList, int value)
 {
-	CSinglyLinkedList *sll = *SinglyLinkedList;
-	CSinglyLinkedNode *scanner = sll->head;
-	if (sll->head == NULL) return false;
+	CSinglyLinkedNode *scanner = (*SinglyLinkedList)->head;
+	if ((*SinglyLinkedList)->head == NULL) return false;
 	while (scanner != NULL)
 	{
 		if (scanner->data == value) return true;
@@ -400,8 +400,7 @@ bool containsValueSLL(CSinglyLinkedList **SinglyLinkedList, int value)
 
 int findMin(CSinglyLinkedList **SinglyLinkedList)
 {
-	CSinglyLinkedList *sll = *SinglyLinkedList;
-	CSinglyLinkedNode *scanner = sll->head;
+	CSinglyLinkedNode *scanner = (*SinglyLinkedList)->head;
 	if (scanner == NULL) return 3; // List is empty
 	int min = scanner->data;
 	while (scanner != NULL)
@@ -414,8 +413,7 @@ int findMin(CSinglyLinkedList **SinglyLinkedList)
 
 int findMax(CSinglyLinkedList **SinglyLinkedList)
 {
-	CSinglyLinkedList *sll = *SinglyLinkedList;
-	CSinglyLinkedNode *scanner = sll->head;
+	CSinglyLinkedNode *scanner = (*SinglyLinkedList)->head;
 	if (scanner == NULL) return 3; // List is empty
 	int max = scanner->data;
 	while (scanner != NULL)
@@ -436,7 +434,7 @@ CSinglyLinkedList * getCSinglyLinkedList()
 {
 	CSinglyLinkedList *sll = (CSinglyLinkedList *)malloc(sizeof(CSinglyLinkedList));
 	sll->initialized = true;
-	sll->size = 0;
+	sll->length = 0;
 	sll->head = NULL;
 	sll->tail = NULL;
 	return sll;
@@ -450,13 +448,25 @@ CSinglyLinkedNode * getCSinglyLinkedNode(int value)
 	return sln;
 }
 
+int getListSizeSLL(CSinglyLinkedList **SinglyLinkedList)
+{
+	CSinglyLinkedNode *scanner = (*SinglyLinkedList)->head;
+	int listSize = 0;
+	if (scanner == NULL) return listSize;
+	while (scanner != NULL)
+	{
+		scanner = scanner->next;
+		listSize++;
+	}
+	return listSize;
+}
+
 int getNodeValueSLL(CSinglyLinkedList **SinglyLinkedList, int position)
 {
-	CSinglyLinkedList *sll = *SinglyLinkedList;
 	// Error!!
-	if (position < 0 || position >= sll->size) return 1337.0;
-	int i, value = sll->head->data;
-	CSinglyLinkedNode *scanner = sll->head;
+	if (position < 0 || position >= (*SinglyLinkedList)->length) return 1337.0;
+	int i, value = (*SinglyLinkedList)->head->data;
+	CSinglyLinkedNode *scanner = (*SinglyLinkedList)->head;
 	for (i = 0; i < position; i++) {
 		scanner = scanner->next;
 	}
@@ -473,8 +483,8 @@ CSinglyLinkedList * copyCSinglyLinkedList(CSinglyLinkedList **SinglyLinkedList)
 	CSinglyLinkedList *sll = *SinglyLinkedList;
 	CSinglyLinkedList *newList = getCSinglyLinkedList();
 	int i;
-	for (i = 0; i < sll->size; i++) {
-		insertTailSLL(&newList, getNodeValueSLL(&sll, i));
+	for (i = 0; i < (*SinglyLinkedList)->length; i++) {
+		insertTailSLL(&newList, getNodeValueSLL(&(*SinglyLinkedList), i));
 	}
 	return newList;
 }
@@ -490,11 +500,10 @@ CSinglyLinkedNode * copyCSinglyLinkedNode(CSinglyLinkedNode *node)
 
 int reverseListSLL(CSinglyLinkedList **SinglyLinkedList)
 {
-	CSinglyLinkedList *sll = *SinglyLinkedList;
-	if (sll->size == 0) return 3; // List is empty
-	if (sll->size == 1) return 4; // Only one node
+	if ((*SinglyLinkedList)->length == 0) return 3; // List is empty
+	if ((*SinglyLinkedList)->length == 1) return 4; // Only one node
 	CSinglyLinkedNode *prev = NULL;
-	CSinglyLinkedNode *curr = sll->head;
+	CSinglyLinkedNode *curr = (*SinglyLinkedList)->head;
 	CSinglyLinkedNode * next = NULL;
 	while (curr != NULL) {
 		next = curr->next;
@@ -502,20 +511,21 @@ int reverseListSLL(CSinglyLinkedList **SinglyLinkedList)
 		prev = curr;
 		curr = next;
 	}
-	sll->head = prev;
+	(*SinglyLinkedList)->head = prev;
 	return 0;
 }
 
 int switchNodesSLL(CSinglyLinkedList **SinglyLinkedList, int position1, int position2)
 {
-	CSinglyLinkedList *sll = *SinglyLinkedList;
-	if (position1 < 0 || position2 < 0 || position1 >= sll->size || position2 >= sll->size)
+	if (position1 < 0 || position2 < 0 || 
+		position1 >= (*SinglyLinkedList)->length ||
+		position2 >= (*SinglyLinkedList)->length)
 		return 2; // Invalid Position
-	if (sll->size == 1) return 4; // Only one node
+	if ((*SinglyLinkedList)->length == 1) return 4; // Only one node
 	if (position1 == position2) return 2; // Invalid Position
 	int i;
-	CSinglyLinkedNode *beforeNode1 = sll->head;
-	CSinglyLinkedNode *beforeNode2 = sll->head;
+	CSinglyLinkedNode *beforeNode1 = (*SinglyLinkedList)->head;
+	CSinglyLinkedNode *beforeNode2 = (*SinglyLinkedList)->head;
 	// Since nodes are already pointing to position 0 :
 	// TODO Special case for position == 0
 	// TODO Special case for position == size - 1 (last position)
@@ -551,15 +561,13 @@ int switchNodeWithTail(CSinglyLinkedList **SinglyLinkedList, int position)
 int switchNodeHeadTail(CSinglyLinkedList **SinglyLinkedList)
 {
 	// TODO Switch head node with tail node
-	CSinglyLinkedList *sll = *SinglyLinkedList;
 }
 
 int bubbleSortSLL(CSinglyLinkedList **SinglyLinkedList)
 {
-	CSinglyLinkedList *sll = *SinglyLinkedList;
-	if (sll->head == NULL) return 3; // List is empty
-	if (sll->size == 1) return 4; // Only one node
-	CSinglyLinkedNode *scanner = sll->head;
+	if ((*SinglyLinkedList)->head == NULL) return 3; // List is empty
+	if ((*SinglyLinkedList)->length == 1) return 4; // Only one node
+	CSinglyLinkedNode *scanner = (*SinglyLinkedList)->head;
 	int i = 0;
 	while (scanner != NULL)
 	{

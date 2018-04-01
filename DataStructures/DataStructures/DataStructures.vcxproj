@@ -145,7 +145,9 @@
   <ItemGroup>
     <ClInclude Include="C\Headers\CArray.h" />
     <ClInclude Include="C\Headers\CDoublyLinkedList.h" />
+    <ClInclude Include="C\Headers\Common.h" />
     <ClInclude Include="C\Headers\CSinglyLinkedList.h" />
+    <ClInclude Include="C\Headers\CStack.h" />
     <ClInclude Include="C\Headers\CStructures.h" />
     <ClInclude Include="C\Headers\CTests.h" />
     <ClInclude Include="C\Headers\DArray.h" />
@@ -171,6 +173,9 @@
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|x64'">Use</PrecompiledHeader>
       <CompileAs Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Default</CompileAs>
     </ClCompile>
+    <ClCompile Include="C\Structures\CStack.c">
+      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">NotUsing</PrecompiledHeader>
+    </ClCompile>
     <ClCompile Include="C\Structures\DArray.c">
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">NotUsing</PrecompiledHeader>
     </ClCompile>
@@ -187,6 +192,9 @@
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">NotUsing</PrecompiledHeader>
     </ClCompile>
     <ClCompile Include="C\Tests\CSortingTests.c">
+      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">NotUsing</PrecompiledHeader>
+    </ClCompile>
+    <ClCompile Include="C\Tests\CStackTests.c">
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">NotUsing</PrecompiledHeader>
     </ClCompile>
     <ClCompile Include="C\Tests\DArrayTests.c">

@@ -10,15 +10,11 @@
 
 #pragma once
 
-
-
 #ifdef __cplusplus
 extern "C" {
 #endif
 
-#include <stdio.h>
-#include <stdlib.h>
-#include <stdbool.h>
+#include "Common.h"
 
 	typedef struct CSinglyLinkedNode {
 		int data;
@@ -27,7 +23,7 @@ extern "C" {
 
 	typedef struct CSinglyLinkedList {
 		bool initialized;
-		int size;
+		int length;
 		CSinglyLinkedNode *head;
 		CSinglyLinkedNode *tail;
 	} CSinglyLinkedList;
@@ -120,6 +116,14 @@ extern "C" {
 	 * @Returns [ int ] Return Code (see code table)
 	 */
 	int displayListSLL(CSinglyLinkedList **SinglyLinkedList);
+
+	/* Displays raw list in console
+	 *
+	 * @Param [ CSinglyLinkedList **SinglyLinkedList ] Reference to list
+	 *
+	 * @Returns [ int ] Return Code (see code table)
+	 */
+	int displayRawListSLL(CSinglyLinkedList **SinglyLinkedList);
 
 	// +-------------------------------------+
 	// |               Resets                |

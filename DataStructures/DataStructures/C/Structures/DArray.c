@@ -65,7 +65,7 @@ int adjustSize(DArray **arr)
 		// Grow
 		DArray *nArray = getDArray(array->maxSize * 2);
 		for (i = 0; i < array->size; i++) {
-			nArray->array[i] = array->array[i];
+			nArray->array[i] = (*arr)->array[i];
 		}
 		nArray->size = array->size;
 		nArray->threshold = false;
