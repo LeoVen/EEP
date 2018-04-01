@@ -60,7 +60,7 @@ extern "C" {
 	
 	int displayCStack(CStack **Stack);
 
-	// TODO Peek
+	int peekCStack(CStack **Stack);
 
 	// +-------------------------------------+
 	// |               Resets                |

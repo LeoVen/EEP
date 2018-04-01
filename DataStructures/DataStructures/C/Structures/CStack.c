@@ -72,14 +72,19 @@ int pushCStack(CStack **Stack, int value)
 
 CStackBox * popCStack(CStack **Stack)
 {
-
+	// TODO
+	//
+	//
 }
 
 int sliceCStack(CStack **Stack)
 {
-	// TODO
-	//
-	//
+	if (!isEmptyCStack(Stack)) {
+		CStackBox *kill = (*Stack)->top;
+		(*Stack)->top = (*Stack)->top->below;
+		free(kill);
+	}
+	return 1; // Stack is empty
 }
 
 // +-------------------------------------------------------------------------------------------------+
@@ -90,10 +95,11 @@ int displayCStack(CStack **Stack)
 {
 	if (!isEmptyCStack(Stack)) {
 		CStackBox *scanner = (*Stack)->top;
-		printf("\n");
+		printf("\nC Stack\n");
+		// while (scanner)
 		while (scanner != NULL)
 		{
-			printf("\n|\t%d\t|", scanner->data);
+			printf("\n|%8d |", scanner->data);
 			scanner = scanner->below;
 		}
 		printf("\n");
@@ -102,9 +108,27 @@ int displayCStack(CStack **Stack)
 	return 1; // Stack is Empty
 }
 
+int displayRawCStack(CStack **Stack)
+{
+	if (!isEmptyCStack(Stack)) {
+		CStackBox *scanner = (*Stack)->top;
+		printf("\n");
+		while (scanner != NULL)
+		{
+			printf("%d ", scanner->data);
+			scanner = scanner->below;
+		}
+		printf("\n");
+		return 0;
+	}
+	return 1; // Stack is Empty
+}
+
+
+
 int peekCStack(CStack **Stack)
 {
-
+	return (*Stack)->top->data;
 }
 
 bool isEmptyCStack(CStack **Stack)

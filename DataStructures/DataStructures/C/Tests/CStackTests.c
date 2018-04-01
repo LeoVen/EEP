@@ -27,12 +27,17 @@ int CStackTests()
 	initCStack(&stack);
 
 	int i;
-	for (i = 0; i < 100; i++) {
+	for (i = 0; i < 10; i++) {
 		pushCStack(&stack, i);
 	}
-
 	displayCStack(&stack);
 
+	for (i = 0; i < 5; i++) {
+		sliceCStack(&stack);
+	}
+	displayCStack(&stack);
+
+	free(stack);
 	printf("\n");
 	return 0;
 }

@@ -35,6 +35,7 @@
 
 int initListSLL(CSinglyLinkedList **SinglyLinkedList)
 {
+	(*SinglyLinkedList) = (CSinglyLinkedList *)malloc(sizeof(CSinglyLinkedList));
 	(*SinglyLinkedList)->initialized = true;
 	(*SinglyLinkedList)->length = 0;
 	(*SinglyLinkedList)->head = NULL;

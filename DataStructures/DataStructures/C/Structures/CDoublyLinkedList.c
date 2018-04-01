@@ -28,11 +28,11 @@
 
 int initListDLL(CDoublyLinkedList **DoublyLinkedList)
 {
-	CDoublyLinkedList *dll = *DoublyLinkedList;
-	dll->initialized = true;
-	dll->length = 0;
-	dll->head = NULL;
-	dll->tail = NULL;
+	(*DoublyLinkedList) = (CDoublyLinkedList *)malloc(sizeof(DoublyLinkedList));
+	(*DoublyLinkedList)->initialized = true;
+	(*DoublyLinkedList)->length = 0;
+	(*DoublyLinkedList)->head = NULL;
+	(*DoublyLinkedList)->tail = NULL;
 	return 0;
 }
 

@@ -23,7 +23,7 @@ int CSinglyLinkedListTests()
 	printf(" +-------------------------------------+\n");
 	printf("\n");
 
-	CSinglyLinkedList *csll = (CSinglyLinkedList *) malloc (sizeof(CSinglyLinkedList));
+	CSinglyLinkedList *csll;
 	initListSLL(&csll);
 	
 	removeHeadSLL(&csll);
