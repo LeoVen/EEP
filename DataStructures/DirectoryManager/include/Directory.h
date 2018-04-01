@@ -8,8 +8,7 @@
  * by Guilherme Pinazza  201710351
  * by Vitor Facioli      201710292
  *
- * Last modified on 27/03/2018
- * by Leonardo Vencovsky
+ * Last modified by Leonardo Vencovsky
  *
  * Header for Directory Structure implementations
  *
@@ -29,7 +28,11 @@ extern "C" {
 #include <string.h>
 #include <stdbool.h>
 
-#define MAX_DIRNAME_SIZE 20
+#define MAX_NAME_SIZE 20
+
+// Change if on linux / windows
+// #define CLEAR_SCREEN "clear"
+#define CLEAR_SCREEN "cls"
 
 
 	typedef struct Directory {

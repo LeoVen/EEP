@@ -7,6 +7,8 @@ Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "DataStructures", "DataStruc
 EndProject
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "DirectoryManager", "DirectoryManager\DirectoryManager.vcxproj", "{3EE254A1-1C5C-4CD5-8B2F-23B3BFC78869}"
 EndProject
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "Tetris", "..\C\2018\Tetris\Tetris\Tetris.vcxproj", "{BBF50192-9296-4E04-9A0F-D28212F781A1}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|x64 = Debug|x64
@@ -31,6 +33,14 @@ Global
 		{3EE254A1-1C5C-4CD5-8B2F-23B3BFC78869}.Release|x64.Build.0 = Release|x64
 		{3EE254A1-1C5C-4CD5-8B2F-23B3BFC78869}.Release|x86.ActiveCfg = Release|Win32
 		{3EE254A1-1C5C-4CD5-8B2F-23B3BFC78869}.Release|x86.Build.0 = Release|Win32
+		{BBF50192-9296-4E04-9A0F-D28212F781A1}.Debug|x64.ActiveCfg = Debug|x64
+		{BBF50192-9296-4E04-9A0F-D28212F781A1}.Debug|x64.Build.0 = Debug|x64
+		{BBF50192-9296-4E04-9A0F-D28212F781A1}.Debug|x86.ActiveCfg = Debug|Win32
+		{BBF50192-9296-4E04-9A0F-D28212F781A1}.Debug|x86.Build.0 = Debug|Win32
+		{BBF50192-9296-4E04-9A0F-D28212F781A1}.Release|x64.ActiveCfg = Release|x64
+		{BBF50192-9296-4E04-9A0F-D28212F781A1}.Release|x64.Build.0 = Release|x64
+		{BBF50192-9296-4E04-9A0F-D28212F781A1}.Release|x86.ActiveCfg = Release|Win32
+		{BBF50192-9296-4E04-9A0F-D28212F781A1}.Release|x86.Build.0 = Release|Win32
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

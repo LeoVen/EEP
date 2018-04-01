@@ -8,8 +8,7 @@
  * by Guilherme Pinazza  201710351
  * by Vitor Facioli      201710292
  *
- * Last modified on 27/03/2018
- * by Leonardo Vencovsky
+ * Last modified by Leonardo Vencovsky
  *
  * Directory Structure implementations for Directory Manager Project
  *
@@ -36,10 +35,6 @@ void changeDirName(Directory *dir, char *name)
 {
 	dir->name = (char *)malloc(sizeof(char) * strlen(name) + 1);
 	strcpy(dir->name, name);
-	//int i;
-	//for (i = 0; i <= strlen(name); i++) {
-	//	dir->name[i] = name[i];
-	//}
 }
 
 int makeDirectory(Directory **current, char *name)
@@ -57,12 +52,10 @@ int listDirectory(Directory **current)
 {
 	Directory *curr = *current;
 	Directory *head = curr->list;
-	printf("\n");
 	while (head != NULL)
 	{
-		printf("\t%s", head->name);
+		printf("%s\t", head->name);
 		head = head->next;
 	}
-	printf("\n");
 	return 0;
 }

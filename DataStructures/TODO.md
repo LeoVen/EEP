@@ -206,9 +206,10 @@
 
 ### Functions
 
-* Push (add to the top)
-* Pop  (remove from the top)
-* Peek (look into value of top box)
+* ~~Push (add to the top)~~
+* Pop (remove from the top and return it)
+* ~~Slice (remove from the top)~~
+* ~~Peek (look into value of top box)~~
 * Pile (put stack on top of another)
 
 ## Queue

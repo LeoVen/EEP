@@ -1,6 +1,4 @@
 ﻿  CStack.c
-  CStackTests.c
-  Gerando Código...
 c:\users\lvenk\documents\github\eep\datastructures\datastructures\c\structures\cstack.c(50): warning C4716: 'getCStackBox': deve retornar um valor
 c:\users\lvenk\documents\github\eep\datastructures\datastructures\c\structures\cstack.c(78): warning C4716: 'popCStack': deve retornar um valor
   DataStructures.vcxproj -> C:\Users\lvenk\Documents\GitHub\EEP\DataStructures\x64\Debug\DataStructures.exe

@@ -1,7 +1,4 @@
-﻿  Main.c
-c:\users\lvenk\documents\github\eep\datastructures\directorymanager\main.c(155): warning C4477: 'printf': a cadeia de formato '%d' requer um argumento do tipo 'int', mas um argumento variadic 1 tem o tipo '::size_t'
-  c:\users\lvenk\documents\github\eep\datastructures\directorymanager\main.c(155): note: considere usar '%zd' na cadeia de formato
-c:\users\lvenk\documents\github\eep\datastructures\directorymanager\main.c(162): warning C4477: 'printf': a cadeia de formato '%d' requer um argumento do tipo 'int', mas um argumento variadic 1 tem o tipo '::size_t'
-  c:\users\lvenk\documents\github\eep\datastructures\directorymanager\main.c(162): note: considere usar '%zd' na cadeia de formato
-c:\users\lvenk\documents\github\eep\datastructures\directorymanager\main.c(169): warning C4715: 'getUserInput': nem todos os caminhos de controle retornam um valor
+﻿  StringHandler.c
+c:\users\lvenk\documents\github\eep\datastructures\directorymanager\src\stringhandler.c(65): warning C4716: 'normalizeString': deve retornar um valor
+c:\users\lvenk\documents\github\eep\datastructures\directorymanager\src\stringhandler.c(116): warning C4715: 'getUserInput': nem todos os caminhos de controle retornam um valor
   DirectoryManager.vcxproj -> C:\Users\lvenk\Documents\GitHub\EEP\DataStructures\x64\Debug\DirectoryManager.exe
