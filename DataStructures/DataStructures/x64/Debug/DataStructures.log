@@ -1,14 +1,2 @@
 ﻿  Vector.c
-c:\users\lvenk\documents\github\eep\datastructures\datastructures\c\structures\vector.c(25): warning C4047: 'return': 'int' difere em níveis de indireção de 'Vector **'
-c:\users\lvenk\documents\github\eep\datastructures\datastructures\c\structures\vector.c(40): warning C4477: 'printf': a cadeia de formato '%d' requer um argumento do tipo 'int', mas um argumento variadic 1 tem o tipo 'double'
-c:\users\lvenk\documents\github\eep\datastructures\datastructures\c\structures\vector.c(40): warning C4477: 'printf': a cadeia de formato '%d' requer um argumento do tipo 'int', mas um argumento variadic 2 tem o tipo 'double'
-c:\users\lvenk\documents\github\eep\datastructures\datastructures\c\structures\vector.c(40): warning C4477: 'printf': a cadeia de formato '%d' requer um argumento do tipo 'int', mas um argumento variadic 3 tem o tipo 'double'
-c:\users\lvenk\documents\github\eep\datastructures\datastructures\c\structures\vector.c(40): warning C4477: 'printf': a cadeia de formato '%d' requer um argumento do tipo 'int', mas um argumento variadic 4 tem o tipo 'double'
-c:\users\lvenk\documents\github\eep\datastructures\datastructures\c\structures\vector.c(40): warning C4477: 'printf': a cadeia de formato '%d' requer um argumento do tipo 'int', mas um argumento variadic 5 tem o tipo 'double'
-c:\users\lvenk\documents\github\eep\datastructures\datastructures\c\structures\vector.c(40): warning C4477: 'printf': a cadeia de formato '%d' requer um argumento do tipo 'int', mas um argumento variadic 6 tem o tipo 'double'
-c:\users\lvenk\documents\github\eep\datastructures\datastructures\c\structures\vector.c(40): warning C4477: 'printf': a cadeia de formato '%d' requer um argumento do tipo 'int', mas um argumento variadic 7 tem o tipo 'double'
-c:\users\lvenk\documents\github\eep\datastructures\datastructures\c\structures\vector.c(40): warning C4477: 'printf': a cadeia de formato '%d' requer um argumento do tipo 'int', mas um argumento variadic 8 tem o tipo 'double'
-c:\users\lvenk\documents\github\eep\datastructures\datastructures\c\structures\vector.c(40): warning C4477: 'printf': a cadeia de formato '%d' requer um argumento do tipo 'int', mas um argumento variadic 9 tem o tipo 'double'
-  VectorTests.c
-  Gerando Código...
   DataStructures.vcxproj -> C:\Users\lvenk\Documents\GitHub\EEP\DataStructures\x64\Debug\DataStructures.exe

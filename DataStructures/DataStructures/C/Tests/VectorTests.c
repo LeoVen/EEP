@@ -75,6 +75,16 @@ int VectorTests()
 	displayVector(v9);
 	printf("\nAngle between the two: %.4lf radians", vectorAngle(v8, v9));
 	
+
+	free(v1);
+	free(v2);
+	free(v3);
+	free(v4);
+	free(v5);
+	free(v6);
+	free(v7);
+	free(v8);
+	free(v9);
 	printf("\n");
 	return 0;
 }

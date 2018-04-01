@@ -14,20 +14,20 @@
 
 int buildNormalVector(double x, double y, double z, Vector **v)
 {
-	(*v) = (Vector *)malloc(sizeof(Vector *));
+	(*v) = malloc(sizeof(Vector));
 	(*v)->x = x;
 	(*v)->y = y;
 	(*v)->z = z;
-	(*v)->base = (Basis *)malloc(sizeof(Basis *));
+	(*v)->base = malloc(sizeof(Basis));
 	buildSimpleVector(1, 0, 0, &((*v)->base->i));
 	buildSimpleVector(0, 1, 0, &((*v)->base->j));
 	buildSimpleVector(0, 0, 1, &((*v)->base->k));
-	return v;
+	return 0;
 }
 
 int buildSimpleVector(double x, double y, double z, SimpleVector **v)
 {
-	(*v) = (SimpleVector *)malloc(sizeof(SimpleVector *));
+	(*v) = malloc(sizeof(SimpleVector));
 	(*v)->x = x;
 	(*v)->y = y;
 	(*v)->z = z;
@@ -37,7 +37,7 @@ int buildSimpleVector(double x, double y, double z, SimpleVector **v)
 void displayVector(Vector *v)
 {
 	printf("\nVector\n[%8.2lf i ]\n[%8.2lf j ]\n[%8.2lf k ]", v->x, v->y, v->z);
-	printf("\nBase\n[%d, %d, %d], [%d, %d, %d], [%d, %d, %d]\n",
+	printf("\nBase\n[%4.2lf, %4.2lf, %4.2lf], [%4.2lf, %4.2lf, %4.2lf], [%4.2lf, %4.2lf, %4.2lf]\n",
 		v->base->i->x, v->base->i->y, v->base->i->z,
 		v->base->j->x, v->base->j->y, v->base->j->z,
 		v->base->k->x, v->base->k->y, v->base->k->z);
