@@ -10,28 +10,51 @@
 
 #include "..\Headers\Vector.h"
 
-Vector* buildVector(double x, double y, double z)
+
+
+int buildNormalVector(double x, double y, double z, Vector **v)
 {
-	Vector *v = (Vector *)malloc(sizeof(Vector));
-	v->x = x;
-	v->y = y;
-	v->z = z;
+	(*v) = (Vector *)malloc(sizeof(Vector *));
+	(*v)->x = x;
+	(*v)->y = y;
+	(*v)->z = z;
+	(*v)->base = (Basis *)malloc(sizeof(Basis *));
+	buildSimpleVector(1, 0, 0, &((*v)->base->i));
+	buildSimpleVector(0, 1, 0, &((*v)->base->j));
+	buildSimpleVector(0, 0, 1, &((*v)->base->k));
 	return v;
+}
+
+int buildSimpleVector(double x, double y, double z, SimpleVector **v)
+{
+	(*v) = (SimpleVector *)malloc(sizeof(SimpleVector *));
+	(*v)->x = x;
+	(*v)->y = y;
+	(*v)->z = z;
+	return 0;
 }
 
 void displayVector(Vector *v)
 {
-	printf("\nVector\n[%8.2lf i ]\n[%8.2lf j ]\n[%8.2lf k ]\n", v->x, v->y, v->z);
+	printf("\nVector\n[%8.2lf i ]\n[%8.2lf j ]\n[%8.2lf k ]", v->x, v->y, v->z);
+	printf("\nBase\n[%d, %d, %d], [%d, %d, %d], [%d, %d, %d]\n",
+		v->base->i->x, v->base->i->y, v->base->i->z,
+		v->base->j->x, v->base->j->y, v->base->j->z,
+		v->base->k->x, v->base->k->y, v->base->k->z);
 }
 
 Vector* vectorSum(Vector *v1, Vector *v2)
 {
-	return buildVector(v1->x + v2->x, v1->y + v2->y, v1->z + v2->z);
+	Vector *v;
+	buildNormalVector(v1->x + v2->x, v1->y + v2->y, v1->z + v2->z, &v);
+	return v;
 }
 
 Vector* vectorSubtraction(Vector *v1, Vector *v2)
 {
-	return buildVector(v1->x - v2->x, v1->y - v2->y, v1->z - v2->z);
+	Vector *v;
+	buildNormalVector(v1->x - v2->x, v1->y - v2->y, v1->z - v2->z, &v);
+	return v;
 }
 
 double vectorModulus(Vector *v)
@@ -58,5 +81,7 @@ double vectorAngle(Vector *v1, Vector *v2)
 
 Vector* copyVector(Vector *v)
 {
-	return buildVector(v->x, v->y, v->z);
+	Vector *newVec;
+	buildNormalVector(v->x, v->y, v->z, &newVec);
+	return newVec;
 }
