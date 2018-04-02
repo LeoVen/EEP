@@ -24,7 +24,13 @@ extern "C" {
 	} DArray;
 
 	// +-------------------------------------+
-	// |           Returns array             |
+	// |             Initialize              |
+	// +-------------------------------------+
+
+	int initDArray(DArray **array, int maxSize);
+
+	// +-------------------------------------+
+	// |              Getters                |
 	// +-------------------------------------+
 	DArray * getDArray(int maxSize);
 
@@ -48,17 +54,40 @@ extern "C" {
 	// +-------------------------------------+
 	// |              Display                |
 	// +-------------------------------------+
-	int displayDArray(DArray **array);
+	/* Displays array in the console
+	 *
+	 * @Param [ DArray **array ] Reference to array
+	 *
+	 * @Returns [ int ] Return Code (see code table)
+	 */
+	int displayDArray(DArray *array);
 
 	// +-------------------------------------+
-	// |              Resize                 |
+	// |              Dynamic                |
 	// +-------------------------------------+
-	DArray * checkGrow(DArray *array);
-	DArray * checkShrink(DArray *array);
-	DArray * growDArray(DArray *array);
-	DArray * shrinkDArray(DArray *array);
-
+	/* Checks if the array needs to be adjusted (for push and pop)
+	 *
+	 * @Param [ DArray **array ] Reference to array
+	 *
+	 * @Returns [ int ] Return Code (see code table)
+	 */
 	int adjustSize(DArray **array);
+
+	/* Makes a bigger copy of current array and frees the memory of the old one
+	 *
+	 * @Param [ DArray **array ] Reference to array
+	 *
+	 * @Returns [ int ] Return Code (see code table)
+	 */
+	int growDArray(DArray **arr);
+
+	/* Makes a smaller copy of current array and frees the memory of the old one
+	 *
+	 * @Param [ DArray **array ] Reference to array
+	 *
+	 * @Returns [ int ] Return Code (see code table)
+	 */
+	int shrinkDArray(DArray **arr);
 
 #ifdef __cplusplus
 }

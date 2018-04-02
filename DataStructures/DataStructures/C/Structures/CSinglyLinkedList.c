@@ -518,9 +518,9 @@ int reverseListSLL(CSinglyLinkedList **SinglyLinkedList)
 
 int switchNodesSLL(CSinglyLinkedList **SinglyLinkedList, int position1, int position2)
 {
-	if (position1 < 0 || position2 < 0 || 
-		position1 >= (*SinglyLinkedList)->length ||
-		position2 >= (*SinglyLinkedList)->length)
+	if (position1 < 0 || position2 < 0
+		|| position1 >= (*SinglyLinkedList)->length
+		|| position2 >= (*SinglyLinkedList)->length)
 		return 2; // Invalid Position
 	if ((*SinglyLinkedList)->length == 1) return 4; // Only one node
 	if (position1 == position2) return 2; // Invalid Position

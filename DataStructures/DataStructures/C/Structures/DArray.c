@@ -11,6 +11,20 @@
 
 #include "..\Headers\DArray.h"
 
+ // +-------------------------------------------------------------------------------------------------+
+ // |                                             Getters                                             |
+ // +-------------------------------------------------------------------------------------------------+
+
+int initDArray(DArray **array, int maxSize)
+{
+	(*array) = malloc(sizeof(DArray));
+	(*array)->array = malloc(sizeof(int) * maxSize);
+	(*array)->size = 0;
+	(*array)->threshold = false;
+	(*array)->maxSize = maxSize;
+	return 0;
+}
+
 DArray * getDArray(int maxSize)
 {
 	if (maxSize < 0) {
@@ -41,6 +55,10 @@ int popValueDArray(DArray **array)
 	return 0;
 }
 
+// +-------------------------------------------------------------------------------------------------+
+// |                                             Display                                             |
+// +-------------------------------------------------------------------------------------------------+
+
 int displayDArray(DArray *array)
 {
 	int i;
@@ -56,42 +74,58 @@ int displayDArray(DArray *array)
 	return 0;
 }
 
+// +-------------------------------------------------------------------------------------------------+
+// |                                             Dynamic                                             |
+// +-------------------------------------------------------------------------------------------------+
+
 int adjustSize(DArray **arr)
 {
 	int i;
 	if ((*arr)->size > (*arr)->maxSize / 2) (*arr)->threshold = true;
 	if ((*arr)->size >= (*arr)->maxSize - 1) {
 		// Grow
-		DArray *nArray = getDArray((*arr)->maxSize * 2);
-		DArray *kill = (*arr);
-		// Copy values
-		for (i = 0; i < (*arr)->size; i++) {
-			nArray->array[i] = (*arr)->array[i];
-		}
-		nArray->size = (*arr)->size;
-		nArray->threshold = false;
-		*arr = nArray;
-		// Free old array
-		free(kill);
-		return 0; // OK
+		return growDArray(arr);
 	}
 	else if ((*arr)->threshold && (*arr)->size < (*arr)->maxSize / 2) {
 		// Shrink
-		DArray *nArray = getDArray((*arr)->maxSize / 2 + 1);
-		DArray *kill = (*arr);
-		// Copy values
-		for (i = 0; i < (*arr)->size; i++) {
-			nArray->array[i] = (*arr)->array[i];
-		}
-		nArray->size = (*arr)->size;
-		nArray->threshold = false;
-		(*arr) = nArray;
-		// Free old array
-		free(kill);
-		return 0; // OK
+		return shrinkDArray(arr);
 	}
 	else {
 		// OK
 		return 0;
 	}
+}
+
+int shrinkDArray(DArray **arr)
+{
+	int i;
+	DArray *nArray = getDArray((*arr)->maxSize / 2 + 1);
+	DArray *kill = (*arr);
+	// Copy values
+	for (i = 0; i < (*arr)->size; i++) {
+		nArray->array[i] = (*arr)->array[i];
+	}
+	nArray->size = (*arr)->size;
+	nArray->threshold = false;
+	(*arr) = nArray;
+	// Free old array
+	free(kill);
+	return 0; // OK
+}
+
+int growDArray(DArray **arr)
+{
+	int i;
+	DArray *nArray = getDArray((*arr)->maxSize * 2);
+	DArray *kill = (*arr);
+	// Copy values
+	for (i = 0; i < (*arr)->size; i++) {
+		nArray->array[i] = (*arr)->array[i];
+	}
+	nArray->size = (*arr)->size;
+	nArray->threshold = false;
+	*arr = nArray;
+	// Free old array
+	free(kill);
+	return 0; // OK
 }
