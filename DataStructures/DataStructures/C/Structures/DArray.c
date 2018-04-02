@@ -17,11 +17,11 @@ DArray * getDArray(int maxSize)
 		printf("\nFATAL ERROR\n");
 		return NULL;
 	}
-	DArray *newArr = (DArray *)malloc(sizeof(DArray));
+	DArray *newArr = malloc(sizeof(DArray));
 	newArr->size = 0;
 	newArr->maxSize = maxSize;
 	newArr->threshold = false;
-	newArr->array = (int *)malloc(sizeof(int) * maxSize);
+	newArr->array = malloc(sizeof(int) * maxSize);
 	return newArr;
 }
 

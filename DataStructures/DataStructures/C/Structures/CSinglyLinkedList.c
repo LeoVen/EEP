@@ -35,7 +35,7 @@
 
 int initListSLL(CSinglyLinkedList **SinglyLinkedList)
 {
-	(*SinglyLinkedList) = (CSinglyLinkedList *)malloc(sizeof(CSinglyLinkedList));
+	(*SinglyLinkedList) = malloc(sizeof(CSinglyLinkedList));
 	(*SinglyLinkedList)->initialized = true;
 	(*SinglyLinkedList)->length = 0;
 	(*SinglyLinkedList)->head = NULL;
@@ -433,7 +433,7 @@ int findMax(CSinglyLinkedList **SinglyLinkedList)
 
 CSinglyLinkedList * getCSinglyLinkedList()
 {
-	CSinglyLinkedList *sll = (CSinglyLinkedList *)malloc(sizeof(CSinglyLinkedList));
+	CSinglyLinkedList *sll = malloc(sizeof(CSinglyLinkedList));
 	sll->initialized = true;
 	sll->length = 0;
 	sll->head = NULL;
@@ -443,7 +443,7 @@ CSinglyLinkedList * getCSinglyLinkedList()
 
 CSinglyLinkedNode * getCSinglyLinkedNode(int value)
 {
-	CSinglyLinkedNode *sln = (CSinglyLinkedNode *)malloc(sizeof(*sln));
+	CSinglyLinkedNode *sln = malloc(sizeof(CSinglyLinkedNode));
 	sln->next = NULL;
 	sln->data = value;
 	return sln;

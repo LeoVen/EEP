@@ -39,5 +39,6 @@ int SortingTests() {
 	printf("\nTotal time spent for insertion sort: %lf seconds", time_spent4);
 	// displayCArray(earray);
 
+	free(earray);
 	return 0;
 }

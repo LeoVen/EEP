@@ -27,8 +27,8 @@ void swap(CArray *array, int position1, int position2);
 
 CArray * getCArray(int size)
 {
-	CArray *array = (CArray *) malloc(sizeof(CArray));
-	array->array = (int *) malloc(sizeof(int) * size);
+	CArray *array = malloc(sizeof(CArray));
+	array->array = malloc(sizeof(int) * size);
 	array->size = size;
 	int i;
 	for (i = 0; i < size; i++) {
@@ -139,8 +139,8 @@ int blenderCArray(CArray *array)
 
 CArray * getCopyCArray(CArray *arr)
 {
-	CArray *array = (CArray *)malloc(sizeof(CArray));
-	array->array = (int *)malloc(sizeof(int) * arr->size);
+	CArray *array = malloc(sizeof(CArray));
+	array->array = malloc(sizeof(int) * arr->size);
 	array->size = arr->size;
 	int i;
 	for (i = 0; i < arr->size; i++) {

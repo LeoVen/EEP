@@ -24,7 +24,7 @@
 
 int initCStack(CStack **Stack)
 {
-	(*Stack) = (CStack *)malloc(sizeof(CStack));
+	(*Stack) = malloc(sizeof(CStack));
 	(*Stack)->height = 0;
 	(*Stack)->top = NULL;
 	return 0;
@@ -36,7 +36,7 @@ int initCStack(CStack **Stack)
 
 CStack * getCStack()
 {
-	CStack *stack = (CStack *)malloc(sizeof(CStack));
+	CStack *stack = malloc(sizeof(CStack));
 	stack->height = 0;
 	stack->top = NULL;
 	return stack;
@@ -44,7 +44,7 @@ CStack * getCStack()
 
 CStackBox * getCStackBox(int value)
 {
-	CStackBox *box = (CStackBox *)malloc(sizeof(CStackBox));
+	CStackBox *box = malloc(sizeof(CStackBox));
 	box->below = NULL;
 	box->data = value;
 }

@@ -35,5 +35,6 @@ int DArrayTests()
 
 	printf("\nsize %d", array->size);
 
+	printf("\n");
 	return 0;
 }

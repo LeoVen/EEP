@@ -28,7 +28,7 @@
 
 int initListDLL(CDoublyLinkedList **DoublyLinkedList)
 {
-	(*DoublyLinkedList) = (CDoublyLinkedList *)malloc(sizeof(DoublyLinkedList));
+	(*DoublyLinkedList) = malloc(sizeof(CDoublyLinkedList));
 	(*DoublyLinkedList)->initialized = true;
 	(*DoublyLinkedList)->length = 0;
 	(*DoublyLinkedList)->head = NULL;
@@ -42,7 +42,7 @@ int initListDLL(CDoublyLinkedList **DoublyLinkedList)
 
 CDoublyLinkedList * getCDoublyLinkedList()
 {
-	CDoublyLinkedList *dll = (CDoublyLinkedList *)malloc(sizeof(CDoublyLinkedList));
+	CDoublyLinkedList *dll = malloc(sizeof(CDoublyLinkedList));
 	dll->initialized = true;
 	dll->length = 0;
 	dll->head = NULL;
@@ -52,7 +52,7 @@ CDoublyLinkedList * getCDoublyLinkedList()
 
 CDoublyLinkedNode * getCDoublyLinkedNode(int value)
 {
-	CDoublyLinkedNode *dln = (CDoublyLinkedNode *)malloc(sizeof(CDoublyLinkedNode));
+	CDoublyLinkedNode *dln = malloc(sizeof(CDoublyLinkedNode));
 	dln->data = value;
 	dln->prev = NULL;
 	dln->next = NULL;
