@@ -136,6 +136,13 @@ int CArrayTests()
 		findMinCArray(aarray), findMaxCArray(aarray));
 	insertionSortCArray(aarray);
 	// displayCArray(aarray);
+	
+	printf("\n\nUpdate at specific location:\n");
+	for (i = 5; i < 15; i++) {
+		updateValueCArray(barray, i, 0);
+	}
+	updateValueCArray(barray, 10, 1); // Shouldn't pass since 0 == not init
+	displayCArray(barray);
 
 	free(arr);
 	free(array);

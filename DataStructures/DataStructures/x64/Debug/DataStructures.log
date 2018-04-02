@@ -1,5 +1,3 @@
-﻿  DArray.c
-c:\users\lvenk\documents\github\eep\datastructures\datastructures\c\structures\darray.c(29): warning C4028: parâmetro formal 1 diferente da declaração
-c:\users\lvenk\documents\github\eep\datastructures\datastructures\c\structures\darray.c(37): warning C4028: parâmetro formal 1 diferente da declaração
-c:\users\lvenk\documents\github\eep\datastructures\datastructures\c\structures\darray.c(45): warning C4028: parâmetro formal 1 diferente da declaração
+﻿  CArrayTests.c
+c:\users\lvenk\documents\github\eep\datastructures\datastructures\c\tests\carraytests.c(71): warning C4244: 'função': conversão de 'time_t' para 'unsigned int', possível perda de dados
   DataStructures.vcxproj -> C:\Users\lvenk\Documents\GitHub\EEP\DataStructures\x64\Debug\DataStructures.exe

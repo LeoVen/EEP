@@ -25,19 +25,19 @@ DArray * getDArray(int maxSize)
 	return newArr;
 }
 
-int pushValueDArray(DArray *array, int value)
+int pushValueDArray(DArray **array, int value)
 {
-	adjustSize(&array);
-	array->array[array->size] = value;
-	(array->size)++;
+	adjustSize(array);
+	(*array)->array[(*array)->size] = value;
+	((*array)->size)++;
 	return 0;
 }
 
-int popValueDArray(DArray *array)
+int popValueDArray(DArray **array)
 {
-	adjustSize(&array);
-	array->array[array->size] = 0;
-	(array->size)--;
+	adjustSize(array);
+	(*array)->array[(*array)->size] = 0;
+	((*array)->size)--;
 	return 0;
 }
 
@@ -58,31 +58,36 @@ int displayDArray(DArray *array)
 
 int adjustSize(DArray **arr)
 {
-	DArray *array = *arr;
 	int i;
-	if (array->size > array->maxSize / 2) array->threshold = true;
-	if (array->size >= array->maxSize - 1) {
+	if ((*arr)->size > (*arr)->maxSize / 2) (*arr)->threshold = true;
+	if ((*arr)->size >= (*arr)->maxSize - 1) {
 		// Grow
-		DArray *nArray = getDArray(array->maxSize * 2);
-		for (i = 0; i < array->size; i++) {
+		DArray *nArray = getDArray((*arr)->maxSize * 2);
+		DArray *kill = (*arr);
+		// Copy values
+		for (i = 0; i < (*arr)->size; i++) {
 			nArray->array[i] = (*arr)->array[i];
 		}
-		nArray->size = array->size;
+		nArray->size = (*arr)->size;
 		nArray->threshold = false;
 		*arr = nArray;
-		//free(array);
+		// Free old array
+		free(kill);
 		return 0; // OK
 	}
-	else if (array->threshold && array->size < array->maxSize / 2) {
+	else if ((*arr)->threshold && (*arr)->size < (*arr)->maxSize / 2) {
 		// Shrink
-		DArray *nArray = getDArray(array->maxSize / 2 + 1);
-		for (i = 0; i < array->size; i++) {
-			nArray->array[i] = array->array[i];
+		DArray *nArray = getDArray((*arr)->maxSize / 2 + 1);
+		DArray *kill = (*arr);
+		// Copy values
+		for (i = 0; i < (*arr)->size; i++) {
+			nArray->array[i] = (*arr)->array[i];
 		}
-		nArray->size = array->size;
+		nArray->size = (*arr)->size;
 		nArray->threshold = false;
-		*arr = nArray;
-		//free(array);
+		(*arr) = nArray;
+		// Free old array
+		free(kill);
 		return 0; // OK
 	}
 	else {

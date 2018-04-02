@@ -25,15 +25,14 @@ int DArrayTests()
 
 	DArray *array = getDArray(100);
 	int i;
-	for (i = 0; i < 2000; i++) {
-		pushValueDArray(array, i);
+	for (i = 0; i < 200; i++) {
+		pushValueDArray(&array, i);
 	}
 	displayDArray(array);
-	for (i = 0; i < 2000; i++) {
-		popValueDArray(array);
+	for (i = 0; i < 200; i++) {
+		popValueDArray(&array);
 	}
-
-	printf("\nsize %d", array->size);
+	displayDArray(array);
 
 	printf("\n");
 	return 0;
