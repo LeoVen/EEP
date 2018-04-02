@@ -151,6 +151,7 @@
     <ClInclude Include="C\Headers\CStructures.h" />
     <ClInclude Include="C\Headers\CTests.h" />
     <ClInclude Include="C\Headers\DArray.h" />
+    <ClInclude Include="C\Headers\StructureConversions.h" />
     <ClInclude Include="C\Headers\Vector.h" />
     <ClInclude Include="Headers\DoublyLinkedList.hpp" />
     <ClInclude Include="Headers\SinglyLinkedList.hpp" />
@@ -181,6 +182,9 @@
     <ClCompile Include="C\Structures\DArray.c">
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">NotUsing</PrecompiledHeader>
     </ClCompile>
+    <ClCompile Include="C\Structures\StructureConversions.c">
+      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">NotUsing</PrecompiledHeader>
+    </ClCompile>
     <ClCompile Include="C\Structures\Vector.c">
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">NotUsing</PrecompiledHeader>
       <WarningLevel Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Level3</WarningLevel>
@@ -189,6 +193,9 @@
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">NotUsing</PrecompiledHeader>
     </ClCompile>
     <ClCompile Include="C\Tests\CDoublyLinkedListTests.c">
+      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">NotUsing</PrecompiledHeader>
+    </ClCompile>
+    <ClCompile Include="C\Tests\ConversionTests.c">
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">NotUsing</PrecompiledHeader>
     </ClCompile>
     <ClCompile Include="C\Tests\CSinglyLinkedListTests.c">

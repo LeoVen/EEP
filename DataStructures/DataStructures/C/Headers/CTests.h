@@ -25,6 +25,8 @@ extern "C" {
 
 	int SortingTests();
 
+	int ConversionTests();
+
 #ifdef __cplusplus
 }
 #endif

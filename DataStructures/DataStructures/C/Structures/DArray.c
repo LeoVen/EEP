@@ -66,11 +66,26 @@ int displayDArray(DArray *array)
 		printf("\n[ Empty ] \n");
 		return 1;
 	}
-	printf("\n[ ");
+	printf("\nD Array\n[ ");
 	for (i = 0; i < array->size; i++) {
 		printf("%d, ", array->array[i]);
 	}
 	printf("nil ]\n");
+	return 0;
+}
+
+int displayRawDArray(DArray *array)
+{
+	int i;
+	if (array->size == 0) {
+		printf("\n[ Empty ] \n");
+		return 1;
+	}
+	printf("\n");
+	for (i = 0; i < array->size; i++) {
+		printf("%d ", array->array[i]);
+	}
+	printf("\n");
 	return 0;
 }
 

@@ -118,7 +118,18 @@ int reverseCArray(CArray *array)
 int displayCArray(CArray *array)
 {
 	int i;
-	printf("\nC ARRAY\n");
+	printf("\nC ARRAY\n[ ");
+	for (i = 0; i < array->size; i++) {
+		printf("%d, ", array->array[i]);
+	}
+	printf("nil ]\n");
+	return 0;
+}
+
+int displayRawCArray(CArray *array)
+{
+	int i;
+	printf("\n");
 	for (i = 0; i < array->size; i++) {
 		printf("%d ", array->array[i]);
 	}

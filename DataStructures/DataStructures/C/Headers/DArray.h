@@ -62,6 +62,14 @@ extern "C" {
 	 */
 	int displayDArray(DArray *array);
 
+	/* Displays only numbers of array in the console
+	 *
+	 * @Param [ DArray **array ] Reference to array
+	 *
+	 * @Returns [ int ] Return Code (see code table)
+	 */
+	int displayRawDArray(DArray *array);
+
 	// +-------------------------------------+
 	// |              Dynamic                |
 	// +-------------------------------------+

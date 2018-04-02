@@ -22,10 +22,16 @@ extern "C" {
 
 	// TODO
 	typedef enum Status {
-		STATUS_OK                       = 0,
-		STATUS_ERR_INVALID_POSITION     = 1,
-		STATUS_ERR_INVALID_OPERATION    = 2,
-		STATUS_ERR_NOT_FOUND            = 3
+		DS_OK                       = 0,
+		DS_ERR_INVALID_POSITION     = 1,
+		DS_ERR_INVALID_OPERATION    = 2,
+		DS_ERR_INVALID_SIZE         = 3,
+		DS_ERR_NOT_FOUND            = 4,
+		DS_ERR_ALLOC                = 5,
+		DS_ERR_OPERATION_FAILED     = 6,
+		DS_ERR_UNEXPECTED_RESULT    = 7,
+		DS_ERR_ITER                 = 8,
+		DS_ERR_NULL_POINTER         = 9
 	} Status;
 
 #ifdef __cplusplus

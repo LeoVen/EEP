@@ -60,6 +60,9 @@
     <ClInclude Include="C\Headers\Common.h">
       <Filter>Arquivos de Cabeçalho</Filter>
     </ClInclude>
+    <ClInclude Include="C\Headers\StructureConversions.h">
+      <Filter>Arquivos de Cabeçalho</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="stdafx.cpp">
@@ -117,6 +120,12 @@
       <Filter>Arquivos de Origem</Filter>
     </ClCompile>
     <ClCompile Include="C\Tests\CStackTests.c">
+      <Filter>Arquivos de Origem</Filter>
+    </ClCompile>
+    <ClCompile Include="C\Structures\StructureConversions.c">
+      <Filter>Arquivos de Origem</Filter>
+    </ClCompile>
+    <ClCompile Include="C\Tests\ConversionTests.c">
       <Filter>Arquivos de Origem</Filter>
     </ClCompile>
   </ItemGroup>

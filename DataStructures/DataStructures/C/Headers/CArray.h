@@ -66,6 +66,7 @@ extern "C" {
 	// |              Display                |
 	// +-------------------------------------+
 	int displayCArray(CArray *array);
+	int displayRawCArray(CArray *array);
 
 #ifdef __cplusplus
 }
