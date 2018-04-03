@@ -54,6 +54,16 @@ int ConversionTests()
 
 	displayListSLL(&sll);
 
+	free(array);
+
+	convert_sll_to_array(sll, &array);
+
+	free(darray);
+
+	convert_array_to_darray(array, &darray);
+
+	displayDArray(darray);
+
 	printf("\n");
 	return 0;
 }

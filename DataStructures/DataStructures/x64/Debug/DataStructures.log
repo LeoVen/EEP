@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 ﻿  CArray.c
 c:\users\leona\documents\github\eep\datastructures\datastructures\c\structures\carray.c(142): warning C4013: 'time' undefined; assuming extern returning int
   CDoublyLinkedList.c
@@ -60,3 +61,7 @@ c:\users\leona\documents\github\eep\datastructures\datastructures\c\structures\c
 c:\users\leona\documents\github\eep\datastructures\datastructures\c\structures\csinglylinkedlist.c(560): warning C4716: 'switchNodeWithTail': must return a value
   Vector.c
   DataStructures.vcxproj -> C:\Users\leona\Documents\GitHub\EEP\DataStructures\x64\Debug\DataStructures.exe
+=======
+﻿  ConversionTests.c
+  DataStructures.vcxproj -> C:\Users\lvenk\Documents\GitHub\EEP\DataStructures\x64\Debug\DataStructures.exe
+>>>>>>> 671308d83b4a8b90bae2b654ba74494c666c614b

@@ -124,3 +124,32 @@ Status convert_darray_to_sll(DArray *darr, CSinglyLinkedList **sll)
 
 	return DS_OK;
 }
+
+// +-------------------------------------------------------------------------------------------------+
+// |                                            AAR -> X                                             |
+// +-------------------------------------------------------------------------------------------------+
+
+Status convert_array_to_darray(CArray *arr, DArray **darr)
+{
+	if (!arr)
+		return DS_ERR_NULL_POINTER;
+
+	if (arr->size <= 0)
+		return DS_ERR_INVALID_OPERATION;
+
+	// TODO implement functions with status errors
+	initDArray(darr, arr->size);
+
+	if (!(*darr))
+		return DS_ERR_ALLOC;
+
+	int i;
+	for (i = 0; i < arr->size; i++) {
+		pushValueDArray(darr, arr->array[i]);
+	}
+
+	if ((*darr)->size != arr->size)
+		return DS_ERR_OPERATION_FAILED;
+
+	return DS_OK;
+}

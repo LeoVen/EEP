@@ -20,6 +20,7 @@
 #pragma warning(disable : 4996)
 
 #include "..\include\Directory.h"
+#include "..\include\StringHandler.h"
 
 Directory * getDirectoryByName(char *name)
 {
@@ -54,8 +55,66 @@ int listDirectory(Directory **current)
 	Directory *head = curr->list;
 	while (head != NULL)
 	{
-		printf("%s\t", head->name);
+		printf(" %s\t", head->name);
 		head = head->next;
 	}
+	return 0;
+}
+bool dirExists(Directory *curr, char *param)
+{
+	Directory *scanner = curr->list;
+	while (scanner != NULL)
+	{
+		if (hashCode(param) == hashCode(scanner->name))
+			return true;
+		scanner = scanner->next;
+	}
+	return false;
+}
+
+int changeDirectory(Directory **curr, char *param)
+{
+	if (dirExists((*curr), param)) {
+		Directory *scanner = (*curr)->list;
+		while (scanner != NULL)
+		{
+			if (hashCode(scanner->name) == hashCode(param)) {
+				(*curr) = scanner;
+				break;
+			}
+		}
+	}
+	else
+		printf("No such directory\n");
+	return 0;
+}
+
+int changeToParent(Directory **curr)
+{
+	if ((*curr)->parent != NULL)
+		(*curr) = (*curr)->parent;
+}
+
+int printWorkingDirectory(Directory *curr)
+{
+	Directory *scanner = curr;
+	// TODO strcat at beggining of string
+	char *buffer = NULL;
+	char *str = NULL;
+	while (scanner != NULL)
+	{
+		if (!str) {
+			buffer = malloc(sizeof(char) * strlen(scanner->name) + 1);
+			strcpy(buffer, scanner->name);
+			str = buffer;
+		}
+		else {
+			str = strcat_head(str, scanner->name);
+			str = strcat_head(str, "/");
+		}
+		scanner = scanner->parent;
+	}
+	if (str != NULL)
+		printf("%s\n", str);
 	return 0;
 }

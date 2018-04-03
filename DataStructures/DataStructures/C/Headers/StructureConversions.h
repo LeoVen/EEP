@@ -29,6 +29,12 @@ extern "C" {
 
 	Status convert_darray_to_sll(DArray *darr, CSinglyLinkedList **sll);
 
+	// +-------------------------------------+
+	// |              AAR -> X               |
+	// +-------------------------------------+
+
+	Status convert_array_to_darray(CArray *arr, DArray **darr);
+
 #ifdef __cplusplus
 }
 #endif

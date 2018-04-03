@@ -29,31 +29,17 @@ int hashCode(char *command)
 	return hash;
 }
 
+char* strcat_head(char *str1, char *str2)
+{
+	char *buffer = malloc(sizeof(char) * (strlen(str1) + strlen(str2)) + 1);
+	strcat_s(str2, sizeof(str2) + 1, str1);
+	strcpy_s(buffer, sizeof(buffer) + 1, str2);
+	return buffer;
+}
+
 void println(const char *str)
 {
 	printf("\n%s", str);
-}
-
-int checkUserInput(char *userInput)
-{
-	int i, sp = 0;
-	for (i = 0; i < strlen(userInput); i++) {
-		// Space
-		if (userInput[i] == 32)
-			sp++;
-	}
-	return sp;
-}
-
-bool dirNameTest(char *cmd)
-{
-	// Dir name must not contain spaces
-	int i;
-	for (i = 0; i < strlen(cmd); i++) {
-		if (cmd[i] == ' ')
-			return false;
-	}
-	return true;
 }
 
 int normalizeString(char *param)
@@ -70,7 +56,19 @@ int normalizeString(char *param)
 
 void printHelpMenu()
 {
-	println("HelpMenu");
+	println("  Command List                                                     ");
+	println("                                                                   ");
+	println("  help                Shows this help menu                         ");
+	println("  ls                  Lists directory content                      ");
+	println("  ls -l               Lists directory content with more datail     ");
+	println("  exit                Exits program                                ");
+	println("  mkdir [dir_name]    Makes a directory of name dir_name           ");
+	println("  rmdir [dir_name]    Removes directory of name dir_name           ");
+	println("  pwd                 Print working directory                      ");
+	println("  cd ..               Change directory to parent directory         ");
+	println("  cd [dir_name]       Change to directory of name dir_name         ");
+	println("                                                                   ");
+
 }
 
 void printMenu()
@@ -92,7 +90,11 @@ void printMenu()
 	println("Enter 'help' to see command list\n");
 }
 
-bool getUserInput(Directory *current)
+// +-------------------------------------------------------------------------------------------------+
+// |                                           User Input                                            |
+// +-------------------------------------------------------------------------------------------------+
+
+bool getUserInput(Directory **current)
 {
 	printf("$ ");
 	char *userInput = (char *)malloc(sizeof(char) * MAX_NAME_SIZE);
@@ -103,15 +105,15 @@ bool getUserInput(Directory *current)
 		// Only one command
 		command = strtok_s(userInput, "\0", &next);
 		param = NULL;
-		return switchCommand(&current, command, param);
+		return switchCommand(current, command, param);
 	}
 	else if (sp == 1) {
 		command = strtok_s(userInput, " ", &next);
 		param = strtok_s(NULL, "\0", &next);
-		return switchCommand(&current, command, param);
+		return switchCommand(current, command, param);
 	}
 	else {
-		println("More than two commands is not supported yet");
+		printf("More than two arguments is not supported\n");
 	}
 }
 
@@ -120,11 +122,22 @@ bool switchCommand(Directory **current, char *command, char *parameter)
 	int hash = hashCode(command);
 	if (hash == hashCode("mkdir")) {
 		if (parameter != NULL && dirNameTest(parameter)) {
-			normalizeString(parameter);
-			makeDirectory(current, parameter);
+			if (!dirExists((*current), parameter)) {
+				if (hashCode(parameter) == hashCode("/")) {
+					printf("Directory with name / not allowed\n");
+					return 1;
+				}
+				normalizeString(parameter);
+				makeDirectory(current, parameter);
+			}
+			else
+				printf("Directory with name already exists\n");
 		}
 		else
 			printf("Directory name must not be empty\n");
+	}
+	else if (hash == hashCode("pwd")) {
+		printWorkingDirectory((*current));
 	}
 	else if (hash == hashCode("ls")) {
 		listDirectory(current);
@@ -138,11 +151,43 @@ bool switchCommand(Directory **current, char *command, char *parameter)
 		printf("\n");
 	}
 	else if (hash == hashCode("exit")) {
-		printf("Goodbye!\n");
+		printf("Goodbye!");
 		return false;
+	}
+	else if (hash == hashCode("cd")) {
+		if (hashCode(parameter) == hashCode(".."))
+			changeToParent(current);
+		else
+			changeDirectory(current, parameter);
 	}
 	else {
 		printf("No such command. Enter 'help' to see command list\n");
+	}
+	return true;
+}
+
+// +-------------------------------------------------------------------------------------------------+
+// |                                               Checks                                            |
+// +-------------------------------------------------------------------------------------------------+
+
+int checkUserInput(char *userInput)
+{
+	int i, sp = 0;
+	for (i = 0; i < strlen(userInput); i++) {
+		// Space
+		if (userInput[i] == 32)
+			sp++;
+	}
+	return sp;
+}
+
+bool dirNameTest(char *cmd)
+{
+	// Dir name must not contain spaces
+	int i;
+	for (i = 0; i < strlen(cmd); i++) {
+		if (cmd[i] == ' ')
+			return false;
 	}
 	return true;
 }
