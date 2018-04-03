@@ -29,14 +29,6 @@ int hashCode(char *command)
 	return hash;
 }
 
-char* strcat_head(char *str1, char *str2)
-{
-	char *buffer = malloc(sizeof(char) * (strlen(str1) + strlen(str2)) + 1);
-	strcat_s(str2, sizeof(str2) + 1, str1);
-	strcpy_s(buffer, sizeof(buffer) + 1, str2);
-	return buffer;
-}
-
 void println(const char *str)
 {
 	printf("\n%s", str);
