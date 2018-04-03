@@ -28,7 +28,7 @@ extern "C" {
 #include <string.h>
 #include <stdbool.h>
 
-#define MAX_NAME_SIZE 20
+#define MAX_NAME_SIZE 30
 
 // Change if on linux / windows
 // #define CLEAR_SCREEN "clear"
@@ -49,6 +49,12 @@ extern "C" {
 	int makeDirectory(Directory **current, char *name);
 	
 	int listDirectory(Directory **current);
+
+	bool dirExists(Directory *curr, char *param);
+
+	int changeDirectory(Directory **curr, char *param);
+
+	int printWorkingDirectory(Directory *curr);
 
 #ifdef __cplusplus
 }

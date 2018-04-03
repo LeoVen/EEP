@@ -36,7 +36,7 @@ void printHelpMenu();
  *
  * @Returns [ bool ] breaks loop if command is exit
  */
-bool getUserInput(Directory *current);
+bool getUserInput(Directory **current);
 
 /* Function that gets user input and returns how many spaces are in the string
  *
@@ -79,3 +79,5 @@ bool dirNameTest(char *cmd);
  * @Returns [ int ] a number equivalent for a string
  */
 void println(const char *str);
+
+char * strcat_head(char *str1, char *str2);
