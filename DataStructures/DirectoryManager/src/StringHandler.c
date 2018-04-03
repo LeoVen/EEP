@@ -64,6 +64,7 @@ void printHelpMenu()
 	println("  exit                Exits program                                ");
 	println("  mkdir [dir_name]    Makes a directory of name dir_name           ");
 	println("  rmdir [dir_name]    Removes directory of name dir_name           ");
+	println("  rm [dir_name]       Removes directory either empty or not        ");
 	println("  pwd                 Print working directory                      ");
 	println("  cd ..               Change directory to parent directory         ");
 	println("  cd [dir_name]       Change to directory of name dir_name         ");
@@ -96,7 +97,8 @@ void printMenu()
 
 bool getUserInput(Directory **current)
 {
-	printf("$ ");
+	printfBeforePrompt((*current));
+	printf(" $ ");
 	char *userInput = (char *)malloc(sizeof(char) * MAX_NAME_SIZE);
 	fgets(userInput, MAX_NAME_SIZE, stdin);
 	int sp = checkUserInput(userInput);
@@ -131,17 +133,36 @@ bool switchCommand(Directory **current, char *command, char *parameter)
 				makeDirectory(current, parameter);
 			}
 			else
-				printf("Directory with name already exists\n");
+				printf("Directory with specified name already exists\n");
 		}
 		else
 			printf("Directory name must not be empty\n");
 	}
 	else if (hash == hashCode("pwd")) {
+		printf("\t");
 		printWorkingDirectory((*current));
+		printf("\n");
+	}
+	else if (hash == hashCode("rmdir")) {
+		if (removeDirectory(current, parameter) == 1) {
+			printf("Not possible to remove a non-empty directory\n");
+		}
+	}
+	else if (hash == hashCode("rm")) {
+		forceRemoveDirectory(current, parameter);
 	}
 	else if (hash == hashCode("ls")) {
-		listDirectory(current);
-		printf("\n");
+		if (parameter == NULL) {
+			listDirectory((*current));
+			printf("\n");
+		}
+		else if (hashCode(parameter) == hashCode("-l")) {
+			listCompleteDirectory((*current));
+		}
+		else {
+			printf("Invalid ls parameter");
+			printf("\n");
+		}
 	}
 	else if (hash == hashCode(CLEAR_SCREEN)) {
 		system(CLEAR_SCREEN);

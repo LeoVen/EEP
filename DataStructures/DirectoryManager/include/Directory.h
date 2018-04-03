@@ -27,6 +27,7 @@ extern "C" {
 #include <stdlib.h>
 #include <string.h>
 #include <stdbool.h>
+#include <time.h>
 
 #define MAX_NAME_SIZE 30
 
@@ -37,6 +38,7 @@ extern "C" {
 
 	typedef struct Directory {
 		char *name;
+		char *time;
 		struct Directory *parent;
 		struct Directory *list;
 		struct Directory *next;
@@ -47,14 +49,22 @@ extern "C" {
 	void changeDirName(Directory *dir, char *name);
 
 	int makeDirectory(Directory **current, char *name);
+
+	int removeDirectory(Directory **curr, char *param);
+
+	int forceRemoveDirectory(Directory **curr, char *param);
 	
-	int listDirectory(Directory **current);
+	int listDirectory(Directory *current);
+
+	int listCompleteDirectory(Directory *curr);
 
 	bool dirExists(Directory *curr, char *param);
 
 	int changeDirectory(Directory **curr, char *param);
 
 	int printWorkingDirectory(Directory *curr);
+
+	int printfBeforePrompt(Directory *curr);
 
 #ifdef __cplusplus
 }

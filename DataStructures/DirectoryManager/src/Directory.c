@@ -28,6 +28,9 @@ Directory * getDirectoryByName(char *name)
 	dir->parent = NULL;
 	dir->list = NULL;
 	dir->next = NULL;
+	time_t now = time(NULL);
+	dir->time = strdup(ctime(&now));
+	dir->time[strlen(dir->time) - 1] = '\0';
 	changeDirName(dir, name);
 	return dir;
 }
@@ -47,19 +50,93 @@ int makeDirectory(Directory **current, char *name)
 	newDir->parent = curr;
 	newDir->next = curr->list;
 	curr->list = newDir;
+	time_t now = time(NULL);
+	newDir->time = strdup(ctime(&now));
+	newDir->time[strlen(newDir->time) - 1] = '\0';
 }
 
-int listDirectory(Directory **current)
+int removeDirectory(Directory **curr, char *param)
 {
-	Directory *curr = *current;
+	if (dirExists((*curr), param)) {
+		Directory *scanner = (*curr)->list;
+		if (hashCode(scanner->name) == hashCode(param)) {
+			if (scanner->list == NULL) {
+				// Remove first
+				(*curr)->list = (*curr)->list->next;
+				free(scanner);
+			}
+			else return 1;
+		}
+		else {
+			Directory *before = scanner;
+			scanner = scanner->next;
+			while (hashCode(scanner->name) != hashCode(param))
+			{
+				before = scanner;
+				scanner = scanner->next;
+			}
+			if (scanner->list == NULL) {
+				// Jump
+				before->next = scanner->next;
+				free(scanner);
+			}
+			else return 1;
+		}
+	}
+	else
+		printf("Directory with specified name doesn't exist\n");
+	return 0;
+}
+
+int forceRemoveDirectory(Directory **curr, char *param)
+{
+	if (dirExists((*curr), param)) {
+		Directory *scanner = (*curr)->list;
+		if (hashCode(scanner->name) == hashCode(param)) {
+			// Remove first
+			(*curr)->list = (*curr)->list->next;
+			free(scanner);
+		}
+		else {
+			Directory *before = scanner;
+			scanner = scanner->next;
+			while (hashCode(scanner->name) != hashCode(param))
+			{
+				before = scanner;
+				scanner = scanner->next;
+			}
+			// Jump
+			before->next = scanner->next;
+			free(scanner);
+		}
+	}
+	else
+		printf("Directory with specified name doesn't exist\n");
+	return 0;
+}
+
+int listDirectory(Directory *curr)
+{
 	Directory *head = curr->list;
 	while (head != NULL)
 	{
-		printf(" %s\t", head->name);
+		printf(" %s/\t", head->name);
 		head = head->next;
 	}
 	return 0;
 }
+
+int listCompleteDirectory(Directory *curr)
+{
+	Directory *head = curr->list;
+	while (head != NULL)
+	{
+		printf(" d %s\t%s/\n", head->time, head->name);
+		head = head->next;
+	}
+	return 0;
+}
+
 bool dirExists(Directory *curr, char *param)
 {
 	Directory *scanner = curr->list;
@@ -85,7 +162,7 @@ int changeDirectory(Directory **curr, char *param)
 		}
 	}
 	else
-		printf("No such directory\n");
+		printf("Directory with specified name doesn't exist\n");
 	return 0;
 }
 
@@ -97,24 +174,22 @@ int changeToParent(Directory **curr)
 
 int printWorkingDirectory(Directory *curr)
 {
-	Directory *scanner = curr;
-	// TODO strcat at beggining of string
-	char *buffer = NULL;
-	char *str = NULL;
-	while (scanner != NULL)
-	{
-		if (!str) {
-			buffer = malloc(sizeof(char) * strlen(scanner->name) + 1);
-			strcpy(buffer, scanner->name);
-			str = buffer;
-		}
-		else {
-			str = strcat_head(str, scanner->name);
-			str = strcat_head(str, "/");
-		}
-		scanner = scanner->parent;
+	if (hashCode(curr->name) == hashCode("/"))
+		printf("/");
+	else {
+		printWorkingDirectory(curr->parent);
+		printf("%s/", curr->name);
 	}
-	if (str != NULL)
-		printf("%s\n", str);
+	return 0;
+}
+
+int printfBeforePrompt(Directory *curr)
+{
+	if (hashCode(curr->name) == hashCode("/"))
+		printf("directory@manager:~/");
+	else {
+		printfBeforePrompt(curr->parent);
+		printf("%s/", curr->name);
+	}
 	return 0;
 }
