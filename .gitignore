@@ -3,7 +3,8 @@
 
 
 # C/C++
-*.obj
+obj
+bin
 *.exe
 *.o
 
@@ -15,3 +16,4 @@
 
 # Unwanted vs folder
 DataStructures/.vs/
+*.obj

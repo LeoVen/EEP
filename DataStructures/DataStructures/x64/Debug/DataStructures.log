@@ -1,2 +1,62 @@
-﻿  ConversionTests.c
+﻿  CArray.c
+c:\users\leona\documents\github\eep\datastructures\datastructures\c\structures\carray.c(142): warning C4013: 'time' undefined; assuming extern returning int
+  CDoublyLinkedList.c
+c:\users\leona\documents\github\eep\datastructures\datastructures\c\structures\cdoublylinkedlist.c(99): warning C4100: 'position': unreferenced formal parameter
+c:\users\leona\documents\github\eep\datastructures\datastructures\c\structures\cdoublylinkedlist.c(99): warning C4100: 'value': unreferenced formal parameter
+c:\users\leona\documents\github\eep\datastructures\datastructures\c\structures\cdoublylinkedlist.c(130): warning C4100: 'position': unreferenced formal parameter
+c:\users\leona\documents\github\eep\datastructures\datastructures\c\structures\cdoublylinkedlist.c(130): warning C4100: 'node': unreferenced formal parameter
+c:\users\leona\documents\github\eep\datastructures\datastructures\c\structures\cdoublylinkedlist.c(130): warning C4100: 'DoublyLinkedList': unreferenced formal parameter
+c:\users\leona\documents\github\eep\datastructures\datastructures\c\structures\cdoublylinkedlist.c(158): warning C4100: 'position': unreferenced formal parameter
+c:\users\leona\documents\github\eep\datastructures\datastructures\c\structures\cdoublylinkedlist.c(175): warning C4013: 'removeHeadSLL' undefined; assuming extern returning int
+c:\users\leona\documents\github\eep\datastructures\datastructures\c\structures\cdoublylinkedlist.c(260): warning C4101: 'kill': unreferenced local variable
+  DArray.c
+c:\users\leona\documents\github\eep\datastructures\datastructures\c\structures\darray.c(98): warning C4101: 'i': unreferenced local variable
+  StructureConversions.c
+  CArrayTests.c
+c:\users\leona\documents\github\eep\datastructures\datastructures\c\tests\carraytests.c(71): warning C4244: 'function': conversion from 'time_t' to 'unsigned int', possible loss of data
+  CDoublyLinkedListTests.c
+c:\users\leona\documents\github\eep\datastructures\datastructures\c\tests\cdoublylinkedlisttests.c(27): warning C4189: 'node': local variable is initialized but not referenced
+  CSinglyLinkedListTests.c
+c:\users\leona\documents\github\eep\datastructures\datastructures\c\tests\csinglylinkedlisttests.c(66): warning C4013: 'time' undefined; assuming extern returning int
+c:\users\leona\documents\github\eep\datastructures\datastructures\c\tests\csinglylinkedlisttests.c(88): warning C4189: 'a': local variable is initialized but not referenced
+  CSortingTests.c
+  CStackTests.c
+  ConversionTests.c
+  DArrayTests.c
+  VectorTests.c
+  Generating Code...
+  CSinglyLinkedList.c
+c:\users\leona\documents\github\eep\datastructures\datastructures\c\structures\csinglylinkedlist.c(30): warning C4464: relative include path contains '..'
+c:\users\leona\documents\github\eep\datastructures\datastructures\c\headers\csinglylinkedlist.h(21): warning C4820: 'CSinglyLinkedNode': '4' bytes padding added after data member 'data'
+c:\users\leona\documents\github\eep\datastructures\datastructures\c\headers\csinglylinkedlist.h(26): warning C4820: 'CSinglyLinkedList': '3' bytes padding added after data member 'initialized'
+c:\users\leona\documents\github\eep\datastructures\datastructures\c\headers\csinglylinkedlist.h(198): warning C4255: 'getCSinglyLinkedList': no function prototype given: converting '()' to '(void)'
+c:\users\leona\documents\github\eep\datastructures\datastructures\c\structures\csinglylinkedlist.c(153): warning C4100: 'node': unreferenced formal parameter
+c:\users\leona\documents\github\eep\datastructures\datastructures\c\structures\csinglylinkedlist.c(435): warning C4255: 'getCSinglyLinkedList': no function prototype given: converting '()' to '(void)'
+c:\users\leona\documents\github\eep\datastructures\datastructures\c\structures\csinglylinkedlist.c(468): warning C4244: 'return': conversion from 'double' to 'int', possible loss of data
+c:\users\leona\documents\github\eep\datastructures\datastructures\c\structures\csinglylinkedlist.c(484): warning C4189: 'sll': local variable is initialized but not referenced
+c:\users\leona\documents\github\eep\datastructures\datastructures\c\structures\csinglylinkedlist.c(548): warning C4100: 'position': unreferenced formal parameter
+c:\users\leona\documents\github\eep\datastructures\datastructures\c\structures\csinglylinkedlist.c(548): warning C4100: 'SinglyLinkedList': unreferenced formal parameter
+c:\users\leona\documents\github\eep\datastructures\datastructures\c\structures\csinglylinkedlist.c(555): warning C4100: 'position': unreferenced formal parameter
+c:\users\leona\documents\github\eep\datastructures\datastructures\c\structures\csinglylinkedlist.c(555): warning C4100: 'SinglyLinkedList': unreferenced formal parameter
+c:\users\leona\documents\github\eep\datastructures\datastructures\c\structures\csinglylinkedlist.c(562): warning C4100: 'SinglyLinkedList': unreferenced formal parameter
+c:\users\leona\documents\github\eep\datastructures\datastructures\c\structures\csinglylinkedlist.c(572): warning C4189: 'i': local variable is initialized but not referenced
+c:\program files (x86)\windows kits\10\include\10.0.16299.0\ucrt\stdio.h(946): warning C4710: 'int printf(const char *const ,...)': function not inlined
+  c:\program files (x86)\windows kits\10\include\10.0.16299.0\ucrt\stdio.h(946): note: see declaration of 'printf'
+  CStack.c
+c:\users\leona\documents\github\eep\datastructures\datastructures\c\structures\cstack.c(11): warning C4464: relative include path contains '..'
+c:\users\leona\documents\github\eep\datastructures\datastructures\c\headers\cstack.h(21): warning C4820: 'CStackBox': '4' bytes padding added after data member 'data'
+c:\users\leona\documents\github\eep\datastructures\datastructures\c\headers\cstack.h(26): warning C4820: 'CStack': '4' bytes padding added after data member 'height'
+c:\users\leona\documents\github\eep\datastructures\datastructures\c\headers\cstack.h(83): warning C4255: 'getCStack': no function prototype given: converting '()' to '(void)'
+c:\users\leona\documents\github\eep\datastructures\datastructures\c\structures\cstack.c(38): warning C4255: 'getCStack': no function prototype given: converting '()' to '(void)'
+c:\users\leona\documents\github\eep\datastructures\datastructures\c\structures\cstack.c(73): warning C4100: 'Stack': unreferenced formal parameter
+c:\program files (x86)\windows kits\10\include\10.0.16299.0\ucrt\stdio.h(946): warning C4710: 'int printf(const char *const ,...)': function not inlined
+  c:\program files (x86)\windows kits\10\include\10.0.16299.0\ucrt\stdio.h(946): note: see declaration of 'printf'
+  Generating Code...
+c:\users\leona\documents\github\eep\datastructures\datastructures\c\structures\cstack.c(50): warning C4716: 'getCStackBox': must return a value
+c:\users\leona\documents\github\eep\datastructures\datastructures\c\structures\cstack.c(78): warning C4716: 'popCStack': must return a value
+c:\users\leona\documents\github\eep\datastructures\datastructures\c\structures\csinglylinkedlist.c(553): warning C4716: 'switchNodeWithHead': must return a value
+c:\users\leona\documents\github\eep\datastructures\datastructures\c\structures\csinglylinkedlist.c(565): warning C4716: 'switchNodeHeadTail': must return a value
+c:\users\leona\documents\github\eep\datastructures\datastructures\c\structures\csinglylinkedlist.c(580): warning C4715: 'bubbleSortSLL': not all control paths return a value
+c:\users\leona\documents\github\eep\datastructures\datastructures\c\structures\csinglylinkedlist.c(560): warning C4716: 'switchNodeWithTail': must return a value
+  Vector.c
   DataStructures.vcxproj -> C:\Users\leona\Documents\GitHub\EEP\DataStructures\x64\Debug\DataStructures.exe
