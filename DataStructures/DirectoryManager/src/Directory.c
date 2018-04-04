@@ -151,6 +151,8 @@ bool dirExists(Directory *curr, char *param)
 
 int changeDirectory(Directory **curr, char *param)
 {
+	if (param == NULL)
+		return 1;
 	if (dirExists((*curr), param)) {
 		Directory *scanner = (*curr)->list;
 		while (scanner != NULL)
@@ -171,6 +173,14 @@ int changeToParent(Directory **curr)
 {
 	if ((*curr)->parent != NULL)
 		(*curr) = (*curr)->parent;
+}
+
+int changeToRoot(Directory **curr)
+{
+	while ((*curr)->parent != NULL)
+	{
+		changeToParent(curr);
+	}
 }
 
 int printWorkingDirectory(Directory *curr)
