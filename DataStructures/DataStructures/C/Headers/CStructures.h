@@ -14,7 +14,7 @@
 extern "C" {
 #endif
 
-#include "Common.h"
+#include "Core.h"
 #include "CSinglyLinkedList.h"
 #include "CDoublyLinkedList.h"
 #include "CStack.h"

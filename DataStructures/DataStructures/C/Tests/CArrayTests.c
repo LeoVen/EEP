@@ -11,7 +11,6 @@
  *
  */
 
-#include <time.h>
 #include "..\Headers\CArray.h"
 
 int CArrayTests()

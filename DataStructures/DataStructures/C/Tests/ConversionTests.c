@@ -32,15 +32,13 @@ int ConversionTests()
 	}
 
 	CArray *array;
-	if (convert_sll_to_array(sll, &array) != DS_OK)
-		printf("\nError");
+	printf("\n%s", status_repr(convert_sll_to_array(sll, &array)));
 	
 	displayCArray(array);
 
 	DArray *darray;
 
-	int err = convert_sll_to_darray(sll, &darray);
-	printf("\nErr %d", err);
+	printf("\n%s", status_repr(convert_sll_to_darray(sll, &darray)));
 
 	displayDArray(darray);
 

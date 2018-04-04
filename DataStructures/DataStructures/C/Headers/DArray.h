@@ -14,7 +14,7 @@
 extern "C" {
 #endif
 
-#include "Common.h"
+#include "Core.h"
 
 	typedef struct DArray {
 		int *array;     // Array of integers

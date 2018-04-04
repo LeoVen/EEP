@@ -57,10 +57,10 @@
     <ClInclude Include="C\Headers\CStack.h">
       <Filter>Arquivos de Cabeçalho</Filter>
     </ClInclude>
-    <ClInclude Include="C\Headers\Common.h">
+    <ClInclude Include="C\Headers\StructureConversions.h">
       <Filter>Arquivos de Cabeçalho</Filter>
     </ClInclude>
-    <ClInclude Include="C\Headers\StructureConversions.h">
+    <ClInclude Include="C\Headers\Core.h">
       <Filter>Arquivos de Cabeçalho</Filter>
     </ClInclude>
   </ItemGroup>
@@ -126,6 +126,9 @@
       <Filter>Arquivos de Origem</Filter>
     </ClCompile>
     <ClCompile Include="C\Tests\ConversionTests.c">
+      <Filter>Arquivos de Origem</Filter>
+    </ClCompile>
+    <ClCompile Include="C\Structures\Core.c">
       <Filter>Arquivos de Origem</Filter>
     </ClCompile>
   </ItemGroup>

@@ -1,12 +1,12 @@
-/*
-* CStack.h
-*
-* Author: Leonardo Vencovsky
-* Created on 31/03/2018
-*
-* Header for Common libs
-*
-*/
+/**
+ * Core.h
+ *
+ * Author: Leonardo Vencovsky
+ * Created on 31/03/2018
+ *
+ * Header for Core implementations that contains Status codes and other related functions.
+ *
+ */
 
 #pragma once
 
@@ -19,8 +19,8 @@ extern "C" {
 #include <stdbool.h>
 #include <string.h>
 #include <math.h>
+#include <time.h>
 
-	// TODO
 	typedef enum Status {
 		DS_OK                       = 0,
 		DS_ERR_INVALID_POSITION     = 1,
@@ -33,6 +33,8 @@ extern "C" {
 		DS_ERR_ITER                 = 8,
 		DS_ERR_NULL_POINTER         = 9
 	} Status;
+	
+	char * status_repr(Status status);
 
 #ifdef __cplusplus
 }

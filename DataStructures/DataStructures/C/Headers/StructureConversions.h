@@ -13,7 +13,7 @@
 extern "C" {
 #endif
 
-#include "Common.h"
+#include "Core.h"
 #include "CStructures.h"
 
 	// +-------------------------------------+

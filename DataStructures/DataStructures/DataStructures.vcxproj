@@ -145,7 +145,7 @@
   <ItemGroup>
     <ClInclude Include="C\Headers\CArray.h" />
     <ClInclude Include="C\Headers\CDoublyLinkedList.h" />
-    <ClInclude Include="C\Headers\Common.h" />
+    <ClInclude Include="C\Headers\Core.h" />
     <ClInclude Include="C\Headers\CSinglyLinkedList.h" />
     <ClInclude Include="C\Headers\CStack.h" />
     <ClInclude Include="C\Headers\CStructures.h" />
@@ -165,6 +165,9 @@
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">NotUsing</PrecompiledHeader>
     </ClCompile>
     <ClCompile Include="C\Structures\CDoublyLinkedList.c">
+      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">NotUsing</PrecompiledHeader>
+    </ClCompile>
+    <ClCompile Include="C\Structures\Core.c">
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">NotUsing</PrecompiledHeader>
     </ClCompile>
     <ClCompile Include="C\Structures\CSinglyLinkedList.c">
