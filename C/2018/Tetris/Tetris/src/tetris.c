@@ -75,7 +75,6 @@ int encontra_y(int mat[ALTURA_TABULEIRO][LARGURA_TABULEIRO], int l, int x) {
 		for (j = x; j < x + l; j++) {
 			tot += mat[i][j];
 		}
-		printf("\ntot: %d, i: %d, j: %d, POS: %d", tot, i, j, pos);
 		if (tot == 0) {
 			return i;
 		}
