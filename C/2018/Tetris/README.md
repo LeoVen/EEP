@@ -1,3 +1,7 @@
 # Tetris
 
->Under development
+> Finished
+
+## To-do 
+
+* Fix problem with ```encontra_y```
