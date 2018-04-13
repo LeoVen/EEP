@@ -17,3 +17,9 @@ bin
 # Unwanted vs folder
 DataStructures/.vs/
 *.obj
+
+.vscode/*
+!.vscode/settings.json
+!.vscode/tasks.json
+!.vscode/launch.json
+!.vscode/extensions.json
