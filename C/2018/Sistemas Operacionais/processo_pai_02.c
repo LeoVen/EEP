@@ -8,10 +8,11 @@ int main(int argc, char const *argv[])
 
 	printf("Processo-Pai: Iniciando a execucao.\n");
 	fork();
+	fork();
 	printf("Processo-Filho: Iniciando a execucao\n");
-	sleep(10);
+	sleep(5);
 	printf("Processo-Filho: Encerrando a execucao\n");
-	printf("Processo-Pai: Encerrando a execucao");
+	printf("Processo-Pai: Encerrando a execucao\n");
 
 	return 0;
 }
