@@ -1,3 +1,11 @@
+/**
+ * @file bitwise.cpp
+ * 
+ * @author Leonardo Vencovsky (https://github.com/LeoVen)
+ * @date 12/05/2018
+ * 
+ * Demonstration of Bitwise operators
+ */
 #include <iostream>
 #include <bitset>
 
