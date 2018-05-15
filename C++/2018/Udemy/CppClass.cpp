@@ -28,12 +28,12 @@ private:
 std::string DateTime::get_string()
 {
     // dd/MM/yyyy hh:mm:ss
-    std::string day_s = (this->day < 10) ? "0" + this->day : std::to_string(this->day);
-    std::string month_s = (this->month < 10) ? "0" + this->month : std::to_string(this->month);
+    std::string day_s = (this->day < 10) ? "0" + std::to_string(this->day) : std::to_string(this->day);
+    std::string month_s = (this->month < 10) ? "0" + std::to_string(this->month) : std::to_string(this->month);
     std::string year_s = std::to_string(this->year);
-    std::string hour_s = (this->hour < 10) ? "0" + this->hour : std::to_string(this->hour);
-    std::string minute_s = (this->minute < 10) ? "0" + this->minute : std::to_string(this->minute);
-    std::string second_s = (this->second < 10) ? "0" + this->second : std::to_string(this->second);
+    std::string hour_s = (this->hour < 10) ? "0" + std::to_string(this->hour) : std::to_string(this->hour);
+    std::string minute_s = (this->minute < 10) ? "0" + std::to_string(this->minute) : std::to_string(this->minute);
+    std::string second_s = (this->second < 10) ? "0" + std::to_string(this->second) : std::to_string(this->second);
 
     return day_s + "/" + month_s + "/" + year_s + " " + hour_s + ":" + minute_s + ":" + second_s;
 }
@@ -96,12 +96,14 @@ int main(int argc, char const *argv[])
     DateTime d1(2018, 5, 14);
 	DateTime d2(2018, 1, 20);
 	DateTime d3(2018, 12, 2);
+    DateTime d4(2018, 5, 14, 22, 21, 13);
+    DateTime d5(2018, 5, 1, 9, 3, 7);
 
 	std::cout << d1.get_string() << std::endl;
 	std::cout << d2.get_string() << std::endl;
 	std::cout << d3.get_string() << std::endl;
-
-    std::cout << "Hello World" << std::endl;
+    std::cout << d4.get_string() << std::endl;
+    std::cout << d5.get_string() << std::endl;
 
     return 0;
 }
