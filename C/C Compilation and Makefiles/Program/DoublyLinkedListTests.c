@@ -2,7 +2,7 @@
  * @file DoublyLinkedListTests.c
  *
  * @author Leonardo Vencovsky (https://github.com/LeoVen)
- * @date 23/05/2018
+ * @date 18/03/2018
  *
  * @brief Test Cases for @c DoublyLinkedLists implementations in C
  *

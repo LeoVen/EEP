@@ -2,7 +2,7 @@
  * @file DoublyLinkedList.c
  *
  * @author Leonardo Vencovsky (https://github.com/LeoVen)
- * @date 23/05/2018
+ * @date 18/03/2018
  *
  * @brief Source file for @c DoublyLinkedList implementations in C
  *

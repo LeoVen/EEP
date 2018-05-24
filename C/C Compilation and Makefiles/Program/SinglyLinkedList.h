@@ -2,7 +2,7 @@
  * @file SinglyLinkedList.h
  *
  * @author Leonardo Vencovsky (https://github.com/LeoVen)
- * @date 23/05/2018
+ * @date 14/03/2018
  *
  * @brief Header file for @c SinglyLinkedList implementations in C
  *

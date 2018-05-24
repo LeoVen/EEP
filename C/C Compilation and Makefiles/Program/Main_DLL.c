@@ -10,11 +10,12 @@
 
 #include "Core.h"
 
-int main()
+int main(int argc, char const *argv[])
 {
 	print_status_repr(DS_OK);
 	DoublyLinkedListTests();
 
 	printf("\n");
+	
 	return 0;
 }

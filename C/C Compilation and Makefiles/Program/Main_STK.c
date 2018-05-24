@@ -4,7 +4,7 @@
  * @author Leonardo Vencovsky (https://github.com/LeoVen)
  * @date 23/05/2018
  *
- * @brief Menu for Data Structures, containing Tests and Interactive Versions
+ * @brief Menu for Data Structures containing all tests
  *
  */
 
@@ -13,9 +13,9 @@
 int main(int argc, char const *argv[])
 {
 	print_status_repr(DS_OK);
-	SinglyLinkedListTests();
+	StackTests();
 
 	printf("\n");
-	
+
 	return 0;
 }
