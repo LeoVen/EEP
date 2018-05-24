@@ -121,10 +121,7 @@ int SinglyLinkedListTests()
 	sll_erase_list(&sll);
 
 	sll_display(sll);
-
-	int a = NULL;
-	printf("\nNULL: %d", (int)a); // lol
-
+	
 	for (i = 0; i < 100; i++)
 		sll_insert_tail(sll, rand() % 10);
 
@@ -132,7 +129,7 @@ int SinglyLinkedListTests()
 	for (i = -10; i < 20; i++) {
 		if (sll_exists(sll, i)) {
 			sll_frequency(sll, i, &f);
-			printf("\nData %d frequency : %zu", i, f);
+			printf("\nData %d frequency : %u", i, f);
 		}
 		else {
 			printf("\nData %d is not in the list", i);
@@ -300,11 +297,11 @@ int SinglyLinkedListTests()
 
 	sll_display(sll_even);
 	print_status_repr(sll_get_length(sll_even, &len));
-	printf("\nLength: %zu\n", len);
+	printf("\nLength: %u\n", len);
 
 	sll_display(sll_odd);
 	print_status_repr(sll_get_length(sll_odd, &len));
-	printf("\nLength: %zu\n", len);
+	printf("\nLength: %u\n", len);
 
 	sll_erase_list(&sll_even);
 	sll_erase_list(&sll_odd);
@@ -328,11 +325,11 @@ int SinglyLinkedListTests()
 	
 	sll_display(sll_odd);
 	print_status_repr(sll_get_length(sll_odd, &len));
-	printf("\nLength: %zu\n", len);
+	printf("\nLength: %u\n", len);
 	
 	sll_display(sll_even);
 	print_status_repr(sll_get_length(sll_even, &len));
-	printf("\nLength: %zu\n", len);
+	printf("\nLength: %u\n", len);
 
 	// Unlink at first occurrance of a key
 	sll_find_occurrance_first(sll_odd, 2, &len);
@@ -341,11 +338,11 @@ int SinglyLinkedListTests()
 
 	sll_display(sll_odd);
 	print_status_repr(sll_get_length(sll_odd, &len));
-	printf("\nLength: %zu\n", len);
+	printf("\nLength: %u\n", len);
 
 	sll_display(sll_even);
 	print_status_repr(sll_get_length(sll_even, &len));
-	printf("\nLength: %zu\n", len);
+	printf("\nLength: %u\n", len);
 
 	// Link back at the first occurrence of a key
 	sll_find_occurrance_first(sll_odd, 3, &len);
@@ -355,22 +352,22 @@ int SinglyLinkedListTests()
 
 	sll_display(sll_odd);
 	print_status_repr(sll_get_length(sll_odd, &len));
-	printf("\nLength: %zu\n", len);
+	printf("\nLength: %u\n", len);
 
 	sll_display(sll_even);
 	print_status_repr(sll_get_length(sll_even, &len));
-	printf("\nLength: %zu\n", len);
+	printf("\nLength: %u\n", len);
 
 	// Link at the beggining
 	sll_link_at(sll_odd, sll, 0);
 
 	sll_display(sll);
 	print_status_repr(sll_get_length(sll, &len));
-	printf("\nLength: %zu\n", len);
+	printf("\nLength: %u\n", len);
 
 	sll_display(sll_odd);
 	print_status_repr(sll_get_length(sll_odd, &len));
-	printf("\nLength: %zu\n", len);
+	printf("\nLength: %u\n", len);
 
 	// Link at the end
 	sll_get_length(sll_result, &len);
@@ -379,11 +376,11 @@ int SinglyLinkedListTests()
 
 	sll_display(sll_odd);
 	print_status_repr(sll_get_length(sll_odd, &len));
-	printf("\nLength: %zu\n", len);
+	printf("\nLength: %u\n", len);
 
 	sll_display(sll_result);
 	print_status_repr(sll_get_length(sll_result, &len));
-	printf("\nLength: %zu\n", len);
+	printf("\nLength: %u\n", len);
 
 	// Free memory
 	sll_delete_list(&sll);
@@ -426,7 +423,7 @@ int SinglyLinkedListTests()
 					printf("\nsll_insert_at()");
 					if (length != 0)
 						len = rand() % length;
-					printf(" position %zu", len);
+					printf(" position %u", len);
 					sll_insert_at(sll, rand() % max, len);
 				}
 				else {
@@ -448,7 +445,7 @@ int SinglyLinkedListTests()
 					printf("\nsll_insert_node_at()");
 					if (length != 0)
 						len = rand() % length;
-					printf(" position %zu", len);
+					printf(" position %u", len);
 					sll_make_node(&node, rand() % max);
 					sll_insert_node_at(sll, node, len);
 				}
@@ -475,7 +472,7 @@ int SinglyLinkedListTests()
 					printf("\nsll_remove_at()");
 					if (length != 0)
 						len = rand() % length;
-					printf(" position %zu", len);
+					printf(" position %u", len);
 					sll_remove_at(sll, len);
 				}
 				else {
@@ -497,7 +494,7 @@ int SinglyLinkedListTests()
 					printf("\nsll_remove_node_at()");
 					if (length != 0)
 						len = rand() % length;
-					printf(" position %zu", len);
+					printf(" position %u", len);
 					sll_remove_node_at(sll, &node, len);
 					free(node);
 				}

@@ -2,18 +2,20 @@
  * @file DataStructuresMenu.c
  *
  * @author Leonardo Vencovsky (https://github.com/LeoVen)
- * @date 23/05/2018
+ * @date 24/05/2018
  *
- * @brief Menu for Data Structures, containing Tests and Interactive Versions
- *
+ * @brief Entrance point
  */
 
 #include "Core.h"
+#include "DataStructuresTests.h"
 
 int main(int argc, char const *argv[])
 {
 	print_status_repr(DS_OK);
-	SinglyLinkedListTests();
+    SinglyLinkedListTests();
+	DoublyLinkedListTests();
+    StackTests();
 
 	printf("\n");
 	

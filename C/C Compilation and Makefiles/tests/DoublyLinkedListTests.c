@@ -139,7 +139,7 @@ int DoublyLinkedListTests()
 					printf("\ndll_insert_at()");
 					if (length != 0)
 						len = rand() % length;
-					printf(" position %zu", len);
+					printf(" position %u", len);
 					dll_insert_at(dll, rand() % max, len);
 				}
 				else {
@@ -161,7 +161,7 @@ int DoublyLinkedListTests()
 					printf("\ndll_insert_node_at()");
 					if (length != 0)
 						len = rand() % length;
-					printf(" position %zu", len);
+					printf(" position %u", len);
 					dll_make_node(&node, rand() % max);
 					dll_insert_node_at(dll, node, len);
 				}
@@ -188,7 +188,7 @@ int DoublyLinkedListTests()
 					printf("\ndll_remove_at()");
 					if (length != 0)
 						len = rand() % length;
-					printf(" position %zu", len);
+					printf(" position %u", len);
 					dll_remove_at(dll, len);
 				}
 				else {
@@ -210,7 +210,7 @@ int DoublyLinkedListTests()
 					printf("\ndll_remove_node_at()");
 					if (length != 0)
 						len = rand() % length;
-					printf(" position %zu", len);
+					printf(" position %u", len);
 					dll_remove_node_at(dll, &node, len);
 					free(node);
 				}

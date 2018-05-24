@@ -10,10 +10,12 @@
 
 #include "Core.h"
 
+int SinglyLinkedListTests();
+
 int main(int argc, char const *argv[])
 {
 	print_status_repr(DS_OK);
-	DoublyLinkedListTests();
+	SinglyLinkedListTests();
 
 	printf("\n");
 	
