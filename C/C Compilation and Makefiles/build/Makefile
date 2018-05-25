@@ -30,33 +30,37 @@ all: $(BINDIR)/$(P)
 
 $(BINDIR)/$(P): $(OBJDIR)/Core.o $(OBJDIR)/$(P)Main.o $(OBJDIR)/$(P)Tests.o $(OBJDIR)/$(P).o
 	@echo ""
-	@echo "+--------------------------+"
-	@echo "| Compiling Program        |"
-	@echo "+--------------------------+"
+	@echo "+--------------------------------------------------+"
+	@echo "| Linking Program                                  |"
+	@echo "+--------------------------------------------------+"
+	@echo "$@"
 	@echo ""
-	$(CC) -I $(HDRDIR) $(FLAGS) $^ -o $@
+	$(CC) -I $(HDRDIR) $(FLAGS) $^ -o $@.exe
 
 $(OBJDIR)/$(P)Main.o: $(INIDIR)/$(P)Main.c $(HDRDIR)/Core.h
 	@echo ""
-	@echo "+--------------------------+"
-	@echo "| Assembling Init Program  |"
-	@echo "+--------------------------+"
+	@echo "+--------------------------------------------------+"
+	@echo "| Compiling and Assembling Init Program            |"
+	@echo "+--------------------------------------------------+"
+	@echo "$@"
 	@echo ""
 	$(CC) -I $(HDRDIR) $(FLAGS) -c $< -o $@
 
 $(OBJDIR)/$(P)Tests.o: $(TSTDIR)/$(P)Tests.c $(OBJDIR)/$(P).o
 	@echo ""
-	@echo "+--------------------------+"
-	@echo "| Assembling Test File     |"
-	@echo "+--------------------------+"
+	@echo "+--------------------------------------------------+"
+	@echo "| Compiling and Assembling Test File               |"
+	@echo "+--------------------------------------------------+"
+	@echo "$@"
 	@echo ""
 	$(CC) -I $(HDRDIR) $(FLAGS) -c $(TSTDIR)/$(P)Tests.c -o $@
 
 $(OBJDIR)/$(P).o: $(SRCDIR)/$(P).c $(HDRDIR)/$(P).h
 	@echo ""
-	@echo "+--------------------------+"
-	@echo "| Assembling Source File   |"
-	@echo "+--------------------------+"
+	@echo "+--------------------------------------------------+"
+	@echo "| Compiling and Assembling Source File             |"
+	@echo "+--------------------------------------------------+"
+	@echo "$@"
 	@echo ""
 	$(CC) -I $(HDRDIR) $(FLAGS) -c $< -o $@
 
@@ -64,9 +68,10 @@ $(OBJDIR)/$(P).o: $(SRCDIR)/$(P).c $(HDRDIR)/$(P).h
 
 $(OBJDIR)/Core.o: $(SRCDIR)/Core.c $(HDRDIR)/Core.h
 	@echo ""
-	@echo "+--------------------------+"
-	@echo "| Assembling Core Module   |"
-	@echo "+--------------------------+"
+	@echo "+--------------------------------------------------+"
+	@echo "| Compiling and Assembling Core Module             |"
+	@echo "+--------------------------------------------------+"
+	@echo "$@"
 	@echo ""
 	$(CC) -I $(HDRDIR) $(FLAGS) -c $< -o $@
 
@@ -112,6 +117,7 @@ help:
 av:
 	@echo "Available 'P' parameters:"
 	@echo ""
-	@echo "SinglyLinkedList"
+	@echo "CircularBuffer"
 	@echo "DoublyLinkedList"
+	@echo "SinglyLinkedList"
 	@echo "Stack"
