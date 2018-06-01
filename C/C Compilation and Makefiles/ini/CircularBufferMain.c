@@ -14,6 +14,8 @@ int CircularBufferTests();
 
 int main(int argc, char const *argv[])
 {
+	srand(time(NULL));
+
 	print_status_repr(DS_OK);
 	CircularBufferTests();
 

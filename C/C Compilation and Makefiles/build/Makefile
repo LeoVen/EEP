@@ -19,9 +19,11 @@ endif
 ifdef RUN
 .DEFAULT_GOAL := $(RUN)
 
+P = $(RUN)
+
 .PHONY: $(RUN)
-$(RUN):
-	$(BINDIR)/$(RUN)
+$(RUN): all
+	$(BINDIR)/$(RUN).exe
 
 endif
 

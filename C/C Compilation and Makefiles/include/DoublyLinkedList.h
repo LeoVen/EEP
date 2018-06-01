@@ -11,7 +11,8 @@
 #pragma once
 
 #ifdef __cplusplus
-extern "C" {
+extern "C"
+{
 #endif
 
 #include "Core.h"
@@ -24,10 +25,11 @@ extern "C" {
 	 * pointer pointing to @c NULL symbolizing the end of the list.
 	 *
 	 */
-	typedef struct DoublyLinkedNode {
-		int data;                           /*!< Node's data */
-		struct DoublyLinkedNode *next;      /*!< Pointer to the next node on the list */
-		struct DoublyLinkedNode *prev;      /*!< Pointer to the previous node on the list */
+	typedef struct DoublyLinkedNode
+	{
+		int data;					   /*!< Node's data */
+		struct DoublyLinkedNode *next; /*!< Pointer to the next node on the list */
+		struct DoublyLinkedNode *prev; /*!< Pointer to the previous node on the list */
 	} DoublyLinkedNode;
 
 	/*
@@ -52,17 +54,18 @@ extern "C" {
 	 * 
 	 * @c DoublyLinkedList.c
 	 */
-	typedef struct DoublyLinkedList {
-		size_t length;                      /*!< List length */
-		struct DoublyLinkedNode *head;      /*!< Pointer to the first Node on the list */
-		struct DoublyLinkedNode *tail;      /*!< Pointer to the last Node on the list */
+	typedef struct DoublyLinkedList
+	{
+		size_t length;				   /*!< List length */
+		struct DoublyLinkedNode *head; /*!< Pointer to the first Node on the list */
+		struct DoublyLinkedNode *tail; /*!< Pointer to the last Node on the list */
 	} DoublyLinkedList;
 
 	Status dll_init_list(DoublyLinkedList **dll);
 	Status dll_init_node(DoublyLinkedNode **node);
 
-	DoublyLinkedList * dll_get_list();
-	DoublyLinkedNode * dll_get_node(int value);
+	DoublyLinkedList *dll_get_list();
+	DoublyLinkedNode *dll_get_node(int value);
 
 	Status dll_make_node(DoublyLinkedNode **node, int value);
 
@@ -93,7 +96,7 @@ extern "C" {
 
 	Status dll_delete_node(DoublyLinkedNode **node);
 	Status dll_delete_list(DoublyLinkedList **dll); // Erases and sets to NULL
-	Status dll_erase_list(DoublyLinkedList **dll); // Erases and inits
+	Status dll_erase_list(DoublyLinkedList **dll);  // Erases and inits
 
 	Status dll_frequency(DoublyLinkedList *dll, int key, size_t *frequency);
 
@@ -116,7 +119,7 @@ extern "C" {
 
 	//Status dll_unlink(DoublyLinkedList *dll, DoublyLinkedList *result, size_t position);
 	//Status dll_unlink_at(DoublyLinkedList *dll, DoublyLinkedList *result, size_t position1, size_t position2);
-	
+
 	//Status dll_copy_list(DoublyLinkedList *dll, DoublyLinkedList **result);
 	//Status dll_copy_node(DoublyLinkedList *node, DoublyLinkedList **result);
 
@@ -133,8 +136,6 @@ extern "C" {
 
 	//Status dll_merge_sorted(DoublyLinkedList *dll1, DoublyLinkedList *dll2, DoublyLinkedList **result);
 
-
 #ifdef __cplusplus
 }
 #endif
-

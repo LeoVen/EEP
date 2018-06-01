@@ -11,7 +11,8 @@
 #pragma once
 
 #ifdef __cplusplus
-extern "C" {
+extern "C"
+{
 #endif
 
 #include "Core.h"
@@ -22,9 +23,10 @@ extern "C" {
 	 * SinglyLinkedNode of the list or simply NULL when it is the last element.
 	 *
 	 */
-	typedef struct SinglyLinkedNode {
-		int data;                           /*!< Node's data */
-		struct SinglyLinkedNode *next;      /*!< Pointer to the next node on the list */
+	typedef struct SinglyLinkedNode
+	{
+		int data;					   /*!< Node's data */
+		struct SinglyLinkedNode *next; /*!< Pointer to the next node on the list */
 	} SinglyLinkedNode;
 
 	/**
@@ -48,30 +50,31 @@ extern "C" {
 	 *
 	 * @c SinglyLinkedList.c
 	 */
-	typedef struct SinglyLinkedList {
-		size_t length;                      /*!< List length */
-		struct SinglyLinkedNode *head;      /*!< Pointer to the first Node on the list */
-		struct SinglyLinkedNode *tail;      /*!< Pointer to the last Node on the list */
+	typedef struct SinglyLinkedList
+	{
+		size_t length;				   /*!< List length */
+		struct SinglyLinkedNode *head; /*!< Pointer to the first Node on the list */
+		struct SinglyLinkedNode *tail; /*!< Pointer to the last Node on the list */
 	} SinglyLinkedList;
-	
+
 	Status sll_init_list(SinglyLinkedList **sll);
 	Status sll_init_node(SinglyLinkedNode **node);
 
-	SinglyLinkedList * sll_get_list();
-	SinglyLinkedNode * sll_get_node(int value);
+	SinglyLinkedList *sll_get_list(void);
+	SinglyLinkedNode *sll_get_node(int value);
 
 	Status sll_make_node(SinglyLinkedNode **node, int value);
 
 	Status sll_get_length(SinglyLinkedList *sll, size_t *result);
 
-	//Status sll_get_node_at(SinglyLinkedList *sll, SinglyLinkedNode **result, size_t position);
+	Status sll_get_node_at(SinglyLinkedList *sll, SinglyLinkedNode **result, size_t position);
 	Status sll_get_node_data(SinglyLinkedList *sll, size_t position, int *result);
 	Status sll_update_node_data(SinglyLinkedList *sll, size_t position, int value);
-	
+
 	Status sll_insert_head(SinglyLinkedList *sll, int value);
 	Status sll_insert_at(SinglyLinkedList *sll, int value, size_t position);
 	Status sll_insert_tail(SinglyLinkedList *sll, int value);
-	
+
 	Status sll_insert_node_head(SinglyLinkedList *sll, SinglyLinkedNode *node);
 	Status sll_insert_node_at(SinglyLinkedList *sll, SinglyLinkedNode *node, size_t position);
 	Status sll_insert_node_tail(SinglyLinkedList *sll, SinglyLinkedNode *node);
@@ -83,24 +86,29 @@ extern "C" {
 	Status sll_remove_node_head(SinglyLinkedList *sll, SinglyLinkedNode **node);
 	Status sll_remove_node_at(SinglyLinkedList *sll, SinglyLinkedNode **node, size_t position);
 	Status sll_remove_node_tail(SinglyLinkedList *sll, SinglyLinkedNode **node);
-	
+
 	Status sll_display(SinglyLinkedList *sll);
 	Status sll_display_raw(SinglyLinkedList *sll);
 
 	Status sll_delete_node(SinglyLinkedNode **node);
 	Status sll_delete_list(SinglyLinkedList **sll); // Erases and sets to NULL
-	Status sll_erase_list(SinglyLinkedList **sll); // Erases and inits
+	Status sll_erase_list(SinglyLinkedList **sll);  // Erases and inits
 
 	Status sll_frequency(SinglyLinkedList *sll, int key, size_t *frequency);
-	
+
 	Status sll_contains(SinglyLinkedList *sll, int key, bool *result);
 	bool sll_exists(SinglyLinkedList *sll, int key);
-	
+
 	bool sll_is_empty(SinglyLinkedList *sll);
-	//bool sll_is_sorted(SinglyLinkedList *sll);
-	
+	Status sll_is_sorted(SinglyLinkedList *sll, bool *result);
+	//Status sll_is_set(SinglyLinkedList *sll, bool *result);
+	//Status sll_is_disjoint(SinglyLinkedList *sll1, SinglyLinkedList *sll2, bool *result);
+
 	Status sll_find_max(SinglyLinkedList *sll, int *result);
 	Status sll_find_min(SinglyLinkedList *sll, int *result);
+
+	Status sll_find_max_pos(SinglyLinkedList *sll, size_t *result);
+	Status sll_find_min_pos(SinglyLinkedList *sll, size_t *result);
 
 	Status sll_occurrance_list(SinglyLinkedList *sll, SinglyLinkedList **result, int key);
 
@@ -109,27 +117,34 @@ extern "C" {
 
 	Status sll_link(SinglyLinkedList *sll1, SinglyLinkedList *sll2);
 	Status sll_link_at(SinglyLinkedList *sll1, SinglyLinkedList *sll2, size_t position);
-	
+
 	Status sll_unlink(SinglyLinkedList *sll, SinglyLinkedList *result, size_t position);
 	//Status sll_unlink_at(SinglyLinkedList *sll, SinglyLinkedList *result, size_t position1, size_t position2);
-	
+
 	Status sll_copy_list(SinglyLinkedList *sll, SinglyLinkedList **result);
 	Status sll_copy_node(SinglyLinkedNode *node, SinglyLinkedNode **result);
 
 	Status sll_reverse(SinglyLinkedList *sll);
-	
-	//Status sll_switch_nodes(SinglyLinkedList *sll, size_t position1, size_t position2);
-	//Status sll_switch_head(SinglyLinkedList *sll, size_t position);
-	//Status sll_switch_tail(SinglyLinkedList *sll, size_t position);
-	//Status sll_switch_ends(SinglyLinkedList *sll);
-	
-	//Status sll_sort_bubble(SinglyLinkedList *sll);
+
+	Status sll_switch_nodes(SinglyLinkedList *sll, size_t position1, size_t position2);
+	Status sll_switch_head(SinglyLinkedList *sll, size_t position);
+	Status sll_switch_tail(SinglyLinkedList *sll, size_t position);
+	Status sll_switch_ends(SinglyLinkedList *sll);
+
+	Status sll_sort_bubble(SinglyLinkedList *sll);
 	//Status sll_sort_slection(SinglyLinkedList *sll);
 	//Status sll_sort_insertion(SinglyLinkedList *sll);
 
 	//Status sll_merge_sorted(SinglyLinkedList *sll1, SinglyLinkedList *sll2, SinglyLinkedList **result);
 
+	//Status sll_remove_keys(SinglyLinkedList *sll, int key);
+
+	//Status sll_set_remove_duplicates(SinglyLinkedList *sll);
+	//Status sll_set_union(SinglyLinkedList *sll1, SinglyLinkedList *sll2, SinglyLinkedList **result);
+	//Status sll_set_intersection(SinglyLinkedList *sll1, SinglyLinkedList *sll2, SinglyLinkedList **result);
+	//Status sll_set_difference(SinglyLinkedList *sll1, SinglyLinkedList *sll2, SinglyLinkedList **result);
+	//Status sll_set_complement(SinglyLinkedList *sll1, SinglyLinkedList *sll2, SinglyLinkedList **result);
+
 #ifdef __cplusplus
 }
 #endif
-
