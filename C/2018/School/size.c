@@ -27,7 +27,7 @@ int main(int argc, char** argv) {
     printf("-FLT_MIN    :   %g\n", (float) -FLT_MIN);
     printf("DBL_MAX     :   %g\n", (double) DBL_MAX);
     printf("DBL_MIN     :   %g\n", (double) DBL_MIN);
-    printf("-DBL_MAX     :  %g\n", (double) -DBL_MAX);
+    printf("-DBL_MAX    :   %g\n", (double) -DBL_MAX);
 
     return (EXIT_SUCCESS);
 }
