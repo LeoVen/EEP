@@ -338,8 +338,8 @@ Status set_remove(HashSet *set, char *value)
 
 						if (((set->buckets)[pos % set->max_size])->hash == hash) {
 
-							free((set->buckets)[pos]);
-							(set->buckets)[pos] = NULL;
+							free((set->buckets)[pos % set->max_size]);
+							(set->buckets)[pos % set->max_size] = NULL;
 
 							(set->size)--;
 						}
