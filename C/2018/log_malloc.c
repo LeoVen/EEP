@@ -11,6 +11,22 @@
 
 #define MEMORY_LOG "memory.log"
 
+void memory_log(void* ptr, size_t size, const char* file, const char* function, const int line, bool is_malloc);
+
+void memory_log(void* ptr, size_t size, const char* file, const char* function, const int line, bool is_malloc)
+{
+
+	FILE *fp = fopen(MEMORY_LOG, "a");
+	
+	time_t current_time;
+	time(&current_time);
+
+	fprintf(fp, "%.19s | %6s | At file %s in function %s in line %d allocated [ %u @ %p ]\n",
+		ctime(&current_time), (is_malloc) ? "MALLOC" : "FREE", file, function, 160, size, ptr);
+
+	fclose(fp);
+}
+
 int PriorityQueueTests();
 
 /**
@@ -40,7 +56,6 @@ char * status_repr(Status status);
 void print_status_repr(Status status);
 
 int dev_short_cut();
-
 
 /**
  * A @c PriorityQueueNode is what a @c PriorityQueue is composed of. It has an
@@ -152,7 +167,6 @@ void print_status_repr(Status status)
 	printf("\n%s", status_repr(status));
 }
 
-
 // +-------------------------------------------------------------------------------------------------+
 // |                                          Initializers                                           |
 // +-------------------------------------------------------------------------------------------------+
@@ -169,16 +183,7 @@ Status prq_init_queue(PriorityQueue **prq)
 
 	(*prq)->length = 0;
 
-	FILE *fp = fopen(MEMORY_LOG, "a");
-
-	time_t current_time;
-
-	time(&current_time);
-
-	fprintf(fp, "%s | MALLOC | At file %s in function %s in line %d allocated [ %u @ %p ]\n",
-		ctime(&current_time), "log_malloc.c", "prq_init_queue", 160, sizeof(PriorityQueue), *prq);
-
-	fclose(fp);
+	memory_log(*prq, sizeof(*prq), "log_malloc", "prq_init_queue", 187, true);
 
 	return DS_OK;
 }
@@ -195,16 +200,7 @@ Status prq_init_node(PriorityQueueNode **node)
 	
 	(*node)->before = NULL;
 
-	FILE *fp = fopen(MEMORY_LOG, "a");
-
-	time_t current_time;
-
-	time(&current_time);
-
-	fprintf(fp, "%s | MALLOC | At file %s in function %s in line %d allocated [ %u @ %p ]\n",
-		ctime(&current_time), "log_malloc.c", "prq_init_node", 186, sizeof(PriorityQueueNode), *node);
-
-	fclose(fp);
+	memory_log(*node, sizeof(*node), "log_malloc", "prq_init_node", 204, true);
 
 	return DS_OK;
 }
@@ -222,16 +218,7 @@ PriorityQueue * prq_get_queue()
 
 	prq->length = 0;
 
-	FILE *fp = fopen(MEMORY_LOG, "a");
-
-	time_t current_time;
-
-	time(&current_time);
-
-	fprintf(fp, "%s | MALLOC | At file %s in function %s in line %d allocated [ %u @ %p ]\n",
-		ctime(&current_time), "log_malloc.c", "prq_get_queue", 216, sizeof(PriorityQueue), &prq);
-
-	fclose(fp);
+	memory_log(prq, sizeof(prq), "log_malloc", "prq_get_queue", 222, true);
 
 	return prq;
 }
@@ -245,16 +232,7 @@ PriorityQueueNode * prq_get_node(int value, int priority)
 	node->data = value;
 	node->priority = priority;
 
-	FILE *fp = fopen(MEMORY_LOG, "a");
-
-	time_t current_time;
-
-	time(&current_time);
-
-	fprintf(fp, "%s | MALLOC | At file %s in function %s in line %d allocated [ %u @ %p ]\n",
-		ctime(&current_time), "log_malloc.c", "prq_get_node", 239, sizeof(PriorityQueueNode), node);
-
-	fclose(fp);
+	memory_log(node, sizeof(node), "log_malloc", "prq_get_node", 236, true);
 
 	return node;
 }
@@ -271,16 +249,7 @@ Status prq_make_node(PriorityQueueNode **node, int value, int priority)
 	(*node)->data = value;
 	(*node)->priority = priority;
 
-	FILE *fp = fopen(MEMORY_LOG, "a");
-
-	time_t current_time;
-
-	time(&current_time);
-
-	fprintf(fp, "%s | MALLOC | At file %s in function %s in line %d allocated [ %u @ %p ]\n",
-		ctime(&current_time), "log_malloc.c", "prq_make_node", 262, sizeof(PriorityQueueNode), *node);
-
-	fclose(fp);
+	memory_log(*node, sizeof(*node), "log_malloc", "prq_make_node", 253, true);
 
 	return DS_OK;
 }
@@ -425,16 +394,7 @@ Status prq_dequeue(PriorityQueue *prq)
 
 	prq->front = prq->front->before;
 
-	FILE *fp = fopen(MEMORY_LOG, "a");
-
-	time_t current_time;
-
-	time(&current_time);
-
-	fprintf(fp, "%s | MALLOC | At file %s in function %s in line %d removed [ %u @ %p ]\n",
-		ctime(&current_time), "log_malloc.c", "prq_dequeue", 416, sizeof(PriorityQueueNode), node);
-
-	fclose(fp);
+	memory_log(node, sizeof(node), "log_malloc", "prq_dequeue", 398, false);
 
 	free(node);
 
@@ -528,16 +488,7 @@ Status prq_display_raw(PriorityQueue *prq)
 
 Status prq_delete_node(PriorityQueueNode **node)
 {
-	FILE *fp = fopen(MEMORY_LOG, "a");
-
-	time_t current_time;
-
-	time(&current_time);
-
-	fprintf(fp, "%s | MALLOC | At file %s in function %s in line %d removed [ %u @ %p ]\n",
-		ctime(&current_time), "log_malloc.c", "prq_delete_node", 529, sizeof(PriorityQueueNode), *node);
-
-	fclose(fp);
+	memory_log(*node, sizeof(*node), "log_malloc", "prq_delete_node", 492, false);
 
 	free(*node);
 
@@ -567,16 +518,7 @@ Status prq_delete_queue(PriorityQueue **prq)
 		prev = (*prq)->front;
 	}
 
-	FILE *fp = fopen(MEMORY_LOG, "a");
-
-	time_t current_time;
-
-	time(&current_time);
-
-	fprintf(fp, "%s | MALLOC | At file %s in function %s in line %d removed [ %u @ %p ]\n",
-		ctime(&current_time), "log_malloc.c", "prq_delete_queue", 549, sizeof(PriorityQueue), *prq);
-
-	fclose(fp);
+	memory_log(*prq, sizeof(*prq), "log_malloc", "prq_delete_queue", 522, false);
 
 	free((*prq));
 
