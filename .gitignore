@@ -8,6 +8,8 @@ bin
 *.exe
 *.o
 
+*.log
+
 # Java
 *.class
 *.jar
