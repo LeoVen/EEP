@@ -35,15 +35,15 @@ int main()
 		gotoxy(x,     y);printf("\n");
 		gotoxy(x, y + 1);printf("##########     ####     #######         ##                 #########  ##########  ##\n");SetConsoleTextAttribute(hConsole, rgb());
 		gotoxy(x, y + 2);printf("##########   ########   ########       ####               #########   ##########  ##\n");SetConsoleTextAttribute(hConsole, rgb());
-    	gotoxy(x, y + 3);printf("###         ###    ###  ###    ##     ##  ##              ####        ###         ##\n");SetConsoleTextAttribute(hConsole, rgb());
-    	gotoxy(x, y + 4);printf("###         ###    ###  ###    ##     ##  ##              ####        ###         ##\n");SetConsoleTextAttribute(hConsole, rgb());
-    	gotoxy(x, y + 5);printf("##########  ###    ###  ###     ##    ##  ##               ########   ###         ##\n");SetConsoleTextAttribute(hConsole, rgb());
-    	gotoxy(x, y + 6);printf("##########  ###    ###  ###     ##   ########   ########   #########  ##########  ##\n");SetConsoleTextAttribute(hConsole, rgb());
-    	gotoxy(x, y + 7);printf("###         ###    ###  ###     ##   ##    ##   ########     #######  ##########  ##\n");SetConsoleTextAttribute(hConsole, rgb());
-    	gotoxy(x, y + 8);printf("###         ###    ###  ###    ##    ##    ##                   ####  ###         ##\n");SetConsoleTextAttribute(hConsole, rgb());
-    	gotoxy(x, y + 9);printf("###         ###    ###  ###    ##   ###    ###                  ####  ###           \n");SetConsoleTextAttribute(hConsole, rgb());
-    	gotoxy(x, y +10);printf("###          ########   ########    ###    ###             #########  ##########    \n");SetConsoleTextAttribute(hConsole, rgb());
-    	gotoxy(x, y +11);printf("###            ####     #######     ###    ###            #########   ##########  ##\n");SetConsoleTextAttribute(hConsole, rgb());
+		gotoxy(x, y + 3);printf("###         ###    ###  ###    ##     ##  ##              ####        ###         ##\n");SetConsoleTextAttribute(hConsole, rgb());
+		gotoxy(x, y + 4);printf("###         ###    ###  ###    ##     ##  ##              ####        ###         ##\n");SetConsoleTextAttribute(hConsole, rgb());
+		gotoxy(x, y + 5);printf("##########  ###    ###  ###     ##    ##  ##               ########   ###         ##\n");SetConsoleTextAttribute(hConsole, rgb());
+		gotoxy(x, y + 6);printf("##########  ###    ###  ###     ##   ########   ########   #########  ##########  ##\n");SetConsoleTextAttribute(hConsole, rgb());
+		gotoxy(x, y + 7);printf("###         ###    ###  ###     ##   ##    ##   ########     #######  ##########  ##\n");SetConsoleTextAttribute(hConsole, rgb());
+		gotoxy(x, y + 8);printf("###         ###    ###  ###    ##    ##    ##                   ####  ###         ##\n");SetConsoleTextAttribute(hConsole, rgb());
+		gotoxy(x, y + 9);printf("###         ###    ###  ###    ##   ###    ###                  ####  ###           \n");SetConsoleTextAttribute(hConsole, rgb());
+		gotoxy(x, y +10);printf("###          ########   ########    ###    ###             #########  ##########    \n");SetConsoleTextAttribute(hConsole, rgb());
+		gotoxy(x, y +11);printf("###            ####     #######     ###    ###            #########   ##########  ##\n");SetConsoleTextAttribute(hConsole, rgb());
 
 		Sleep(200);
 	}
