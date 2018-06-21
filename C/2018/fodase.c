@@ -16,7 +16,7 @@ int rgb()
 {
 	int colors[4] = {FOREGROUND_BLUE, FOREGROUND_GREEN, FOREGROUND_RED, FOREGROUND_INTENSITY};
 
-	return colors[rand() % 4] | colors[rand() % 4];
+	return colors[rand() % 4] | colors[rand() % 4] | colors[rand() % 4];
 }
 
 int main()
