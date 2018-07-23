@@ -15,15 +15,13 @@ def concatName(name, surname):
 
 
 def main():
-    vetor_nomes = []
+    vetor_nomes = set()
     nome1 = input()
     nome2 = input()
     for i in range(1000):
         nome_completo = concatName(nome1, nome2)
-        vetor_nomes.append(nome_completo)
-    print(vetor_nomes)
-        
-
+        vetor_nomes.add(nome_completo)
+    print(sorted(vetor_nomes))
 
 
 if __name__ == '__main__':

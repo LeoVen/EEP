@@ -34,15 +34,14 @@ def concatName(nome1, nome2, nome3):
 
 
 def main():
-    vetor_nomes = []
+    vetor_nomes = set()
     nome1 = input()
     nome2 = input()
     nome3 = input()
     for i in range(1000):
         nome_completo = concatName(nome1, nome2, nome3)
-        vetor_nomes.append(nome_completo)
+        vetor_nomes.add(nome_completo)
     print(vetor_nomes)
-
 
 
 if __name__ == '__main__':
