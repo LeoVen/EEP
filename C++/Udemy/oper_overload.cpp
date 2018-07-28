@@ -32,9 +32,7 @@ class Complex
 
 	friend std::ostream &operator<<(std::ostream &stream, const Complex &c)
 	{
-		stream << std::to_string(c.real) << " + " << std::to_string(c.imag) << "i";
-
-		return stream;
+		return stream << std::to_string(c.real) << " + " << std::to_string(c.imag) << "i";
 	}
 
 	std::string to_string()
