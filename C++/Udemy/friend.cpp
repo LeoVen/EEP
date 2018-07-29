@@ -1,3 +1,11 @@
+/**
+ * @file friend.cpp
+ * 
+ * @author Leonardo Vencovsky (https://github.com/LeoVen)
+ * @date 16/05/2018
+ * 
+ * Showcase for friend class and function
+ */
 #include <iostream>
 #include <string>
 
