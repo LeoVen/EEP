@@ -67,7 +67,7 @@ class Stack
 	}
 };
 
-main(int argc, char const *argv[])
+int main(int argc, char const *argv[])
 {
 	const char *alpha = "ABCDEFGHIJKLMNOPQRSTUVWXYZ";
 
