@@ -1,4 +1,6 @@
 #include <stdio.h>
+#include <stdlib.h>
+#include <string.h>
 #include <errno.h>
 #include <ctype.h>
 #include <sys/types.h>
@@ -9,44 +11,52 @@
 int main(int argc, char *argv[])
 {
     int rdfd, wrfd, ret_val, count, numread;
+    
     char buf[MAX_BUF_SIZE];
 
-    /* Cria o primeiro named pipe */
+    // Creates the first named pipe
     ret_val = mkfifo(NP1, 0666);
 
-    if ((ret_val == -1) && (errno != EEXIST)) {
-        perror("Erro ao criar o named pipe");
+    if ((ret_val == -1) && (errno != EEXIST))
+    {
+        perror("Error creating the named pipe");
+
         exit (1);
     }
 
-    /* Cria o segundo named pipe */
+    // Creates the second named pipe
     ret_val = mkfifo(NP2, 0666);
 
-    if ((ret_val == -1) && (errno != EEXIST)) {
+    if ((ret_val == -1) && (errno != EEXIST))
+    {
         perror("Erro ao criar o named pipe");
+
         exit (1);
     }
 
-    /* Abre o primeiro named pipe para leitura */
+    // Opens the first named pipe for reading
     rdfd = open(NP1, O_RDONLY);
 
-    /* Abre o segundo named pipe para escrita */
+    // Opens the second named pipe for writing
     wrfd = open(NP2, O_WRONLY);
 
-    /* Le do primeiro pipe */
+    // Reads from the first pipe
     numread = read(rdfd, buf, MAX_BUF_SIZE);
 
     //buf[numread] = '0';
 
-    printf("Servidor Full Duplex : Li do pipe : %s\n", buf);
+    printf("Full Duplex Server: Read from pipe: %s\n", buf);
 
-    /* Converte texto para maiusculo */
+    // Converting to uppercase
     count = 0;
-    while (count < numread) {
+
+    while (count < numread)
+    {
         buf[count] = toupper(buf[count]);
+
         count++;
     }
 
-    /* Escreve o texto convertido no segundo pipe */    
+    // Writes the converted text into the second pipe
     write(wrfd, buf, strlen(buf));
 }

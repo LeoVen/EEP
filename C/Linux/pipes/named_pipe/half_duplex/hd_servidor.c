@@ -1,4 +1,6 @@
 #include <stdio.h>
+#include <stdlib.h>
+#include <string.h>
 #include <errno.h>
 #include <ctype.h>
 #include <unistd.h>
@@ -10,32 +12,38 @@
 int main(int argc, char *argv[])
 {
     int fd, ret_val, count, numread;
+    
     char buf[MAX_BUF_SIZE];
 
-    /* Cria o named - pipe */
+    // Creates a Half-duplex Named Pipe
     ret_val = mkfifo(HALF_DUPLEX, 0777);
 
-    if ((ret_val == -1) && (errno != EEXIST)) {
+    if ((ret_val == -1) && (errno != EEXIST))
+    {
         perror("Error creating the named pipe");
+        
         exit (1);
     }
 
-    /* Abre o pipe para leitura */
+    // Opens the pipe for reading only
     fd = open(HALF_DUPLEX, O_RDONLY);
 
-    /* Le do pipe */
+    // Read from pipe
     numread = read(fd, buf, MAX_BUF_SIZE);
 
     //buf[numread] = '0';
 
-    printf("Servidor Half Duplex : Li do pipe : %s\n", buf);
+    printf("Half Duplex Server: Read from pipe: %s\n", buf);
 
-    /* Converte para maiusculas */
+    // Converting to uppercase
     count = 0;
-    while (count < numread) {
+
+    while (count < numread)
+    {
         buf[count] = toupper(buf[count]);
+
         count++;
     }
     
-    printf("Servidor Half Duplex : Texto convertido : %s\n", buf);
+    printf("Half Duplex Server: Converted text: %s\n", buf);
 }

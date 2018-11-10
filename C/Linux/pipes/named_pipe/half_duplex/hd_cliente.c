@@ -1,4 +1,6 @@
 #include <stdio.h>
+#include <stdlib.h>
+#include <string.h>
 #include <errno.h>
 #include <ctype.h>
 #include <unistd.h>
@@ -11,14 +13,15 @@ int main(int argc, char *argv[])
 {
     int fd;
 
-    if (argc != 2) {
-        printf("Uso : %s mensagem_a_ser_enviada_ao_servidor\n", argv[0]);
+    if (argc != 2)
+    {
+        printf("Usage: %s message_to_be_sent_to_the_server\n", argv[0]);
         exit (1);
     }
 
-    /* Abre o pipe para escrita */
+    // Opens pipe to write only
     fd = open(HALF_DUPLEX, O_WRONLY);
 
-    /* Escreve no pipe */
+    // Writes to the pipe the first parameter
     write(fd, argv[1], strlen(argv[1]));
 }
