@@ -18,13 +18,13 @@
 
 #define MIN(a,b) (((a)<(b))?(a):(b))
 #define MAX(a,b) (((a)>(b))?(a):(b))
-
-// Representa um nó na árvore binária
+// A block to be fit into plates
 typedef struct block
 {
 	int width, height, x, y;
 } block_t;
 
+// Allocates a new block
 block_t *new_block(int w, int h)
 {
 	block_t *b = malloc(sizeof(block_t));
@@ -53,6 +53,7 @@ int compare_block(block_t *b1, block_t *b2)
 	return c2 - c1;
 }
 
+// Sorts and array of blocks using a compare function
 void quicksort(int(*d_compare)(block_t*, block_t*), block_t *buffer[], size_t length)
 {
 	if (length < 2)
@@ -81,6 +82,7 @@ void quicksort(int(*d_compare)(block_t*, block_t*), block_t *buffer[], size_t le
 	quicksort(d_compare, buffer + i, length - i);
 }
 
+// Displays an array of blocks
 void display_blocks(block_t *blocks[], size_t size)
 {
 	printf("\n[ ");
@@ -94,6 +96,7 @@ void display_blocks(block_t *blocks[], size_t size)
 	printf("[ %d, %d ] ]\n", blocks[size - 1]->width, blocks[size - 1]->height);
 }
 
+// Example
 void sort_example()
 {
 
@@ -127,6 +130,7 @@ void sort_example()
 	free(blocks);
 }
 
+// Loads plates and blocks from a file
 void load_blocks(FILE *f, int *nplates, int *pwidth, int *pheight,
 	block_t **blocks[], int *bcount)
 {
@@ -172,7 +176,7 @@ void load_blocks(FILE *f, int *nplates, int *pwidth, int *pheight,
 	}
 }
 
-void binpacking(block_t *array)
+void binpacking(/* TODO */)
 {
 	// TODO
 }
