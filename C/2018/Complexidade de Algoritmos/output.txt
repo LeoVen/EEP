@@ -1,0 +1,12 @@
+Plate 1
+X   0	Y   0	W  42	H  16
+X   0	Y  16	W  33	H  15
+X   0	Y  31	W  33	H   7
+X   0	Y  38	W  23	H  10
+X  23	Y  38	W  18	H   5
+X  33	Y  16	W  12	H  12
+X  42	Y   0	W   3	H   9
+Plate 2
+X   0	Y   0	W  21	H  32
+X  21	Y   0	W   5	H  19
+X  26	Y   0	W  10	H   8
