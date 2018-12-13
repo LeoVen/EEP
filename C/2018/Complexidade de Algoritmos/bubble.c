@@ -13,8 +13,10 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <time.h>
+#include <windows.h>
 
-#define SIZE 100
+#define SIZE 60
+#define MAX 20
 #define CLEAR_SCREEN system("cls");
 
 int find_max(int *array, size_t arr_size)
@@ -28,21 +30,28 @@ int find_max(int *array, size_t arr_size)
 	return max;
 }
 
-void print(int *array, size_t arr_size)
+void print(int *array, size_t arr_size, size_t current)
 {
 	int max = find_max(array, arr_size);
 
+	char buff[SIZE + 1];
 	for (int i = max; i >= 0; i--)
 	{
 		for (size_t j = 0; j < arr_size; j++)
 		{
 			if (array[j] >= i)
-				printf("#");
+			{
+				if (j == current)
+					buff[j] = '~';
+				else
+					buff[j] = '#';
+			}
 			else
-				printf(" ");
+				buff[j] = ' ';
 		}
 
-		printf("\n");
+		buff[SIZE] = '\0';
+		printf("%s\n", buff);
 	}
 }
 
@@ -65,8 +74,9 @@ void bubble(int *array, size_t arr_size)
 				array[j + 1] = tmp;
 			}
 
+			Sleep(100);
 			CLEAR_SCREEN;
-			print(array, arr_size);
+			print(array, arr_size, j + 1);
 		}
 	}
 
@@ -81,7 +91,7 @@ int main(int argc, char const *argv[])
 
 	for (size_t i = 0; i < SIZE; i++)
 	{
-		arr[i] = rand() % 40;
+		arr[i] = rand() % MAX;
 	}
 
 	bubble(arr, SIZE);
