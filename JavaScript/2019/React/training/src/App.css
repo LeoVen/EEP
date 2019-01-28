@@ -1,0 +1,4 @@
+.flex-buttons {
+    display: inline-flex;
+    justify-content: space-evenly;
+}
