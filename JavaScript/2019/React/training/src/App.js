@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import './App.css'
 import { ButtonResult , IncrementingButton } from "./Components/IncrementingButton";
 import { CardList } from "./Components/CardList";
+import Clock from "./Components/Clock";
 
 class App extends Component {
     state = {
@@ -36,6 +37,7 @@ class App extends Component {
               <div>
                   <CardList cards={this.state.cards}/>
               </div>
+              <Clock/>
           </div>
         );
   }
