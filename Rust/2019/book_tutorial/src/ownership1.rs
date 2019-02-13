@@ -1,4 +1,4 @@
-fn main() {
+pub fn ownership1() {
     let s = String::from("hello");  // s comes into scope
 
     takes_ownership(s);             // s's value moves into the function...

@@ -2,7 +2,7 @@ use std::io;
 use rand::Rng;
 use std::cmp::Ordering;
 
-fn main() {
+pub fn guess_game() {
 
     println!("Welcome to the guessing game. Take a guess");
 

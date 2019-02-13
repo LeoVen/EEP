@@ -1,4 +1,6 @@
-fn main() {
+#[allow(unused_variables)]
+
+pub fn ownership2() {
     let s1 = gives_ownership();         // gives_ownership moves its return
                                         // value into s1
 

@@ -1,4 +1,6 @@
-fn main() {
+#[allow(unused_variables)]
+
+pub fn ownership0() {
 
     // Clone data type
     let s1 = String::from("Hello World!");

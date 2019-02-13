@@ -1,0 +1,8 @@
+[package]
+name = "book_tutorial"
+version = "0.1.0"
+authors = ["LeoVen <lvenk26@gmail.com>"]
+edition = "2018"
+
+[dependencies]
+rand = "0.3.14"

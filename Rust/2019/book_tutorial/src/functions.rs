@@ -1,4 +1,4 @@
-fn main() {
+pub fn functions() {
     let x = 10;
     let y = 20;
 

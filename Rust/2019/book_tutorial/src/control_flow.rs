@@ -1,6 +1,6 @@
 use rand::Rng;
 
-fn main() {
+pub fn control_flow() {
     let r = rand::thread_rng().gen_range(1, 100);
 
     if r < 20 {

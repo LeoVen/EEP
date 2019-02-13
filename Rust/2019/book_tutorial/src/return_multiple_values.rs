@@ -1,4 +1,4 @@
-fn main() {
+pub fn return_multiple_values() {
     let s1 = String::from("hello");
 
     // Ownership gets transfered back to s2, from s1

@@ -1,6 +1,6 @@
 #![allow(unused_variables)]
 
-fn main() {
+pub fn str_slice() {
     let s = String::from("hello world");
 
     // String slice type:

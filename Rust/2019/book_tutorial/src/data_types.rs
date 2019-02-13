@@ -4,7 +4,7 @@
 // It can't be the result of a function and must be annotated
 const MAX_POINTS: u32 = 100_000;
 
-fn main() {
+pub fn data_types() {
 
     // Compiles
     // let spaces = "   ";

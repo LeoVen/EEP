@@ -1,5 +1,7 @@
-fn main() {
-    let s1 = String::from("hello");
+#[allow(unused_variables)]
+
+pub fn reference() {
+    let mut s1 = String::from("hello");
 
     let len = calculate_length(&s1);
     let len = mutate_string_and_return_length(&mut s1);
