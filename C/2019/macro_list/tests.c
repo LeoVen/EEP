@@ -115,9 +115,10 @@ int main(int argc, char const *argv[])
 		cs_push(stack, random_alpha());
 	}
 
-	size_t s = stack->count;
-	printf("Stack size     : %u\n", stack->count);
-	printf("Stack capacity : %u\n", stack->capacity);
+	size_t s = cs_count(stack);
+	size_t c = cs_capacity(stack);
+	printf("Stack size     : %u\n", s);
+	printf("Stack capacity : %u\n", c);
 
 	for (int i = 0; i < s; i++)
 	{
@@ -125,8 +126,8 @@ int main(int argc, char const *argv[])
 		cs_pop(stack);
 	}
 
-	printf("\nStack size: %u", stack->count);
-	printf("\nStack capacity : %u", stack->capacity);
+	printf("\nStack size: %u", cs_count(stack));
+	printf("\nStack capacity : %u", cs_capacity(stack));
 
 	cs_free(stack);
 

@@ -8,4 +8,4 @@ test.exe: common_lists.o tests.o
 	$(CC) $(CFLAGS) -c $^ -o $@
 
 run: test.exe
-	test.exe
+	./test.exe

@@ -37,39 +37,61 @@
 
 // TODO Iterator
 
-#define CONCATH_(C) C##_GENERATE_HEADER
-#define CONCATC_(C) C##_GENERATE_SOURCE
+#define CONCATH_(C, P) C##_GENERATE_HEADER##_##P
+#define CONCATC_(C, P) C##_GENERATE_SOURCE##_##P
 
-#define CONCATH(C) CONCATH_(C)
-#define CONCATC(C) CONCATC_(C)
+#define CONCATH(C, P) CONCATH_(C, P)
+#define CONCATC(C, P) CONCATC_(C, P)
 
 /// Declares and creates all functions used by the generated list
 ///
 /// @param C     : Container (LIST, STACK)
+/// @param P     : Permission (PRIVATE, PUBLIC) - If struct fields are hidden or not
 /// @param PFX   : Functions prefix (namespace)
 /// @param SNAME : Structure name (typedef struct)
-/// @param MOD   : Functions modifiers (optional)
+/// @param MOD   : Functions modifiers [optional](static)
 /// @param T     : Data type to handle
-#define CONTAINER_GENERATE(C, PFX, SNAME, MOD, T)    \
-    CONTAINER_GENERATE_HEADER(C, PFX, SNAME, MOD, T) \
-    CONTAINER_GENERATE_SOURCE(C, PFX, SNAME, MOD, T)
+#define CONTAINER_GENERATE(C, P, PFX, SNAME, MOD, T)    \
+    CONTAINER_GENERATE_HEADER(C, P, PFX, SNAME, MOD, T) \
+    CONTAINER_GENERATE_SOURCE(C, P, PFX, SNAME, MOD, T)
 
-#define CONTAINER_GENERATE_HEADER(C, PFX, SNAME, MOD, T) \
-    CONCATH(C)                                           \
+#define CONTAINER_GENERATE_HEADER(C, P, PFX, SNAME, MOD, T) \
+    CONCATH(C, P)                                           \
     (PFX, SNAME, MOD, T)
 
-#define CONTAINER_GENERATE_SOURCE(C, PFX, SNAME, MOD, T) \
-    CONCATC(C)                                           \
+#define CONTAINER_GENERATE_SOURCE(C, P, PFX, SNAME, MOD, T) \
+    CONCATC(C, P)                                           \
     (PFX, SNAME, MOD, T)
 
+/*****************************************************************************/
+/********************************************************************** LIST */
+/*****************************************************************************/
+
+/* PRIVATE *******************************************************************/
+#define LIST_GENERATE_HEADER_PRIVATE(PFX, SNAME, MOD, T) \
+    LIST_GENERATE_HEADER(PFX, SNAME, MOD, T)
+#define LIST_GENERATE_SOURCE_PRIVATE(PFX, SNAME, MOD, T) \
+    LIST_GENERATE_STRUCT(PFX, SNAME, MOD, T)             \
+    LIST_GENERATE_SOURCE(PFX, SNAME, MOD, T)
+/* PUBLIC ********************************************************************/
+#define LIST_GENERATE_HEADER_PUBLIC(PFX, SNAME, MOD, T) \
+    LIST_GENERATE_STRUCT(PFX, SNAME, MOD, T)            \
+    LIST_GENERATE_HEADER(PFX, SNAME, MOD, T)
+#define LIST_GENERATE_SOURCE_PUBLIC(PFX, SNAME, MOD, T) \
+    LIST_GENERATE_SOURCE(PFX, SNAME, MOD, T)
+/* STRUCT ********************************************************************/
+#define LIST_GENERATE_STRUCT(PFX, SNAME, MOD, T) \
+                                                 \
+    struct SNAME##_s                             \
+    {                                            \
+        T *buffer;                               \
+        size_t capacity;                         \
+        size_t count;                            \
+    };
+/* HEADER ********************************************************************/
 #define LIST_GENERATE_HEADER(PFX, SNAME, MOD, T)                                    \
                                                                                     \
-    typedef struct SNAME##_s                                                        \
-    {                                                                               \
-        T *buffer;                                                                  \
-        size_t capacity;                                                            \
-        size_t count;                                                               \
-    } SNAME;                                                                        \
+    typedef struct SNAME##_s SNAME;                                                 \
                                                                                     \
     MOD SNAME *PFX##_new(size_t size);                                              \
     MOD void PFX##_free(SNAME *list);                                               \
@@ -87,7 +109,7 @@
     MOD bool PFX##_empty(SNAME *list);                                              \
     MOD bool PFX##_full(SNAME *list);                                               \
     MOD bool PFX##_grow(SNAME *list);
-
+/* SOURCE ********************************************************************/
 #define LIST_GENERATE_SOURCE(PFX, SNAME, MOD, T)                                   \
                                                                                    \
     MOD SNAME *PFX##_new(size_t size)                                              \
@@ -310,14 +332,36 @@
         return true;                                                               \
     }
 
+/*****************************************************************************/
+/********************************************************************* STACK */
+/*****************************************************************************/
+
+/* PRIVATE *******************************************************************/
+#define STACK_GENERATE_HEADER_PRIVATE(PFX, SNAME, MOD, T) \
+    STACK_GENERATE_HEADER(PFX, SNAME, MOD, T)
+#define STACK_GENERATE_SOURCE_PRIVATE(PFX, SNAME, MOD, T) \
+    STACK_GENERATE_STRUCT(PFX, SNAME, MOD, T)             \
+    STACK_GENERATE_SOURCE(PFX, SNAME, MOD, T)
+/* PUBLIC ********************************************************************/
+#define STACK_GENERATE_HEADER_PUBLIC(PFX, SNAME, MOD, T) \
+    STACK_GENERATE_STRUCT(PFX, SNAME, MOD, T)            \
+    STACK_GENERATE_HEADER(PFX, SNAME, MOD, T)
+#define STACK_GENERATE_SOURCE_PUBLIC(PFX, SNAME, MOD, T) \
+    STACK_GENERATE_SOURCE(PFX, SNAME, MOD, T)
+/* STRUCT ********************************************************************/
+#define STACK_GENERATE_STRUCT(PFX, SNAME, MOD, T) \
+                                                  \
+    struct SNAME##_s                              \
+    {                                             \
+        T *buffer;                                \
+        size_t capacity;                          \
+        size_t count;                             \
+    };                                            \
+                                                  \
+/* HEADER ********************************************************************/
 #define STACK_GENERATE_HEADER(PFX, SNAME, MOD, T)                                  \
                                                                                    \
-    typedef struct SNAME##_s                                                       \
-    {                                                                              \
-        T *buffer;                                                                 \
-        size_t capacity;                                                           \
-        size_t count;                                                              \
-    } SNAME;                                                                       \
+    typedef struct SNAME##_s SNAME;                                                \
                                                                                    \
     MOD SNAME *PFX##_new(size_t size);                                             \
     MOD void PFX##_free(SNAME *stack);                                             \
@@ -328,8 +372,10 @@
     MOD bool PFX##_pop_if(SNAME *stack, size_t index, bool condition);             \
     MOD bool PFX##_empty(SNAME *stack);                                            \
     MOD bool PFX##_full(SNAME *stack);                                             \
+    MOD size_t PFX##_count(SNAME *stack);                                          \
+    MOD size_t PFX##_capacity(SNAME *stack);                                       \
     MOD bool PFX##_grow(SNAME *stack);
-
+/* SOURCE ********************************************************************/
 #define STACK_GENERATE_SOURCE(PFX, SNAME, MOD, T)                                  \
                                                                                    \
     MOD SNAME *PFX##_new(size_t size)                                              \
@@ -409,6 +455,16 @@
     MOD bool PFX##_full(SNAME *stack)                                              \
     {                                                                              \
         return stack->count >= stack->capacity;                                    \
+    }                                                                              \
+                                                                                   \
+    MOD size_t PFX##_count(SNAME *stack)                                           \
+    {                                                                              \
+        return stack->count;                                                       \
+    }                                                                              \
+                                                                                   \
+    MOD size_t PFX##_capacity(SNAME *stack)                                        \
+    {                                                                              \
+        return stack->capacity;                                                    \
     }                                                                              \
                                                                                    \
     MOD bool PFX##_grow(SNAME *stack)                                              \
