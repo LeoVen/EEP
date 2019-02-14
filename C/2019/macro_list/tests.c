@@ -1,11 +1,34 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <stdbool.h>
+#include <stdint.h>
+#include <math.h>
 #include "macro_list.h"
 #include "common_lists.h"
 
-// Can also be used in files
-// MLIST_GENERATE(st, static_list, static, char *)
+double rrandom()
+{
+	return (double)rand() / ((double)RAND_MAX + 1.0);
+}
+
+int8_t random_int8_t(int8_t min, int8_t max)
+{
+	return (int8_t)floor(rrandom() *
+							 ((double)max - (double)min + 1.0) +
+						 (double)min);
+}
+
+char random_alpha()
+{
+	const char alpha[] = {'0', '1', '2', '3', '4', '5', '6', '7', '8', '9',
+						  'a', 'b', 'c', 'd', 'e', 'f', 'g', 'h', 'i', 'j',
+						  'k', 'l', 'm', 'n', 'o', 'p', 'q', 'r', 's', 't',
+						  'u', 'v', 'w', 'x', 'y', 'z', 'A', 'B', 'C', 'D',
+						  'E', 'F', 'G', 'H', 'I', 'J', 'K', 'L', 'M', 'N',
+						  'O', 'P', 'Q', 'R', 'S', 'T', 'U', 'V', 'W', 'X',
+						  'Y', 'Z'};
+	return alpha[random_int8_t(0, 61)];
+}
 
 int main(int argc, char const *argv[])
 {
@@ -13,15 +36,15 @@ int main(int argc, char const *argv[])
 
 	for (int i = 0; i < 100; i++)
 	{
-		il_push(list, i, list->length == 0 ? list->length : i % list->length);
+		il_push(list, i, list->count == 0 ? list->count : i % list->count);
 	}
 
 	printf("\n[ ");
 
-	for (int i = 0; i < list->length - 1; i++)
+	for (int i = 0; i < list->count - 1; i++)
 		printf("%d, ", il_get(list, i));
 
-	printf("%d ]\n", il_get(list, list->length - 1));
+	printf("%d ]\n", il_get(list, list->count - 1));
 
 	il_free(list);
 
@@ -37,11 +60,11 @@ int main(int argc, char const *argv[])
 		{
 			// Print
 			printf("\n[ ");
-			for (int i = 0; i < list->length - 1; i++)
+			for (int i = 0; i < list->count - 1; i++)
 			{
 				printf("%d, ", il_get(list, i));
 			}
-			printf("%d ]\n", il_get(list, list->length - 1));
+			printf("%d ]\n", il_get(list, list->count - 1));
 		}
 	}
 
@@ -54,11 +77,11 @@ int main(int argc, char const *argv[])
 		{
 			// Print
 			printf("\n[ ");
-			for (int i = 0; i < list->length - 1; i++)
+			for (int i = 0; i < list->count - 1; i++)
 			{
 				printf("%d, ", il_get(list, i));
 			}
-			printf("%d ]\n", il_get(list, list->length - 1));
+			printf("%d ]\n", il_get(list, list->count - 1));
 		}
 	}
 
@@ -68,7 +91,7 @@ int main(int argc, char const *argv[])
 
 	for (int i = 0; i < 1000; i++)
 	{
-		il_insert_if(list, i, list->length, i % 2 == 0);
+		il_insert_if(list, i, list->count, i % 2 == 0);
 	}
 
 	// Print all even numbers
@@ -76,14 +99,36 @@ int main(int argc, char const *argv[])
 	{
 		// Print
 		printf("\n[ ");
-		for (int i = 0; i < list->length - 1; i++)
+		for (int i = 0; i < list->count - 1; i++)
 		{
 			printf("%d, ", il_get(list, i));
 		}
-		printf("%d ]\n", il_get(list, list->length - 1));
+		printf("%d ]\n", il_get(list, list->count - 1));
 	}
 
 	il_free(list);
+
+	char_stack *stack = cs_new(100);
+
+	for (int i = 0; i < 2000; i++)
+	{
+		cs_push(stack, random_alpha());
+	}
+
+	size_t s = stack->count;
+	printf("Stack size     : %u\n", stack->count);
+	printf("Stack capacity : %u\n", stack->capacity);
+
+	for (int i = 0; i < s; i++)
+	{
+		printf("%c ", cs_top(stack));
+		cs_pop(stack);
+	}
+
+	printf("\nStack size: %u", stack->count);
+	printf("\nStack capacity : %u", stack->capacity);
+
+	cs_free(stack);
 
 	return 0;
 }

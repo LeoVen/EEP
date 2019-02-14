@@ -1,6 +1,4 @@
 #include "common_lists.h"
 
-MLIST_GENERATE_SOURCE(il, int_list, , int)
-MLIST_GENERATE_SOURCE(sl, size_list, , size_t)
-MLIST_GENERATE_SOURCE(dl, double_list, , double)
-MLIST_GENERATE_SOURCE(cl, char_list, , char)
+CONTAINER_GENERATE_SOURCE(LIST, il, int_list, , int)
+CONTAINER_GENERATE_SOURCE(STACK, cs, char_stack, , char)

@@ -3,7 +3,5 @@
 #include <stdbool.h>
 #include "macro_list.h"
 
-MLIST_GENERATE_HEADER(il, int_list, , int)
-MLIST_GENERATE_HEADER(sl, size_list, , size_t)
-MLIST_GENERATE_HEADER(dl, double_list, , double)
-MLIST_GENERATE_HEADER(cl, char_list, , char)
+CONTAINER_GENERATE_HEADER(LIST, il, int_list, , int)
+CONTAINER_GENERATE_HEADER(STACK, cs, char_stack, , char)

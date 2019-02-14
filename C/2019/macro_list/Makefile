@@ -6,3 +6,6 @@ test.exe: common_lists.o tests.o
 
 %.o: %.c
 	$(CC) $(CFLAGS) -c $^ -o $@
+
+run: test.exe
+	test.exe
