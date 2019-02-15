@@ -1,11 +1,12 @@
 CC = gcc
 CFLAGS = -Wall
+INCLUDE = ./
 
-test.exe: common_lists.o tests.o
+test.exe: containers.o tests.o macro_list.h
 	$(CC) $^ -o $@
 
-%.o: %.c
-	$(CC) $(CFLAGS) -c $^ -o $@
+%.o: %.c macro_list.h
+	$(CC) -I $(INCLUDE) $(CFLAGS) -c $< -o $@
 
-run: test.exe
+run: test.exe macro_list.h
 	./test.exe

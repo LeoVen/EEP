@@ -45,7 +45,7 @@
 
 /// Declares and creates all functions used by the generated list
 ///
-/// @param C     : Container (LIST, STACK)
+/// @param C     : Container (LIST, STACK, QUEUE)
 /// @param P     : Permission (PRIVATE, PUBLIC) - If struct fields are hidden or not
 /// @param PFX   : Functions prefix (namespace)
 /// @param SNAME : Structure name (typedef struct)
@@ -508,6 +508,189 @@
         stack->capacity = new_capacity;                                   \
                                                                           \
         return true;                                                      \
+    }
+
+/*****************************************************************************/
+/********************************************************************* QUEUE */
+/*****************************************************************************/
+
+/* PRIVATE *******************************************************************/
+#define QUEUE_GENERATE_HEADER_PRIVATE(PFX, SNAME, FMOD, T) \
+    QUEUE_GENERATE_HEADER(PFX, SNAME, FMOD, T)
+#define QUEUE_GENERATE_SOURCE_PRIVATE(PFX, SNAME, FMOD, T) \
+    QUEUE_GENERATE_STRUCT(PFX, SNAME, FMOD, T)             \
+    QUEUE_GENERATE_SOURCE(PFX, SNAME, FMOD, T)
+/* PUBLIC ********************************************************************/
+#define QUEUE_GENERATE_HEADER_PUBLIC(PFX, SNAME, FMOD, T) \
+    QUEUE_GENERATE_STRUCT(PFX, SNAME, FMOD, T)            \
+    QUEUE_GENERATE_HEADER(PFX, SNAME, FMOD, T)
+#define QUEUE_GENERATE_SOURCE_PUBLIC(PFX, SNAME, FMOD, T) \
+    QUEUE_GENERATE_SOURCE(PFX, SNAME, FMOD, T)
+/* STRUCT ********************************************************************/
+#define QUEUE_GENERATE_STRUCT(PFX, SNAME, FMOD, T) \
+                                                   \
+    struct SNAME##_s                               \
+    {                                              \
+        T *buffer;                                 \
+        size_t capacity;                           \
+        size_t count;                              \
+        size_t front;                              \
+        size_t rear;                               \
+    };
+/* HEADER ********************************************************************/
+#define QUEUE_GENERATE_HEADER(PFX, SNAME, FMOD, T)                       \
+                                                                         \
+    typedef struct SNAME##_s SNAME;                                      \
+                                                                         \
+    FMOD SNAME *PFX##_new(size_t size);                                  \
+    FMOD void PFX##_free(SNAME *queue);                                  \
+    FMOD bool PFX##_enqueue(SNAME *queue, T element);                    \
+    FMOD bool PFX##_dequeue(SNAME *queue);                               \
+    FMOD T PFX##_peek(SNAME *queue);                                     \
+    FMOD bool PFX##_enqueue_if(SNAME *queue, T element, bool condition); \
+    FMOD bool PFX##_dequeue_if(SNAME *queue, bool condition);            \
+    FMOD bool PFX##_empty(SNAME *queue);                                 \
+    FMOD bool PFX##_full(SNAME *queue);                                  \
+    FMOD size_t PFX##_count(SNAME *queue);                               \
+    FMOD size_t PFX##_capacity(SNAME *queue);
+/* SOURCE ********************************************************************/
+#define QUEUE_GENERATE_SOURCE(PFX, SNAME, FMOD, T)                                                 \
+                                                                                                   \
+    FMOD bool PFX##_grow(SNAME *queue);                                                            \
+                                                                                                   \
+    FMOD SNAME *PFX##_new(size_t size)                                                             \
+    {                                                                                              \
+        if (size < 1)                                                                              \
+            return NULL;                                                                           \
+                                                                                                   \
+        SNAME *queue = malloc(sizeof(SNAME));                                                      \
+                                                                                                   \
+        if (!queue)                                                                                \
+            return NULL;                                                                           \
+                                                                                                   \
+        queue->buffer = malloc(sizeof(T) * size);                                                  \
+                                                                                                   \
+        if (!queue->buffer)                                                                        \
+        {                                                                                          \
+            free(queue);                                                                           \
+            return NULL;                                                                           \
+        }                                                                                          \
+                                                                                                   \
+        for (size_t i = 0; i < size; i++)                                                          \
+        {                                                                                          \
+            queue->buffer[i] = 0;                                                                  \
+        }                                                                                          \
+                                                                                                   \
+        queue->capacity = size;                                                                    \
+        queue->count = 0;                                                                          \
+        queue->front = 0;                                                                          \
+        queue->rear = 0;                                                                           \
+                                                                                                   \
+        return queue;                                                                              \
+    }                                                                                              \
+                                                                                                   \
+    FMOD void PFX##_free(SNAME *queue)                                                             \
+    {                                                                                              \
+        free(queue->buffer);                                                                       \
+        free(queue);                                                                               \
+    }                                                                                              \
+                                                                                                   \
+    FMOD bool PFX##_enqueue(SNAME *queue, T element)                                               \
+    {                                                                                              \
+        if (PFX##_full(queue))                                                                     \
+        {                                                                                          \
+            if (!PFX##_grow(queue))                                                                \
+                return false;                                                                      \
+        }                                                                                          \
+                                                                                                   \
+        queue->buffer[queue->rear] = element;                                                      \
+                                                                                                   \
+        queue->rear = (queue->rear == queue->capacity - 1) ? 0 : queue->rear + 1;                  \
+        queue->count++;                                                                            \
+                                                                                                   \
+        return true;                                                                               \
+    }                                                                                              \
+                                                                                                   \
+    FMOD bool PFX##_dequeue(SNAME *queue)                                                          \
+    {                                                                                              \
+        if (PFX##_empty(queue))                                                                    \
+            return false;                                                                          \
+                                                                                                   \
+        queue->buffer[queue->front] = 0;                                                           \
+                                                                                                   \
+        queue->front = (queue->front == queue->capacity - 1) ? 0 : queue->front + 1;               \
+        queue->count--;                                                                            \
+                                                                                                   \
+        return true;                                                                               \
+    }                                                                                              \
+                                                                                                   \
+    FMOD T PFX##_peek(SNAME *queue)                                                                \
+    {                                                                                              \
+        if (PFX##_empty(queue))                                                                    \
+            return 0;                                                                              \
+                                                                                                   \
+        return queue->buffer[queue->front];                                                        \
+    }                                                                                              \
+                                                                                                   \
+    FMOD bool PFX##_enqueue_if(SNAME *queue, T element, bool condition)                            \
+    {                                                                                              \
+        if (condition)                                                                             \
+            return PFX##_enqueue(queue, element);                                                  \
+                                                                                                   \
+        return false;                                                                              \
+    }                                                                                              \
+                                                                                                   \
+    FMOD bool PFX##_dequeue_if(SNAME *queue, bool condition)                                       \
+    {                                                                                              \
+        if (condition)                                                                             \
+            return PFX##_dequeue(queue);                                                           \
+                                                                                                   \
+        return false;                                                                              \
+    }                                                                                              \
+                                                                                                   \
+    FMOD bool PFX##_empty(SNAME *queue)                                                            \
+    {                                                                                              \
+        return queue->count == 0;                                                                  \
+    }                                                                                              \
+                                                                                                   \
+    FMOD bool PFX##_full(SNAME *queue)                                                             \
+    {                                                                                              \
+        return queue->count >= queue->capacity;                                                    \
+    }                                                                                              \
+                                                                                                   \
+    FMOD size_t PFX##_count(SNAME *queue)                                                          \
+    {                                                                                              \
+        return queue->count;                                                                       \
+    }                                                                                              \
+                                                                                                   \
+    FMOD size_t PFX##_capacity(SNAME *queue)                                                       \
+    {                                                                                              \
+        return queue->capacity;                                                                    \
+    }                                                                                              \
+                                                                                                   \
+    FMOD bool PFX##_grow(SNAME *queue)                                                             \
+    {                                                                                              \
+                                                                                                   \
+        size_t new_capacity = queue->capacity * 2;                                                 \
+                                                                                                   \
+        T *new_buffer = malloc(sizeof(T) * new_capacity);                                          \
+                                                                                                   \
+        if (!new_buffer)                                                                           \
+            return false;                                                                          \
+                                                                                                   \
+        for (size_t i = queue->front, j = 0; j < queue->count; i = (i + 1) % queue->capacity, j++) \
+        {                                                                                          \
+            new_buffer[j] = queue->buffer[i];                                                      \
+        }                                                                                          \
+                                                                                                   \
+        free(queue->buffer);                                                                       \
+                                                                                                   \
+        queue->buffer = new_buffer;                                                                \
+        queue->capacity = new_capacity;                                                            \
+        queue->front = 0;                                                                          \
+        queue->rear = queue->count;                                                                \
+                                                                                                   \
+        return true;                                                                               \
     }
 
 #endif /* MACRO_LIST */

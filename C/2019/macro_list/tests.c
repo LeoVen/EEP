@@ -4,8 +4,9 @@
 #include <stdint.h>
 #include <inttypes.h>
 #include <math.h>
+#include <time.h>
 #include "macro_list.h"
-#include "common_lists.h"
+#include "containers.h"
 
 double rrandom()
 {
@@ -14,9 +15,12 @@ double rrandom()
 
 int8_t random_int8_t(int8_t min, int8_t max)
 {
-	return (int8_t)floor(rrandom() *
-							 ((double)max - (double)min + 1.0) +
-						 (double)min);
+	return (int8_t)floor(rrandom() * ((double)max - (double)min + 1.0) + (double)min);
+}
+
+size_t random_size_t(size_t min, size_t max)
+{
+	return (size_t)floor(rrandom() * ((double)max - (double)min + 1.0) + (double)min);
 }
 
 char random_alpha()
@@ -33,6 +37,8 @@ char random_alpha()
 
 int main(int argc, char const *argv[])
 {
+	srand((unsigned)time(NULL));
+
 	int_list *list = il_new(10);
 
 	for (int i = 0; i < 100; i++)
@@ -128,9 +134,47 @@ int main(int argc, char const *argv[])
 	}
 
 	printf("\nStack size: %" PRIu64 "", cs_count(stack));
-	printf("\nStack capacity : %" PRIu64 "", cs_capacity(stack));
+	printf("\nStack capacity : %" PRIu64 "\n", cs_capacity(stack));
 
 	cs_free(stack);
+
+	index_queue *idxs = queue_new(100);
+
+	size_t sum0 = 0, sum1 = 0, curr;
+
+	printf("\nQueue size     : %" PRIu64 "\n", queue_count(idxs));
+	printf("Queue capacity : %" PRIu64 "\n", queue_capacity(idxs));
+
+	for (int i = 1; i <= 600; i++)
+	{
+		curr = random_size_t(0, 100);
+		if (queue_enqueue(idxs, curr))
+			sum0 += curr;
+
+		if (i % 11 == 0 && queue_count(idxs) > 0)
+		{
+			sum0 -= queue_peek(idxs);
+			queue_dequeue(idxs);
+		}
+	}
+
+	printf("\nQueue size     : %" PRIu64 "\n", queue_count(idxs));
+	printf("Queue capacity : %" PRIu64 "\n", queue_capacity(idxs));
+
+	while (!queue_empty(idxs))
+	{
+		sum1 += queue_peek(idxs);
+
+		queue_dequeue(idxs);
+	}
+
+	printf("\nQueue size     : %" PRIu64 "\n", queue_count(idxs));
+	printf("Queue capacity : %" PRIu64 "\n", queue_capacity(idxs));
+
+	if (sum0 == sum1)
+		printf("\nElements were preserved -> %" PRIu64 " : %" PRIu64 "", sum0, sum1);
+
+	queue_free(idxs);
 
 	return 0;
 }

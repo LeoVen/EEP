@@ -1,5 +1,6 @@
 mod control_flow;
 mod data_types;
+mod enums;
 mod functions;
 mod guess_game;
 mod hello;
@@ -18,6 +19,7 @@ mod tuple_structs;
 fn main() {
     control_flow::control_flow();
     data_types::data_types();
+    enums::enums();
     functions::functions();
     guess_game::guess_game();
     hello::hello();
