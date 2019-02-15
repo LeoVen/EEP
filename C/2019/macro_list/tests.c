@@ -2,6 +2,7 @@
 #include <stdlib.h>
 #include <stdbool.h>
 #include <stdint.h>
+#include <inttypes.h>
 #include <math.h>
 #include "macro_list.h"
 #include "common_lists.h"
@@ -117,8 +118,8 @@ int main(int argc, char const *argv[])
 
 	size_t s = cs_count(stack);
 	size_t c = cs_capacity(stack);
-	printf("Stack size     : %u\n", s);
-	printf("Stack capacity : %u\n", c);
+	printf("Stack size     : %" PRIu64 "\n", s);
+	printf("Stack capacity : %" PRIu64 "\n", c);
 
 	for (int i = 0; i < s; i++)
 	{
@@ -126,8 +127,8 @@ int main(int argc, char const *argv[])
 		cs_pop(stack);
 	}
 
-	printf("\nStack size: %u", cs_count(stack));
-	printf("\nStack capacity : %u", cs_capacity(stack));
+	printf("\nStack size: %" PRIu64 "", cs_count(stack));
+	printf("\nStack capacity : %" PRIu64 "", cs_capacity(stack));
 
 	cs_free(stack);
 
