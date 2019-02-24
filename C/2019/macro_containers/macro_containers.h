@@ -1,15 +1,15 @@
 /**
- * @file macro_list.h
+ * @file macro_containers.h
  *
  * @author Leonardo Vencovsky (https://github.com/LeoVen)
  * @date 11/02/2019
  *
- * Macro based generic list implemented as a dynamic array.
+ * Macro based generic containers.
  *
  */
 
-#ifndef MACRO_LIST
-#define MACRO_LIST
+#ifndef MACRO_CONTAINERS
+#define MACRO_CONTAINERS
 
 // TODO Functions that can manipulate the desired data type
 // compare_f  (CMPF)
@@ -43,7 +43,7 @@
 #define CONCATH(C, P) CONCATH_(C, P)
 #define CONCATC(C, P) CONCATC_(C, P)
 
-/// Declares and creates all functions used by the generated list
+/// Declares and creates all functions used by the generated container
 ///
 /// @param C     : Container (LIST, STACK, QUEUE)
 /// @param P     : Permission (PRIVATE, PUBLIC) - If struct fields are hidden or not
@@ -693,4 +693,4 @@
         return true;                                                                               \
     }
 
-#endif /* MACRO_LIST */
+#endif /* MACRO_CONTAINERS */
