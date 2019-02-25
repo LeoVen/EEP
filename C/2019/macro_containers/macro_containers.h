@@ -87,11 +87,18 @@
         T *buffer;                                \
         size_t capacity;                          \
         size_t count;                             \
+    };                                            \
+                                                  \
+    struct SNAME##_iter_s                         \
+    {                                             \
+        struct SNAME##_s *target;                 \
+        size_t cursor;                            \
     };
 /* HEADER ********************************************************************/
 #define LIST_GENERATE_HEADER(PFX, SNAME, FMOD, T)                                    \
                                                                                      \
     typedef struct SNAME##_s SNAME;                                                  \
+    typedef struct SNAME##_iter_s SNAME##_iter;                                      \
                                                                                      \
     FMOD SNAME *PFX##_new(size_t size);                                              \
     FMOD void PFX##_free(SNAME *list);                                               \
@@ -109,7 +116,10 @@
     FMOD bool PFX##_empty(SNAME *list);                                              \
     FMOD bool PFX##_full(SNAME *list);                                               \
     FMOD size_t PFX##_count(SNAME *list);                                            \
-    FMOD size_t PFX##_capacity(SNAME *list);
+    FMOD size_t PFX##_capacity(SNAME *list);                                         \
+                                                                                     \
+    FMOD void PFX##_iter(SNAME##_iter *iter, SNAME *target);                         \
+    FMOD bool PFX##_iter_next(SNAME##_iter *iter, T *result);                        \
 /* SOURCE ********************************************************************/
 #define LIST_GENERATE_SOURCE(PFX, SNAME, FMOD, T)                                   \
                                                                                     \
@@ -343,6 +353,23 @@
         list->capacity = new_capacity;                                              \
                                                                                     \
         return true;                                                                \
+    }                                                                               \
+                                                                                    \
+    FMOD void PFX##_iter(SNAME##_iter *iter, SNAME *target)                         \
+    {                                                                               \
+        iter->target = target;                                                      \
+        iter->cursor = 0;                                                           \
+    }                                                                               \
+                                                                                    \
+    FMOD bool PFX##_iter_next(SNAME##_iter *iter, T *result)                        \
+    {                                                                               \
+        if (iter->cursor < iter->target->count)                                     \
+        {                                                                           \
+            *result = iter->target->buffer[iter->cursor++];                         \
+            return true;                                                            \
+        }                                                                           \
+                                                                                    \
+        return false;                                                               \
     }
 
 /*****************************************************************************/
@@ -692,5 +719,20 @@
                                                                                                    \
         return true;                                                                               \
     }
+
+#define FOR_EACH(C, PFX, SNAME, T, TARGET, BODY) \
+    C##_FOR_EACH(PFX, SNAME, T, TARGET, BODY)
+
+#define LIST_FOR_EACH(PFX, SNAME, T, TARGET, BODY) \
+    do                                             \
+    {                                              \
+        T var;                                     \
+        SNAME##_iter _iter_;                       \
+        PFX##_iter(&_iter_, TARGET);               \
+        while (PFX##_iter_next(&_iter_, &var))     \
+        {                                          \
+            BODY;                                  \
+        }                                          \
+    } while (0);
 
 #endif /* MACRO_CONTAINERS */

@@ -1,5 +1,5 @@
 CC = gcc
-CFLAGS = -Wall
+CFLAGS = -Wall -Wextra
 INCLUDE = ./
 
 test.exe: containers.o tests.o macro_containers.h

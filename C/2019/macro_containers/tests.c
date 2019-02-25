@@ -35,7 +35,7 @@ char random_alpha()
 	return alpha[random_int8_t(0, 61)];
 }
 
-int main(int argc, char const *argv[])
+int main(void)
 {
 	srand((unsigned)time(NULL));
 
@@ -48,7 +48,7 @@ int main(int argc, char const *argv[])
 
 	printf("\n[ ");
 
-	for (int i = 0; i < list->count - 1; i++)
+	for (size_t i = 0; i < list->count - 1; i++)
 		printf("%d, ", il_get(list, i));
 
 	printf("%d ]\n", il_get(list, list->count - 1));
@@ -67,7 +67,7 @@ int main(int argc, char const *argv[])
 		{
 			// Print
 			printf("\n[ ");
-			for (int i = 0; i < list->count - 1; i++)
+			for (size_t i = 0; i < list->count - 1; i++)
 			{
 				printf("%d, ", il_get(list, i));
 			}
@@ -84,7 +84,7 @@ int main(int argc, char const *argv[])
 		{
 			// Print
 			printf("\n[ ");
-			for (int i = 0; i < list->count - 1; i++)
+			for (size_t i = 0; i < list->count - 1; i++)
 			{
 				printf("%d, ", il_get(list, i));
 			}
@@ -106,7 +106,7 @@ int main(int argc, char const *argv[])
 	{
 		// Print
 		printf("\n[ ");
-		for (int i = 0; i < list->count - 1; i++)
+		for (size_t i = 0; i < list->count - 1; i++)
 		{
 			printf("%d, ", il_get(list, i));
 		}
@@ -127,7 +127,7 @@ int main(int argc, char const *argv[])
 	printf("Stack size     : %" PRIu64 "\n", s);
 	printf("Stack capacity : %" PRIu64 "\n", c);
 
-	for (int i = 0; i < s; i++)
+	for (size_t i = 0; i < s; i++)
 	{
 		printf("%c ", cs_top(stack));
 		cs_pop(stack);
@@ -172,9 +172,26 @@ int main(int argc, char const *argv[])
 	printf("Queue capacity : %" PRIu64 "\n", queue_capacity(idxs));
 
 	if (sum0 == sum1)
-		printf("\nElements were preserved -> %" PRIu64 " : %" PRIu64 "", sum0, sum1);
+		printf("\nElements were preserved -> %" PRIu64 " : %" PRIu64 "\n", sum0, sum1);
 
 	queue_free(idxs);
+
+	printf("\nUsing ForEach\n\n");
+
+	int_list *integers = il_new(1000);
+
+	for (size_t i = 0; i < il_capacity(integers); i++)
+		il_push_back(integers, i);
+
+	int sum = 0;
+	FOR_EACH(LIST, il, int_list, int, integers, {
+		printf("%d, ", var);
+		sum += var;
+	})
+
+	printf("\n\nSUM: %d\n", sum);
+
+	il_free(integers);
 
 	return 0;
 }
