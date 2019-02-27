@@ -6,6 +6,7 @@ mod guess_game;
 mod hello;
 mod implementation;
 mod loops;
+mod option;
 mod ownership0;
 mod ownership1;
 mod ownership2;
@@ -25,6 +26,7 @@ fn main() {
     hello::hello();
     implementation::implementation();
     loops::loops();
+    option::option();
     ownership0::ownership0();
     ownership1::ownership1();
     ownership2::ownership2();

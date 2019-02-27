@@ -8,7 +8,7 @@ namespace DataStructures.Library
         #region Private Properties
 
         // The array of bits
-        private UInt64[] Bits;
+        private ulong[] Bits;
 
         // How many bits there are in a single word
         private static readonly int _WordSize = 64;
@@ -48,12 +48,46 @@ namespace DataStructures.Library
 
             Bits = new ulong[totalWords];
 
-            ulong value = defaultValue ? 1ul : 0ul;
+            uint value = defaultValue ? 1u : 0u;
 
             for (var i = 0; i < Bits.Length; i++)
                 Bits[i] = value;
 
             CountWords = totalWords;
+        }
+
+        #endregion
+
+        public ulong this[int index]
+        {
+            get
+            {
+                if (index < 0 || index > CountWords)
+                    throw new IndexOutOfRangeException("Index out of range");
+
+                return Bits[index];
+            }
+            set
+            {
+                if (index < 0 || index > CountWords)
+                    throw new IndexOutOfRangeException("Index out of range");
+
+                Bits[index] = value;
+            }
+        }
+
+        #region IO Functions
+
+        public bool Set(int bitIndex)
+        {
+            if (bitIndex < 0)
+                throw new IndexOutOfRangeException($"{nameof(bitIndex)} out of range");
+
+            int wordIndex = BitToWordIndex(bitIndex);
+
+            Bits[wordIndex] &= ~(1ul << bitIndex);
+
+            return false;
         }
 
         #endregion

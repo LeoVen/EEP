@@ -38,5 +38,16 @@ namespace DataStructures.Tests
 
             Assert.AreEqual(4, bits.CountWords);
         }
+
+        [TestMethod]
+        public void BitArraySetTest()
+        {
+            BitArray bits = new BitArray(256, false);
+
+            for (var i = 0; i < 64; i++)
+                bits.Set(i);
+
+            Assert.AreEqual(ulong.MaxValue, bits[0]);
+        }
     }
 }
