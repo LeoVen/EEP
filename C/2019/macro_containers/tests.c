@@ -8,6 +8,8 @@
 #include "macro_containers.h"
 #include "containers.h"
 
+CONTAINER_GENERATE(DEQUE, PUBLIC, dq, deque, , int)
+
 double rrandom()
 {
 	return (double)rand() / ((double)RAND_MAX + 1.0);
@@ -184,7 +186,7 @@ int main(void)
 		il_push_back(integers, i);
 
 	int sum = 0;
-	FOR_EACH(LIST, il, int_list, int, integers, {
+	FOR_EACH(il, int_list, int, integers, {
 		printf("%d, ", var);
 		sum += var;
 	})
@@ -192,6 +194,74 @@ int main(void)
 	printf("\n\nSUM: %d\n", sum);
 
 	il_free(integers);
+
+	deque *d = dq_new(1000);
+
+	int sum2 = 0, numbers = 0, r = 0;
+
+	for (int i = 0; numbers < 10000; i = rand())
+	{
+		if (i % 2 == 0 || dq_empty(d))
+		{
+			if (i % 4 == 0)
+			{
+				dq_push_front(d, ++numbers);
+			}
+			else
+			{
+				dq_push_back(d, ++numbers);
+			}
+		}
+		else
+		{
+			if (i % 3 == 0)
+			{
+				r = dq_front(d);
+				dq_pop_front(d);
+			}
+			else
+			{
+				r = dq_back(d);
+				dq_pop_back(d);
+			}
+
+			sum2 += r;
+		}
+	}
+
+	// Emptying the queue
+	while (!dq_empty(d))
+	{
+		if (rand() % 2 == 0)
+		{
+			r = dq_front(d);
+			dq_pop_front(d);
+		}
+		else
+		{
+			r = dq_back(d);
+			dq_pop_back(d);
+		}
+
+		sum2 += r;
+	}
+
+	printf("Theoretical Sum: 50005000\nTotal Sum: %d\n", sum2);
+
+	dq_free(d);
+
+	d = dq_new(32);
+
+	for (int i = 1; i < 1001; i++)
+		i % 2 == 0 ? dq_push_front(d, i) : dq_push_back(d, i);
+
+	int sum3 = 0;
+
+	FOR_EACH(dq, deque, int, d, {
+		sum3 += var;
+	})
+
+	printf("Deque sum: %d\n", sum3);
 
 	return 0;
 }
