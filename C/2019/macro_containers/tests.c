@@ -8,8 +8,6 @@
 #include "macro_containers.h"
 #include "containers.h"
 
-CONTAINER_GENERATE(DEQUE, PUBLIC, dq, deque, , int)
-
 double rrandom()
 {
 	return (double)rand() / ((double)RAND_MAX + 1.0);

@@ -1,4 +1,5 @@
 #include <stdio.h>
+#include <assert.h>
 #include "macro_containers.h"
 
 CONTAINER_GENERATE(LIST, PUBLIC, l, list, , int)
@@ -57,6 +58,11 @@ int main(int argc, char const *argv[])
 	s_free(s);
 	q_free(q);
 	d_free(d);
+
+	assert(sum0 == 50005000);
+	assert(sum1 == 50005000);
+	assert(sum2 == 50005000);
+	assert(sum3 == 50005000);
 
 	return 0;
 }

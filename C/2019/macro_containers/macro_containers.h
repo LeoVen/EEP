@@ -122,7 +122,7 @@
     FMOD size_t PFX##_capacity(SNAME *_list_);                                         \
                                                                                        \
     FMOD void PFX##_iter(SNAME##_iter *iter, SNAME *target);                           \
-    FMOD bool PFX##_iter_next(SNAME##_iter *iter, T *result);                          \
+    FMOD bool PFX##_iter_next(SNAME##_iter *iter, T *result, size_t *index);           \
 /* SOURCE ********************************************************************/
 #define LIST_GENERATE_SOURCE(PFX, SNAME, FMOD, T)                                     \
                                                                                       \
@@ -364,10 +364,11 @@
         iter->cursor = 0;                                                             \
     }                                                                                 \
                                                                                       \
-    FMOD bool PFX##_iter_next(SNAME##_iter *iter, T *result)                          \
+    FMOD bool PFX##_iter_next(SNAME##_iter *iter, T *result, size_t *index)           \
     {                                                                                 \
         if (iter->cursor < iter->target->count)                                       \
         {                                                                             \
+            *index = iter->cursor;                                                    \
             *result = iter->target->buffer[iter->cursor++];                           \
             return true;                                                              \
         }                                                                             \
@@ -407,25 +408,25 @@
         size_t cursor;                             \
     };                                             \
 /* HEADER ********************************************************************/
-#define STACK_GENERATE_HEADER(PFX, SNAME, FMOD, T)                      \
-                                                                        \
-    typedef struct SNAME##_s SNAME;                                     \
-    typedef struct SNAME##_iter_s SNAME##_iter;                         \
-                                                                        \
-    FMOD SNAME *PFX##_new(size_t size);                                 \
-    FMOD void PFX##_free(SNAME *_stack_);                               \
-    FMOD bool PFX##_push(SNAME *_stack_, T element);                    \
-    FMOD bool PFX##_pop(SNAME *_stack_);                                \
-    FMOD T PFX##_top(SNAME *_stack_);                                   \
-    FMOD bool PFX##_push_if(SNAME *_stack_, T element, bool condition); \
-    FMOD bool PFX##_pop_if(SNAME *_stack_, bool condition);             \
-    FMOD bool PFX##_empty(SNAME *_stack_);                              \
-    FMOD bool PFX##_full(SNAME *_stack_);                               \
-    FMOD size_t PFX##_count(SNAME *_stack_);                            \
-    FMOD size_t PFX##_capacity(SNAME *_stack_);                         \
-                                                                        \
-    FMOD void PFX##_iter(SNAME##_iter *iter, SNAME *target);            \
-    FMOD bool PFX##_iter_next(SNAME##_iter *iter, T *result);           \
+#define STACK_GENERATE_HEADER(PFX, SNAME, FMOD, T)                           \
+                                                                             \
+    typedef struct SNAME##_s SNAME;                                          \
+    typedef struct SNAME##_iter_s SNAME##_iter;                              \
+                                                                             \
+    FMOD SNAME *PFX##_new(size_t size);                                      \
+    FMOD void PFX##_free(SNAME *_stack_);                                    \
+    FMOD bool PFX##_push(SNAME *_stack_, T element);                         \
+    FMOD bool PFX##_pop(SNAME *_stack_);                                     \
+    FMOD T PFX##_top(SNAME *_stack_);                                        \
+    FMOD bool PFX##_push_if(SNAME *_stack_, T element, bool condition);      \
+    FMOD bool PFX##_pop_if(SNAME *_stack_, bool condition);                  \
+    FMOD bool PFX##_empty(SNAME *_stack_);                                   \
+    FMOD bool PFX##_full(SNAME *_stack_);                                    \
+    FMOD size_t PFX##_count(SNAME *_stack_);                                 \
+    FMOD size_t PFX##_capacity(SNAME *_stack_);                              \
+                                                                             \
+    FMOD void PFX##_iter(SNAME##_iter *iter, SNAME *target);                 \
+    FMOD bool PFX##_iter_next(SNAME##_iter *iter, T *result, size_t *index); \
 /* SOURCE ********************************************************************/
 #define STACK_GENERATE_SOURCE(PFX, SNAME, FMOD, T)                          \
                                                                             \
@@ -554,10 +555,11 @@
         iter->cursor = 0;                                                   \
     }                                                                       \
                                                                             \
-    FMOD bool PFX##_iter_next(SNAME##_iter *iter, T *result)                \
+    FMOD bool PFX##_iter_next(SNAME##_iter *iter, T *result, size_t *index) \
     {                                                                       \
         if (iter->cursor < iter->target->count)                             \
         {                                                                   \
+            *index = iter->cursor;                                          \
             *result = iter->target->buffer[iter->cursor++];                 \
             return true;                                                    \
         }                                                                   \
@@ -597,27 +599,28 @@
     {                                              \
         struct SNAME##_s *target;                  \
         size_t cursor;                             \
+        size_t count;                              \
     };                                             \
 /* HEADER ********************************************************************/
-#define QUEUE_GENERATE_HEADER(PFX, SNAME, FMOD, T)                         \
-                                                                           \
-    typedef struct SNAME##_s SNAME;                                        \
-    typedef struct SNAME##_iter_s SNAME##_iter;                            \
-                                                                           \
-    FMOD SNAME *PFX##_new(size_t size);                                    \
-    FMOD void PFX##_free(SNAME *_queue_);                                  \
-    FMOD bool PFX##_enqueue(SNAME *_queue_, T element);                    \
-    FMOD bool PFX##_dequeue(SNAME *_queue_);                               \
-    FMOD T PFX##_peek(SNAME *_queue_);                                     \
-    FMOD bool PFX##_enqueue_if(SNAME *_queue_, T element, bool condition); \
-    FMOD bool PFX##_dequeue_if(SNAME *_queue_, bool condition);            \
-    FMOD bool PFX##_empty(SNAME *_queue_);                                 \
-    FMOD bool PFX##_full(SNAME *_queue_);                                  \
-    FMOD size_t PFX##_count(SNAME *_queue_);                               \
-    FMOD size_t PFX##_capacity(SNAME *_queue_);                            \
-                                                                           \
-    FMOD void PFX##_iter(SNAME##_iter *iter, SNAME *target);               \
-    FMOD bool PFX##_iter_next(SNAME##_iter *iter, T *result);              \
+#define QUEUE_GENERATE_HEADER(PFX, SNAME, FMOD, T)                           \
+                                                                             \
+    typedef struct SNAME##_s SNAME;                                          \
+    typedef struct SNAME##_iter_s SNAME##_iter;                              \
+                                                                             \
+    FMOD SNAME *PFX##_new(size_t size);                                      \
+    FMOD void PFX##_free(SNAME *_queue_);                                    \
+    FMOD bool PFX##_enqueue(SNAME *_queue_, T element);                      \
+    FMOD bool PFX##_dequeue(SNAME *_queue_);                                 \
+    FMOD T PFX##_peek(SNAME *_queue_);                                       \
+    FMOD bool PFX##_enqueue_if(SNAME *_queue_, T element, bool condition);   \
+    FMOD bool PFX##_dequeue_if(SNAME *_queue_, bool condition);              \
+    FMOD bool PFX##_empty(SNAME *_queue_);                                   \
+    FMOD bool PFX##_full(SNAME *_queue_);                                    \
+    FMOD size_t PFX##_count(SNAME *_queue_);                                 \
+    FMOD size_t PFX##_capacity(SNAME *_queue_);                              \
+                                                                             \
+    FMOD void PFX##_iter(SNAME##_iter *iter, SNAME *target);                 \
+    FMOD bool PFX##_iter_next(SNAME##_iter *iter, T *result, size_t *index); \
 /* SOURCE ********************************************************************/
 #define QUEUE_GENERATE_SOURCE(PFX, SNAME, FMOD, T)                                                       \
                                                                                                          \
@@ -762,14 +765,17 @@
     {                                                                                                    \
         iter->target = target;                                                                           \
         iter->cursor = target->front;                                                                    \
+        iter->count = 0;                                                                                 \
     }                                                                                                    \
                                                                                                          \
-    FMOD bool PFX##_iter_next(SNAME##_iter *iter, T *result)                                             \
+    FMOD bool PFX##_iter_next(SNAME##_iter *iter, T *result, size_t *index)                              \
     {                                                                                                    \
-        if (iter->cursor != iter->target->rear)                                                          \
+        if (iter->count < iter->target->count)                                                           \
         {                                                                                                \
             *result = iter->target->buffer[iter->cursor];                                                \
             iter->cursor = ++(iter->cursor) % iter->target->capacity;                                    \
+            *index = iter->count;                                                                        \
+            iter->count++;                                                                               \
             return true;                                                                                 \
         }                                                                                                \
                                                                                                          \
@@ -808,6 +814,7 @@
     {                                              \
         struct SNAME##_s *target;                  \
         size_t cursor;                             \
+        size_t count;                              \
     };                                             \
 /* HEADER ********************************************************************/
 #define DEQUE_GENERATE_HEADER(PFX, SNAME, FMOD, T)                            \
@@ -833,7 +840,7 @@
     FMOD size_t PFX##_capacity(SNAME *_deque_);                               \
                                                                               \
     FMOD void PFX##_iter(SNAME##_iter *iter, SNAME *target);                  \
-    FMOD bool PFX##_iter_next(SNAME##_iter *iter, T *result);                 \
+    FMOD bool PFX##_iter_next(SNAME##_iter *iter, T *result, size_t *index);  \
 /* SOURCE ********************************************************************/
 #define DEQUE_GENERATE_SOURCE(PFX, SNAME, FMOD, T)                                                       \
                                                                                                          \
@@ -1033,30 +1040,34 @@
     {                                                                                                    \
         iter->target = target;                                                                           \
         iter->cursor = target->front;                                                                    \
+        iter->count = 0;                                                                                 \
     }                                                                                                    \
                                                                                                          \
-    FMOD bool PFX##_iter_next(SNAME##_iter *iter, T *result)                                             \
+    FMOD bool PFX##_iter_next(SNAME##_iter *iter, T *result, size_t *index)                              \
     {                                                                                                    \
-        if (iter->cursor != iter->target->rear)                                                          \
+        if (iter->count < iter->target->count)                                                           \
         {                                                                                                \
             *result = iter->target->buffer[iter->cursor];                                                \
             iter->cursor = ++(iter->cursor) % iter->target->capacity;                                    \
+            *index = iter->count;                                                                        \
+            iter->count++;                                                                               \
             return true;                                                                                 \
         }                                                                                                \
                                                                                                          \
         return false;                                                                                    \
     }
 
-#define FOR_EACH(PFX, SNAME, T, TARGET, BODY)  \
-    do                                         \
-    {                                          \
-        T var;                                 \
-        SNAME##_iter _iter_;                   \
-        PFX##_iter(&_iter_, TARGET);           \
-        while (PFX##_iter_next(&_iter_, &var)) \
-        {                                      \
-            BODY;                              \
-        }                                      \
+#define FOR_EACH(PFX, SNAME, T, TARGET, BODY)          \
+    do                                                 \
+    {                                                  \
+        size_t index;                                  \
+        T var;                                         \
+        SNAME##_iter _iter_;                           \
+        PFX##_iter(&_iter_, TARGET);                   \
+        while (PFX##_iter_next(&_iter_, &var, &index)) \
+        {                                              \
+            BODY;                                      \
+        }                                              \
     } while (0);
 
 #endif /* MACRO_CONTAINERS */
