@@ -5,7 +5,7 @@
  */
 package EEP;
 
-import EEP.App1.models.Pessoa;
+import EEP.App1.models.*;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Date;
@@ -20,7 +20,7 @@ public class Main {
     /**
      * @param args the command line arguments
      */
-    public static void main(String[] args) {
+    public static void main(String[] args) throws Exception {
 
         List<Pessoa> pessoas = Arrays.asList(
             new Pessoa("Vitao", new Date(1998, 06, 27), 1.85),
@@ -33,6 +33,23 @@ public class Main {
         for (Pessoa p : pessoas) {
             System.out.println(p);
         }
+        
+        Animal a = new Cachorro();
+
+        System.out.println(a.getEspecie());
+        a.chamar();
+        
+        Conta c = new Conta(1000.0);
+        
+        c.sacar(500.0);
+        
+        System.out.println(c.getSalario());
+        
+        try {
+            c.sacar(1000.0);
+        } catch(Exception e) {
+            System.out.println(e.getMessage());
+            throw e;
+        }
     }
-    
 }
