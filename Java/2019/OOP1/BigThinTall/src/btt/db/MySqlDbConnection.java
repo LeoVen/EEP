@@ -16,9 +16,9 @@ import java.util.Optional;
  * @author lvenk
  */
 public class MySqlDbConnection {
-    
-    public static Connection getConnection() throws SQLException {
-        
+
+    public static Connection getConnection() {
+
         // Connection URL
         String strConn = "jdbc:mysql://" + Macros.DbServerName + ":" + Macros.DbPort
                 + "/" + Macros.DbDatabaseName + "?useTimezone=true&serverTimezone=UTC";
@@ -35,6 +35,7 @@ public class MySqlDbConnection {
 
         } catch (ClassNotFoundException e) {
             System.out.println("Class " + Macros.MySqlDriver + " not found");
+            e.printStackTrace();
         } catch (SQLException e) {
             System.out.println("Could not connect to " + strConn);
             e.printStackTrace();

@@ -5,9 +5,16 @@
  */
 package btt;
 
+import btt.dao.UserDAO;
+import btt.db.MySqlDbConnection;
 import btt.spawn.Signup;
+import btt.spawn.UserScreen;
+import btt.util.PasswordEncryption;
+import btt.util.PopupFactory;
 import java.io.File;
 import java.io.IOException;
+import java.sql.Connection;
+import java.sql.SQLException;
 import javax.imageio.ImageIO;
 
 /**
@@ -241,7 +248,51 @@ public class Main extends javax.swing.JFrame {
     }// </editor-fold>//GEN-END:initComponents
 
     private void LoginButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_LoginButtonActionPerformed
-        // TODO add your handling code here:
+
+        boolean userLogin = false;
+
+        Connection conn = MySqlDbConnection.getConnection();
+
+        if (conn == null) {
+            // Connection failed
+            System.out.println("Connection to DB failed");
+            PopupFactory.showError(this, "Internal Error");
+        }
+        else {
+            String username = UserInputText.getText();
+            String password = new String(PasswordInputText.getPassword());
+
+            String encPassword = PasswordEncryption.getSHA1(password);
+
+            if (encPassword == null)
+            {
+                System.out.println("Encryption error.");
+                PopupFactory.showError(this, "Internal Error");
+                return;
+            }
+
+            try {
+                boolean pass = UserDAO.validate(conn, username, encPassword);
+
+                if (!pass) {
+                    PopupFactory.showError(this, "Invalid username or password.");
+                }
+
+                userLogin = pass;
+
+            } catch (SQLException e) {
+                PopupFactory.showError(this, "Internal Error");
+                e.printStackTrace();
+            }
+        }
+
+        if (userLogin) {
+            // User did login
+            UserScreen us = new UserScreen();
+            us.setLocationRelativeTo(null);
+            us.setVisible(true);
+            this.dispose();
+        }
     }//GEN-LAST:event_LoginButtonActionPerformed
 
     private void PasswordInputTextActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_PasswordInputTextActionPerformed

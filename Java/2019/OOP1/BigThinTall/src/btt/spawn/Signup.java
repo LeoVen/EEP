@@ -6,6 +6,7 @@
 package btt.spawn;
 
 import btt.dao.UserDAO;
+import btt.db.Macros;
 import btt.db.MySqlDbConnection;
 import btt.util.ErrorMessage;
 import btt.util.PasswordEncryption;
@@ -147,12 +148,19 @@ public class Signup extends javax.swing.JFrame {
 
         try {
             // Get form content
-            String username = UserInputName.getText();
-            String email = UserInputEmail.getText();
+            String username = UserInputName.getText().trim();
+            String email = UserInputEmail.getText().trim();
             String password = new String(UserInputPassword.getPassword());
 
             String errorMessage = "";
-            
+
+            // Treat username and email maximum length
+            if (username.length() > Macros.MaxLenUsername)
+                errorMessage = errorMessage + "Username must contain at most " + Macros.MaxLenUsername + " characters.<br>";
+            if (email.length() > Macros.MaxLenEmail)
+                errorMessage = errorMessage + "Email must contain at most " + Macros.MaxLenEmail + " characters.<br>";
+
+            // Treat the absence of any required field
             if (username.equals(""))
                 errorMessage = errorMessage + "User must not be empty.<br>";
             if (email.equals(""))
@@ -193,18 +201,15 @@ public class Signup extends javax.swing.JFrame {
 
         } catch (NullPointerException e) {
             System.out.println("Document not found in Signup form");
-            ErrorMessage err = new ErrorMessage(this, true, "NullPointerException");
-            err.setVisible(true);
+            PopupFactory.showError(this, "Internal Error");
         } catch (SQLException e) {
             System.out.println("Something went wrong with that sql!");
             e.printStackTrace();
-            ErrorMessage err = new ErrorMessage(this, true, "SQLException");
-            err.setVisible(true);
+            PopupFactory.showError(this, "Internal Error");
         }
 
         if (userCreated) {
             PopupFactory.showSuccess(this, "User Created Successfully");
-
             this.dispose();
         }
     }//GEN-LAST:event_SignupButtonActionPerformed

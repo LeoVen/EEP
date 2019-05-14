@@ -5,6 +5,7 @@
  */
 package btt.dao;
 
+import btt.util.PasswordEncryption;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -37,14 +38,28 @@ public class UserDAO {
 
         String query = "INSERT INTO users (username, email, password) values (?, ?, ?)";
 
-        PreparedStatement pStmt = conn.prepareStatement(query);
+        try(PreparedStatement pStmt = conn.prepareStatement(query)) {
 
-        pStmt.setString(1, username);
-        pStmt.setString(2, email);
-        pStmt.setString(3, password);
+            pStmt.setString(1, username);
+            pStmt.setString(2, email);
+            pStmt.setString(3, password);
 
-        pStmt.execute();
+            pStmt.execute();
+        }
+    }
 
-        pStmt.close();
+    public static boolean validate(Connection conn, String username, String password) throws SQLException {
+        // String password must be already encrypted
+
+        String query = "SELECT * FROM users WHERE username = ? and password = ?;";
+
+        try(PreparedStatement pStmt = conn.prepareStatement(query)) {
+            pStmt.setString(1, username);
+            pStmt.setString(2, password);
+
+            try(ResultSet rs = pStmt.executeQuery()) {
+                return rs.next();
+            }
+        }
     }
 }
