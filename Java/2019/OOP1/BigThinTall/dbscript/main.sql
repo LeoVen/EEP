@@ -1,0 +1,12 @@
+CREATE DATABASE
+IF NOT EXISTS OOPCRUD;
+
+CREATE TABLE
+IF NOT EXISTS users
+(
+    id int unsigned NOT NULL AUTO_INCREMENT,
+    username VARCHAR(50) NOT NULL,
+    email VARCHAR(200),
+    password CHAR(40) NOT NULL,
+    PRIMARY KEY (id)
+);

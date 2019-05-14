@@ -287,7 +287,7 @@ public class Main extends javax.swing.JFrame {
                 Main frame = new Main();
                 frame.setVisible(true);
                 frame.setLocationRelativeTo(null);
-                frame.setTitle("BigThinTall's To-Do list");
+                frame.setTitle("BigThinTall's To-Do List");
                 try {
                     frame.setIconImage(ImageIO.read(new File("images/icon.png")));
                 } catch(IOException e) {

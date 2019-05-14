@@ -5,6 +5,15 @@
  */
 package btt.spawn;
 
+import btt.dao.UserDAO;
+import btt.db.MySqlDbConnection;
+import btt.util.ErrorMessage;
+import btt.util.PasswordEncryption;
+import btt.util.PopupFactory;
+import btt.util.SuccessMessage;
+import java.sql.Connection;
+import java.sql.SQLException;
+
 /**
  *
  * @author lvenk
@@ -28,13 +37,13 @@ public class Signup extends javax.swing.JFrame {
     private void initComponents() {
 
         jPanel1 = new javax.swing.JPanel();
-        UserInputName = new javax.swing.JTextField();
         UserInputEmail = new javax.swing.JTextField();
+        UserInputName = new javax.swing.JTextField();
         UserInputPassword = new javax.swing.JPasswordField();
         jLabel1 = new javax.swing.JLabel();
         jLabel2 = new javax.swing.JLabel();
         jLabel3 = new javax.swing.JLabel();
-        jButton1 = new javax.swing.JButton();
+        SignupButton = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
         setMaximumSize(new java.awt.Dimension(32000, 3200));
@@ -53,13 +62,13 @@ public class Signup extends javax.swing.JFrame {
 
         jLabel3.setText("E-mail");
 
-        jButton1.setBackground(new java.awt.Color(0, 77, 64));
-        jButton1.setForeground(new java.awt.Color(255, 255, 255));
-        jButton1.setText("Signup");
-        jButton1.setFocusPainted(false);
-        jButton1.addActionListener(new java.awt.event.ActionListener() {
+        SignupButton.setBackground(new java.awt.Color(0, 77, 64));
+        SignupButton.setForeground(new java.awt.Color(255, 255, 255));
+        SignupButton.setText("Signup");
+        SignupButton.setFocusPainted(false);
+        SignupButton.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jButton1ActionPerformed(evt);
+                SignupButtonActionPerformed(evt);
             }
         });
 
@@ -73,7 +82,7 @@ public class Signup extends javax.swing.JFrame {
                     .addGroup(jPanel1Layout.createSequentialGroup()
                         .addComponent(jLabel1)
                         .addGap(30, 30, 30)
-                        .addComponent(UserInputEmail, javax.swing.GroupLayout.PREFERRED_SIZE, 200, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addComponent(UserInputName, javax.swing.GroupLayout.PREFERRED_SIZE, 200, javax.swing.GroupLayout.PREFERRED_SIZE))
                     .addGroup(jPanel1Layout.createSequentialGroup()
                         .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addComponent(jLabel3)
@@ -81,11 +90,11 @@ public class Signup extends javax.swing.JFrame {
                         .addGap(32, 32, 32)
                         .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addComponent(UserInputPassword, javax.swing.GroupLayout.PREFERRED_SIZE, 200, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(UserInputName, javax.swing.GroupLayout.PREFERRED_SIZE, 200, javax.swing.GroupLayout.PREFERRED_SIZE))))
+                            .addComponent(UserInputEmail, javax.swing.GroupLayout.PREFERRED_SIZE, 200, javax.swing.GroupLayout.PREFERRED_SIZE))))
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
                 .addGap(105, 105, 105)
-                .addComponent(jButton1, javax.swing.GroupLayout.PREFERRED_SIZE, 200, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addComponent(SignupButton, javax.swing.GroupLayout.PREFERRED_SIZE, 200, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(105, 105, 105))
         );
         jPanel1Layout.setVerticalGroup(
@@ -94,17 +103,17 @@ public class Signup extends javax.swing.JFrame {
                 .addGap(22, 22, 22)
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel1)
-                    .addComponent(UserInputEmail, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addGap(25, 25, 25)
-                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jLabel2)
                     .addComponent(UserInputName, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addGap(25, 25, 25)
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(UserInputPassword, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(jLabel3))
+                    .addComponent(jLabel2)
+                    .addComponent(UserInputPassword, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addGap(25, 25, 25)
+                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(jLabel3)
+                    .addComponent(UserInputEmail, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 53, Short.MAX_VALUE)
-                .addComponent(jButton1, javax.swing.GroupLayout.PREFERRED_SIZE, 40, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addComponent(SignupButton, javax.swing.GroupLayout.PREFERRED_SIZE, 40, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(25, 25, 25))
         );
 
@@ -132,50 +141,79 @@ public class Signup extends javax.swing.JFrame {
         // TODO add your handling code here:
     }//GEN-LAST:event_UserInputPasswordActionPerformed
 
-    private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_jButton1ActionPerformed
+    private void SignupButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_SignupButtonActionPerformed
 
-    /**
-     * @param args the command line arguments
-     */
-    public static void main(String args[]) {
-        /* Set the Nimbus look and feel */
-        //<editor-fold defaultstate="collapsed" desc=" Look and feel setting code (optional) ">
-        /* If Nimbus (introduced in Java SE 6) is not available, stay with the default look and feel.
-         * For details see http://download.oracle.com/javase/tutorial/uiswing/lookandfeel/plaf.html 
-         */
+        boolean userCreated = false;
+
         try {
-            for (javax.swing.UIManager.LookAndFeelInfo info : javax.swing.UIManager.getInstalledLookAndFeels()) {
-                if ("Nimbus".equals(info.getName())) {
-                    javax.swing.UIManager.setLookAndFeel(info.getClassName());
-                    break;
-                }
-            }
-        } catch (ClassNotFoundException ex) {
-            java.util.logging.Logger.getLogger(Signup.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        } catch (InstantiationException ex) {
-            java.util.logging.Logger.getLogger(Signup.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        } catch (IllegalAccessException ex) {
-            java.util.logging.Logger.getLogger(Signup.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        } catch (javax.swing.UnsupportedLookAndFeelException ex) {
-            java.util.logging.Logger.getLogger(Signup.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        }
-        //</editor-fold>
+            // Get form content
+            String username = UserInputName.getText();
+            String email = UserInputEmail.getText();
+            String password = new String(UserInputPassword.getPassword());
 
-        /* Create and display the form */
-        java.awt.EventQueue.invokeLater(new Runnable() {
-            public void run() {
-                new Signup().setVisible(true);
+            String errorMessage = "";
+            
+            if (username.equals(""))
+                errorMessage = errorMessage + "User must not be empty.<br>";
+            if (email.equals(""))
+                errorMessage = errorMessage + "Email must not be emtpy.<br>";
+            if (password.equals(""))
+                errorMessage = errorMessage + "Password must not be emtpy.<br>";
+
+            if (!errorMessage.equals("")) {
+                PopupFactory.showError(this, errorMessage);
             }
-        });
-    }
+            else {
+                // Get default connection
+                Connection conn = MySqlDbConnection.getConnection();
+
+                // Database connection error
+                if (conn == null) {
+                    PopupFactory.showError(this, "Database connection error.");
+                }
+                // Check if user doesn't exist already
+                else if (UserDAO.contains(conn, username)) {
+                    PopupFactory.showError(this, "User already exists. <br> Please try another username.");
+                }
+                // Connection to DB is good and user doesn't exist
+                else {
+                    // Get password hash
+                    String encPassword = PasswordEncryption.getSHA1(password);
+
+                    // Create user
+                    UserDAO.create(conn, username, email, encPassword);
+
+                    userCreated = true;
+                }
+
+                // Closing resources
+                if (conn != null)
+                    conn.close();
+            }
+
+        } catch (NullPointerException e) {
+            System.out.println("Document not found in Signup form");
+            ErrorMessage err = new ErrorMessage(this, true, "NullPointerException");
+            err.setVisible(true);
+        } catch (SQLException e) {
+            System.out.println("Something went wrong with that sql!");
+            e.printStackTrace();
+            ErrorMessage err = new ErrorMessage(this, true, "SQLException");
+            err.setVisible(true);
+        }
+
+        if (userCreated) {
+            PopupFactory.showSuccess(this, "User Created Successfully");
+
+            this.dispose();
+        }
+    }//GEN-LAST:event_SignupButtonActionPerformed
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JButton SignupButton;
     private javax.swing.JTextField UserInputEmail;
     private javax.swing.JTextField UserInputName;
     private javax.swing.JPasswordField UserInputPassword;
-    private javax.swing.JButton jButton1;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;
