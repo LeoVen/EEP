@@ -24,8 +24,8 @@ public class Macros {
     public static int DbPort = 3306;
 
     public static String MySqlDriver = "com.mysql.cj.jdbc.Driver";
-    
+
     public static int MaxLenUsername = 50;
-    
+
     public static int MaxLenEmail = 200;
 }

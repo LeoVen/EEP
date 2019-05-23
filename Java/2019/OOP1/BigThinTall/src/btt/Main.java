@@ -15,6 +15,7 @@ import java.io.File;
 import java.io.IOException;
 import java.sql.Connection;
 import java.sql.SQLException;
+import javafx.util.Pair;
 import javax.imageio.ImageIO;
 
 /**
@@ -144,12 +145,12 @@ public class Main extends javax.swing.JFrame {
                 .addGap(49, 49, 49)
                 .addComponent(jLabel2)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(UserInputText, javax.swing.GroupLayout.PREFERRED_SIZE, 24, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(20, 20, 20)
+                .addComponent(UserInputText, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(24, 24, 24)
                 .addComponent(jLabel1)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(PasswordInputText, javax.swing.GroupLayout.PREFERRED_SIZE, 24, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(25, 25, 25)
+                .addComponent(PasswordInputText, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(29, 29, 29)
                 .addComponent(LoginButton, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addContainerGap())
         );
@@ -249,8 +250,6 @@ public class Main extends javax.swing.JFrame {
 
     private void LoginButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_LoginButtonActionPerformed
 
-        boolean userLogin = false;
-
         Connection conn = MySqlDbConnection.getConnection();
 
         if (conn == null) {
@@ -272,31 +271,29 @@ public class Main extends javax.swing.JFrame {
             }
 
             try {
-                boolean pass = UserDAO.validate(conn, username, encPassword);
+                Pair<Boolean, Integer> p = UserDAO.validate(conn, username, encPassword);
 
-                if (!pass) {
+                if (!p.getKey()) {
                     PopupFactory.showError(this, "Invalid username or password.");
                 }
 
-                userLogin = pass;
+                if (p.getKey()) {
+                    // User did login
+                    UserScreen us = new UserScreen(p.getValue());
+                    us.setLocationRelativeTo(null);
+                    us.setVisible(true);
+                    this.dispose();
+                }
 
             } catch (SQLException e) {
                 PopupFactory.showError(this, "Internal Error");
                 e.printStackTrace();
             }
         }
-
-        if (userLogin) {
-            // User did login
-            UserScreen us = new UserScreen();
-            us.setLocationRelativeTo(null);
-            us.setVisible(true);
-            this.dispose();
-        }
     }//GEN-LAST:event_LoginButtonActionPerformed
 
     private void PasswordInputTextActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_PasswordInputTextActionPerformed
-        // TODO add your handling code here:
+        LoginButtonActionPerformed(evt);
     }//GEN-LAST:event_PasswordInputTextActionPerformed
 
     private void SignupButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_SignupButtonActionPerformed

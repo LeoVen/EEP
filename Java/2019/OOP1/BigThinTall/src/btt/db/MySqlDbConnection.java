@@ -29,8 +29,6 @@ public class MySqlDbConnection {
 
             Connection conn = DriverManager.getConnection(strConn, Macros.DbUsername, Macros.DbUserPassword);
 
-            System.out.println("Database Connection Established");
-
             return conn;
 
         } catch (ClassNotFoundException e) {

@@ -11,6 +11,7 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
+import javafx.util.Pair;
 
 /**
  *
@@ -48,7 +49,7 @@ public class UserDAO {
         }
     }
 
-    public static boolean validate(Connection conn, String username, String password) throws SQLException {
+    public static Pair<Boolean, Integer> validate(Connection conn, String username, String password) throws SQLException {
         // String password must be already encrypted
 
         String query = "SELECT * FROM users WHERE username = ? and password = ?;";
@@ -58,7 +59,7 @@ public class UserDAO {
             pStmt.setString(2, password);
 
             try(ResultSet rs = pStmt.executeQuery()) {
-                return rs.next();
+                return new Pair(rs.next(), rs.getInt("id"));
             }
         }
     }
