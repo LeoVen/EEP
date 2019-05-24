@@ -9,7 +9,7 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
-import java.util.HashMap;
+import java.util.TreeMap;
 
 /**
  *
@@ -17,11 +17,11 @@ import java.util.HashMap;
  */
 public class CategoryDAO {
 
-    public static HashMap<String, Integer> get(Connection conn, int userId) throws SQLException {
-        HashMap<String, Integer> categories = new HashMap<>();
+    public static TreeMap<String, Integer> getAll(Connection conn, int userId) throws SQLException {
+        TreeMap<String, Integer> categories = new TreeMap<>();
 
-        String query = "SELECT * FROM categories where userid = ?;";
-        
+        String query = "SELECT * FROM categories WHERE userid = ?;";
+
         try(PreparedStatement pStmt = conn.prepareStatement(query)) {
             pStmt.setInt(1, userId);
 
@@ -35,8 +35,32 @@ public class CategoryDAO {
         return categories;
     }
 
+    public static boolean contains(Connection conn, int userId, String categoryName) throws SQLException {
+        String query = "SELECT * FROM categories WHERE userid = ? AND name = ?;";
+
+        try(PreparedStatement pStmt = conn.prepareStatement(query)) {
+            pStmt.setInt(1, userId);
+            pStmt.setString(2, categoryName);
+
+            try(ResultSet rs = pStmt.executeQuery()) {
+                return rs.next();
+            }
+        }
+    }
+
     public static void add(Connection conn, int userId, String categoryName) throws SQLException {
-        String query = "INSERT INTO categories (userid, name) values (?, ?);";
+        String query = "INSERT INTO categories (userid, name) VALUES (?, ?);";
+
+        try(PreparedStatement pStmt = conn.prepareStatement(query)) {
+            pStmt.setInt(1, userId);
+            pStmt.setString(2, categoryName);
+
+            pStmt.execute();
+        }
+    }
+
+    public static void delete(Connection conn, int userId, String categoryName) throws SQLException {
+        String query = "DELETE FROM categories WHERE userid = ? AND name = ?;";
 
         try(PreparedStatement pStmt = conn.prepareStatement(query)) {
             pStmt.setInt(1, userId);

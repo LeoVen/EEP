@@ -9,13 +9,6 @@ package btt.util;
  *
  * @author lvenk
  */
-public class StringInputReceiver {
-
-    public String message;
-    public boolean cancelled;
-
-    public StringInputReceiver() {
-        message = null;
-        cancelled = true;
-    }
+public class ComboItem {
+    
 }

@@ -5,6 +5,9 @@
  */
 package btt.util;
 
+import btt.screens.ErrorMessage;
+import btt.screens.SuccessMessage;
+
 /**
  *
  * @author lvenk

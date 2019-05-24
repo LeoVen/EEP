@@ -37,7 +37,7 @@ public class UserDAO {
 
     public static void create(Connection conn, String username, String email, String password) throws SQLException {
 
-        String query = "INSERT INTO users (username, email, password) values (?, ?, ?)";
+        String query = "INSERT INTO users (username, email, password) VALUES (?, ?, ?)";
 
         try(PreparedStatement pStmt = conn.prepareStatement(query)) {
 
@@ -52,14 +52,15 @@ public class UserDAO {
     public static Pair<Boolean, Integer> validate(Connection conn, String username, String password) throws SQLException {
         // String password must be already encrypted
 
-        String query = "SELECT * FROM users WHERE username = ? and password = ?;";
+        String query = "SELECT * FROM users WHERE username = ? AND password = ?;";
 
         try(PreparedStatement pStmt = conn.prepareStatement(query)) {
             pStmt.setString(1, username);
             pStmt.setString(2, password);
 
             try(ResultSet rs = pStmt.executeQuery()) {
-                return new Pair(rs.next(), rs.getInt("id"));
+                boolean hasValue = rs.next();
+                return new Pair(hasValue, hasValue ? rs.getInt("id") : 0);
             }
         }
     }

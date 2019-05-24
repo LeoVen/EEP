@@ -7,8 +7,8 @@ package btt;
 
 import btt.dao.UserDAO;
 import btt.db.MySqlDbConnection;
-import btt.spawn.Signup;
-import btt.spawn.UserScreen;
+import btt.screens.Signup;
+import btt.screens.UserScreen;
 import btt.util.PasswordEncryption;
 import btt.util.PopupFactory;
 import java.io.File;

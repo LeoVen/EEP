@@ -3,17 +3,17 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package btt.spawn;
+package btt.screens;
 
 import btt.Main;
 import btt.dao.CategoryDAO;
 import btt.db.MySqlDbConnection;
 import btt.util.PopupFactory;
-import btt.util.StringInput;
-import btt.util.StringInputReceiver;
+import btt.util.StringReceiver;
 import java.sql.Connection;
 import java.sql.SQLException;
-import java.util.Map;
+import java.util.ArrayList;
+import java.util.TreeMap;
 import javax.swing.DefaultListModel;
 
 /**
@@ -22,7 +22,7 @@ import javax.swing.DefaultListModel;
  */
 public class UserScreen extends javax.swing.JFrame {
 
-    Map<String, Integer> categoryList;
+    TreeMap<String, Integer> categoryList;
     int userId;
     DefaultListModel categories;
 
@@ -33,9 +33,10 @@ public class UserScreen extends javax.swing.JFrame {
         this.userId = userId;
         initComponents();
         categories = (DefaultListModel) CategoryList.getModel();
+        CategoryList.setSelectionBackground(new java.awt.Color(13,71,161));
 
         try (Connection conn = MySqlDbConnection.getConnection()) {
-            categoryList = CategoryDAO.get(conn, userId);
+            categoryList = CategoryDAO.getAll(conn, userId);
 
             categoryList.forEach( (k, v) -> {
                 categories.addElement(k);
@@ -63,6 +64,7 @@ public class UserScreen extends javax.swing.JFrame {
         jPanel2 = new javax.swing.JPanel();
         jLabel1 = new javax.swing.JLabel();
         jSeparator1 = new javax.swing.JSeparator();
+        InfoLabel = new javax.swing.JLabel();
         TitleBackPanel = new javax.swing.JPanel();
         MainLabel = new javax.swing.JLabel();
         LogoutButton = new javax.swing.JButton();
@@ -103,6 +105,8 @@ public class UserScreen extends javax.swing.JFrame {
                 .addGap(0, 0, Short.MAX_VALUE))
         );
 
+        InfoLabel.setFont(new java.awt.Font("Tahoma", 0, 14)); // NOI18N
+
         javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
         jPanel1.setLayout(jPanel1Layout);
         jPanel1Layout.setHorizontalGroup(
@@ -111,7 +115,9 @@ public class UserScreen extends javax.swing.JFrame {
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
                     .addGroup(jPanel1Layout.createSequentialGroup()
                         .addGap(0, 0, Short.MAX_VALUE)
-                        .addComponent(NewTodoButton, javax.swing.GroupLayout.PREFERRED_SIZE, 200, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                            .addComponent(NewTodoButton, javax.swing.GroupLayout.DEFAULT_SIZE, 200, Short.MAX_VALUE)
+                            .addComponent(InfoLabel, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                         .addComponent(jPanel2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                     .addComponent(jScrollPane1))
@@ -123,7 +129,8 @@ public class UserScreen extends javax.swing.JFrame {
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(jPanel1Layout.createSequentialGroup()
                         .addComponent(NewTodoButton, javax.swing.GroupLayout.PREFERRED_SIZE, 28, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(0, 34, Short.MAX_VALUE))
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(InfoLabel, javax.swing.GroupLayout.DEFAULT_SIZE, 28, Short.MAX_VALUE))
                     .addComponent(jPanel2, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 446, javax.swing.GroupLayout.PREFERRED_SIZE))
@@ -200,6 +207,11 @@ public class UserScreen extends javax.swing.JFrame {
         DeleteCategoryButton.setBackground(new java.awt.Color(198, 40, 40));
         DeleteCategoryButton.setForeground(new java.awt.Color(255, 255, 255));
         DeleteCategoryButton.setText("Delete Category");
+        DeleteCategoryButton.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                DeleteCategoryButtonActionPerformed(evt);
+            }
+        });
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
@@ -254,9 +266,10 @@ public class UserScreen extends javax.swing.JFrame {
     }//GEN-LAST:event_CategoryListMouseClicked
 
     private void NewCategoryButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_NewCategoryButtonActionPerformed
-        StringInputReceiver rec = new StringInputReceiver();
+        StringReceiver rec = new StringReceiver();
 
-        StringInput strInput = new StringInput(this, true, "Insert the new category's name.", rec);
+        // Open up window to receive text for the name of the new category
+        NewCategory strInput = new NewCategory(this, true, rec);
         strInput.setLocationRelativeTo(null);
         strInput.setVisible(true);
 
@@ -265,11 +278,18 @@ public class UserScreen extends javax.swing.JFrame {
             if (rec.message.equals("")) {
                 PopupFactory.showError(this, "Can not create a category with an empty name");
             } else {
+
                 try (Connection conn = MySqlDbConnection.getConnection()) {
-                    // Add to database
-                    CategoryDAO.add(conn, userId, rec.message);
-                    // Add to JList
-                    categories.addElement(rec.message);
+                    String categoryName = rec.message.trim();
+
+                    if (CategoryDAO.contains(conn, userId, categoryName)) {
+                        PopupFactory.showError(this, "Category already exists.");
+                    } else {
+                        // Add to database
+                        CategoryDAO.add(conn, userId, categoryName);
+                        // Add to JList
+                        categories.addElement(categoryName);
+                    }
                 } catch (SQLException e) {
                     PopupFactory.showError(this, "Internal Error");
                     e.printStackTrace();
@@ -278,9 +298,42 @@ public class UserScreen extends javax.swing.JFrame {
         }
     }//GEN-LAST:event_NewCategoryButtonActionPerformed
 
+    private void DeleteCategoryButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_DeleteCategoryButtonActionPerformed
+
+        StringReceiver rec = new StringReceiver();
+
+        // Create a window where user can choose which category to delete
+        DeleteCategory dlt = new DeleteCategory(this, true, rec, new ArrayList<String>(categoryList.keySet()));
+        dlt.setLocationRelativeTo(this);
+        dlt.setVisible(true);
+
+        if (!rec.cancelled || rec.message != null) {
+            try (Connection conn = MySqlDbConnection.getConnection()) {
+                String categoryName = rec.message.trim();
+                Integer categoryId = categoryList.get(categoryName);
+                
+                if (categoryId == null) {
+                    // What the hell?
+                    PopupFactory.showError(this, "Internal Error");
+                } else {
+                    // Remove category from database
+                    CategoryDAO.delete(conn, userId, categoryName);
+                    // Remove category from the list
+                    categories.removeElement(categoryName);
+                }
+            } catch (SQLException e) {
+                PopupFactory.showError(this, "Internal Error");
+                e.printStackTrace();
+            }
+        } else {
+            // User didn't select a valid category or cancelled
+        }
+    }//GEN-LAST:event_DeleteCategoryButtonActionPerformed
+
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JList<String> CategoryList;
     private javax.swing.JButton DeleteCategoryButton;
+    private javax.swing.JLabel InfoLabel;
     private javax.swing.JButton LogoutButton;
     private javax.swing.JPanel MainBackPanel;
     private javax.swing.JLabel MainLabel;

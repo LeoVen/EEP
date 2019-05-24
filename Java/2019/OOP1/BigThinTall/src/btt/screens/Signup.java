@@ -3,15 +3,13 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package btt.spawn;
+package btt.screens;
 
 import btt.dao.UserDAO;
 import btt.db.Macros;
 import btt.db.MySqlDbConnection;
-import btt.util.ErrorMessage;
 import btt.util.PasswordEncryption;
 import btt.util.PopupFactory;
-import btt.util.SuccessMessage;
 import java.sql.Connection;
 import java.sql.SQLException;
 
@@ -47,7 +45,6 @@ public class Signup extends javax.swing.JFrame {
         SignupButton = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
-        setMaximumSize(new java.awt.Dimension(32000, 3200));
 
         jPanel1.setPreferredSize(new java.awt.Dimension(400, 250));
 
