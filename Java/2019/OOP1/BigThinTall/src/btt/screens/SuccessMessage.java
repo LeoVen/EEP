@@ -36,6 +36,7 @@ public class SuccessMessage extends javax.swing.JDialog {
         SuccessMessage = new javax.swing.JLabel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
+        setTitle("BTT - Success");
 
         jLabel1.setFont(new java.awt.Font("Arial", 1, 24)); // NOI18N
         jLabel1.setText("Success");

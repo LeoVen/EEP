@@ -7,6 +7,7 @@ package btt;
 
 import btt.dao.UserDAO;
 import btt.db.MySqlDbConnection;
+import btt.model.UserConfig;
 import btt.screens.Signup;
 import btt.screens.UserScreen;
 import btt.util.PasswordEncryption;
@@ -30,6 +31,13 @@ public class Main extends javax.swing.JFrame {
     public Main() {
         initComponents();
         UserInputText.requestFocus();
+
+        // Set the icon for this frame
+        try {
+            this.setIconImage(ImageIO.read(new File("images/icon.png")));
+        } catch(IOException e) {
+            System.out.println("Icon not found");
+        }
     }
 
     /**
@@ -56,6 +64,7 @@ public class Main extends javax.swing.JFrame {
         SignupButton = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
+        setTitle("BigThinTall's To-Do List");
         setBounds(new java.awt.Rectangle(0, 0, 0, 0));
         setMaximumSize(new java.awt.Dimension(750, 500));
         setMinimumSize(new java.awt.Dimension(750, 500));
@@ -105,10 +114,9 @@ public class Main extends javax.swing.JFrame {
         jLabel2.setForeground(new java.awt.Color(255, 255, 255));
         jLabel2.setText("Username");
 
-        LoginButton.setBackground(new java.awt.Color(0, 77, 64));
+        LoginButton.setBackground(new java.awt.Color(255, 111, 0));
         LoginButton.setForeground(new java.awt.Color(255, 255, 255));
         LoginButton.setText("Login");
-        LoginButton.setToolTipText("");
         LoginButton.setFocusPainted(false);
         LoginButton.setMaximumSize(new java.awt.Dimension(100, 30));
         LoginButton.setMinimumSize(new java.awt.Dimension(100, 30));
@@ -171,7 +179,7 @@ public class Main extends javax.swing.JFrame {
         jLabel5.setForeground(new java.awt.Color(255, 255, 255));
         jLabel5.setText("A To-Do List App");
 
-        SignupButton.setBackground(new java.awt.Color(0, 77, 64));
+        SignupButton.setBackground(new java.awt.Color(255, 111, 0));
         SignupButton.setForeground(new java.awt.Color(255, 255, 255));
         SignupButton.setText("Signup");
         SignupButton.setFocusPainted(false);
@@ -275,11 +283,9 @@ public class Main extends javax.swing.JFrame {
 
                 if (!p.getKey()) {
                     PopupFactory.showError(this, "Invalid username or password.");
-                }
-
-                if (p.getKey()) {
+                } else {
                     // User did login
-                    UserScreen us = new UserScreen(p.getValue());
+                    UserScreen us = new UserScreen(new UserConfig(p.getValue(), username));
                     us.setLocationRelativeTo(null);
                     us.setVisible(true);
                     this.dispose();
@@ -335,12 +341,6 @@ public class Main extends javax.swing.JFrame {
                 Main frame = new Main();
                 frame.setVisible(true);
                 frame.setLocationRelativeTo(null);
-                frame.setTitle("BigThinTall's To-Do List");
-                try {
-                    frame.setIconImage(ImageIO.read(new File("images/icon.png")));
-                } catch(IOException e) {
-                    System.out.println("Icon not found");
-                }
             }
         });
     }

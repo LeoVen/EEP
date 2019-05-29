@@ -36,6 +36,7 @@ public class ErrorMessage extends javax.swing.JDialog {
         ErrorMessage = new javax.swing.JLabel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
+        setTitle("BTT - Error");
 
         ErrorTitle.setFont(new java.awt.Font("Arial", 1, 24)); // NOI18N
         ErrorTitle.setText("Error");

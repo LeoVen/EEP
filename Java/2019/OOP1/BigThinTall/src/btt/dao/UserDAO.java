@@ -64,4 +64,17 @@ public class UserDAO {
             }
         }
     }
+
+    public static void update(Connection conn, int userId, String password) throws SQLException {
+        // String password must be already encrypted
+
+        String query = "UPDATE users SET password = ? WHERE id = ?;";
+
+        try(PreparedStatement pStmt = conn.prepareStatement(query)) {
+            pStmt.setString(1, password);
+            pStmt.setInt(2,userId);
+
+            pStmt.execute();
+        }
+    }
 }

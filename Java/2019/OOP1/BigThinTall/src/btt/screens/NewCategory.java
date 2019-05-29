@@ -53,12 +53,14 @@ public class NewCategory extends javax.swing.JDialog {
         );
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
+        setTitle("BTT - New Category");
 
         jPanel2.setBackground(new java.awt.Color(13, 71, 161));
 
         AcceptButton.setBackground(new java.awt.Color(0, 77, 64));
         AcceptButton.setForeground(new java.awt.Color(255, 255, 255));
         AcceptButton.setText("Accept");
+        AcceptButton.setFocusPainted(false);
         AcceptButton.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 AcceptButtonActionPerformed(evt);
@@ -68,6 +70,7 @@ public class NewCategory extends javax.swing.JDialog {
         CancelButton.setBackground(new java.awt.Color(198, 40, 40));
         CancelButton.setForeground(new java.awt.Color(255, 255, 255));
         CancelButton.setText("Cancel");
+        CancelButton.setFocusPainted(false);
         CancelButton.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 CancelButtonActionPerformed(evt);

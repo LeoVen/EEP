@@ -9,7 +9,7 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
-import java.util.TreeMap;
+import java.util.TreeSet;
 
 /**
  *
@@ -17,8 +17,8 @@ import java.util.TreeMap;
  */
 public class CategoryDAO {
 
-    public static TreeMap<String, Integer> getAll(Connection conn, int userId) throws SQLException {
-        TreeMap<String, Integer> categories = new TreeMap<>();
+    public static TreeSet<String> getAll(Connection conn, int userId) throws SQLException {
+        TreeSet<String> categories = new TreeSet<>();
 
         String query = "SELECT * FROM categories WHERE userid = ?;";
 
@@ -27,7 +27,7 @@ public class CategoryDAO {
 
             try(ResultSet rs = pStmt.executeQuery()) {
                 while (rs.next()) {
-                    categories.put(rs.getString("name"), rs.getInt("id"));
+                    categories.add(rs.getString("name"));
                 }
             }
         }

@@ -7,13 +7,19 @@ package btt.screens;
 
 import btt.Main;
 import btt.dao.CategoryDAO;
+import btt.dao.UserDAO;
 import btt.db.MySqlDbConnection;
+import btt.model.UserConfig;
 import btt.util.PopupFactory;
 import btt.util.StringReceiver;
+import java.io.File;
+import java.io.IOException;
 import java.sql.Connection;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.TreeMap;
+import java.util.TreeSet;
+import javax.imageio.ImageIO;
 import javax.swing.DefaultListModel;
 
 /**
@@ -22,28 +28,35 @@ import javax.swing.DefaultListModel;
  */
 public class UserScreen extends javax.swing.JFrame {
 
-    TreeMap<String, Integer> categoryList;
-    int userId;
-    DefaultListModel categories;
+    private TreeSet<String> categoryList;
+    private UserConfig config;
+    private DefaultListModel categories;
 
     /**
      * Creates new form UserScreen
      */
-    public UserScreen(int userId) {
-        this.userId = userId;
+    public UserScreen(UserConfig config) {
+        this.config = config;
         initComponents();
         categories = (DefaultListModel) CategoryList.getModel();
         CategoryList.setSelectionBackground(new java.awt.Color(13,71,161));
 
         try (Connection conn = MySqlDbConnection.getConnection()) {
-            categoryList = CategoryDAO.getAll(conn, userId);
+            categoryList = CategoryDAO.getAll(conn, config.userId);
 
-            categoryList.forEach( (k, v) -> {
+            categoryList.forEach( (k) -> {
                 categories.addElement(k);
             });
         } catch (SQLException e) {
             e.printStackTrace();
             PopupFactory.showError(this, "Failed to load category list.");
+        }
+
+        // Set the icon for this frame
+        try {
+            this.setIconImage(ImageIO.read(new File("images/icon.png")));
+        } catch(IOException e) {
+            System.out.println("Icon not found");
         }
     }
 
@@ -68,18 +81,21 @@ public class UserScreen extends javax.swing.JFrame {
         TitleBackPanel = new javax.swing.JPanel();
         MainLabel = new javax.swing.JLabel();
         LogoutButton = new javax.swing.JButton();
+        ChangePasswordButton = new javax.swing.JButton();
         jScrollPane2 = new javax.swing.JScrollPane();
         CategoryList = new javax.swing.JList<>();
         NewCategoryButton = new javax.swing.JButton();
         DeleteCategoryButton = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
+        setTitle("BigThinTall's To-Do List");
 
         MainBackPanel.setBackground(new java.awt.Color(255, 255, 255));
 
         NewTodoButton.setBackground(new java.awt.Color(13, 71, 161));
         NewTodoButton.setForeground(new java.awt.Color(255, 255, 255));
         NewTodoButton.setText("New To-Do");
+        NewTodoButton.setFocusPainted(false);
 
         jScrollPane1.setViewportView(TodoList);
 
@@ -166,13 +182,25 @@ public class UserScreen extends javax.swing.JFrame {
             }
         });
 
+        ChangePasswordButton.setBackground(new java.awt.Color(255, 111, 0));
+        ChangePasswordButton.setForeground(new java.awt.Color(255, 255, 255));
+        ChangePasswordButton.setText("Change Password");
+        ChangePasswordButton.setFocusPainted(false);
+        ChangePasswordButton.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                ChangePasswordButtonActionPerformed(evt);
+            }
+        });
+
         javax.swing.GroupLayout TitleBackPanelLayout = new javax.swing.GroupLayout(TitleBackPanel);
         TitleBackPanel.setLayout(TitleBackPanelLayout);
         TitleBackPanelLayout.setHorizontalGroup(
             TitleBackPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(TitleBackPanelLayout.createSequentialGroup()
                 .addComponent(MainLabel, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addGap(9, 9, 9)
+                .addComponent(ChangePasswordButton)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addComponent(LogoutButton)
                 .addContainerGap())
         );
@@ -181,9 +209,11 @@ public class UserScreen extends javax.swing.JFrame {
             .addGroup(TitleBackPanelLayout.createSequentialGroup()
                 .addComponent(MainLabel, javax.swing.GroupLayout.PREFERRED_SIZE, 47, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(0, 0, Short.MAX_VALUE))
-            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, TitleBackPanelLayout.createSequentialGroup()
+            .addGroup(TitleBackPanelLayout.createSequentialGroup()
                 .addContainerGap()
-                .addComponent(LogoutButton, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addGroup(TitleBackPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(LogoutButton, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(ChangePasswordButton))
                 .addContainerGap())
         );
 
@@ -198,6 +228,7 @@ public class UserScreen extends javax.swing.JFrame {
         NewCategoryButton.setBackground(new java.awt.Color(0, 77, 64));
         NewCategoryButton.setForeground(new java.awt.Color(255, 255, 255));
         NewCategoryButton.setText("New Category");
+        NewCategoryButton.setFocusPainted(false);
         NewCategoryButton.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 NewCategoryButtonActionPerformed(evt);
@@ -207,6 +238,7 @@ public class UserScreen extends javax.swing.JFrame {
         DeleteCategoryButton.setBackground(new java.awt.Color(198, 40, 40));
         DeleteCategoryButton.setForeground(new java.awt.Color(255, 255, 255));
         DeleteCategoryButton.setText("Delete Category");
+        DeleteCategoryButton.setFocusPainted(false);
         DeleteCategoryButton.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 DeleteCategoryButtonActionPerformed(evt);
@@ -273,7 +305,7 @@ public class UserScreen extends javax.swing.JFrame {
         strInput.setLocationRelativeTo(null);
         strInput.setVisible(true);
 
-        if (!rec.cancelled) {
+        if (!rec.cancelled && rec.message != null){
             // User did input something
             if (rec.message.equals("")) {
                 PopupFactory.showError(this, "Can not create a category with an empty name");
@@ -282,13 +314,15 @@ public class UserScreen extends javax.swing.JFrame {
                 try (Connection conn = MySqlDbConnection.getConnection()) {
                     String categoryName = rec.message.trim();
 
-                    if (CategoryDAO.contains(conn, userId, categoryName)) {
+                    if (CategoryDAO.contains(conn, config.userId, categoryName)) {
                         PopupFactory.showError(this, "Category already exists.");
                     } else {
                         // Add to database
-                        CategoryDAO.add(conn, userId, categoryName);
+                        CategoryDAO.add(conn, config.userId, categoryName);
                         // Add to JList
                         categories.addElement(categoryName);
+                        // Add to TreeMap
+                        categoryList.add(categoryName);
                     }
                 } catch (SQLException e) {
                     PopupFactory.showError(this, "Internal Error");
@@ -302,25 +336,23 @@ public class UserScreen extends javax.swing.JFrame {
 
         StringReceiver rec = new StringReceiver();
 
+        if (categoryList.size() == 0) {
+            PopupFactory.showError(this, "There are no categories to be deleted.");
+            return;
+        }
+
         // Create a window where user can choose which category to delete
-        DeleteCategory dlt = new DeleteCategory(this, true, rec, new ArrayList<String>(categoryList.keySet()));
+        DeleteCategory dlt = new DeleteCategory(this, true, rec, new ArrayList<String>(categoryList));
         dlt.setLocationRelativeTo(this);
         dlt.setVisible(true);
 
-        if (!rec.cancelled || rec.message != null) {
+        if (!rec.cancelled && rec.message != null) {
             try (Connection conn = MySqlDbConnection.getConnection()) {
                 String categoryName = rec.message.trim();
-                Integer categoryId = categoryList.get(categoryName);
-                
-                if (categoryId == null) {
-                    // What the hell?
-                    PopupFactory.showError(this, "Internal Error");
-                } else {
-                    // Remove category from database
-                    CategoryDAO.delete(conn, userId, categoryName);
-                    // Remove category from the list
-                    categories.removeElement(categoryName);
-                }
+                // Remove category from database
+                CategoryDAO.delete(conn, config.userId, categoryName);
+                // Remove category from the list
+                categories.removeElement(categoryName);
             } catch (SQLException e) {
                 PopupFactory.showError(this, "Internal Error");
                 e.printStackTrace();
@@ -330,8 +362,16 @@ public class UserScreen extends javax.swing.JFrame {
         }
     }//GEN-LAST:event_DeleteCategoryButtonActionPerformed
 
+    private void ChangePasswordButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_ChangePasswordButtonActionPerformed
+        // New screen to change the password
+        ChangePassword changePassword = new ChangePassword(config);
+        changePassword.setLocationRelativeTo(null);
+        changePassword.setVisible(true);
+    }//GEN-LAST:event_ChangePasswordButtonActionPerformed
+
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JList<String> CategoryList;
+    private javax.swing.JButton ChangePasswordButton;
     private javax.swing.JButton DeleteCategoryButton;
     private javax.swing.JLabel InfoLabel;
     private javax.swing.JButton LogoutButton;

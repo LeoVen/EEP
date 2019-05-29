@@ -45,6 +45,7 @@ public class Signup extends javax.swing.JFrame {
         SignupButton = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
+        setTitle("BTT - Signup");
 
         jPanel1.setPreferredSize(new java.awt.Dimension(400, 250));
 
