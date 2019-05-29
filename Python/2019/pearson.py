@@ -1,9 +1,6 @@
 import numpy as np
 import matplotlib.pyplot as plt
 
-def f(x):
-  return x**2
-
 x = np.array([80, 85, 50, 70, 55, 77, 85, 93, 65, 60])
 y = np.array([1.8, 1.83, 1.65, 1.9, 1.6, 1.8, 1.78, 1.86, 1.7, 1.65])
 
