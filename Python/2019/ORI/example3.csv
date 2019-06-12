@@ -1,0 +1,10 @@
+milk,eggs,coffee,sugar,diapers,butter
+milk,coffee,flour
+milk,eggs,sugar
+coffee,sugar
+diapers
+butter,eggs,milk
+coffee,sugar,milk,eggs
+flour,butter,eggs
+butter,eggs,milk,coffee,sugar
+diapers,coffee,beer

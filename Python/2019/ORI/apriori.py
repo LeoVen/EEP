@@ -1,89 +1,48 @@
 # apriori.py
 #
-# 24/05/2019
+# 11/06/2019
 #
 # Apriori Algorithm
 #
 
-import numpy as np
-import pandas as pd
 import argparse
 from itertools import chain, combinations
 from collections import defaultdict
 
-# Preprocessing
-# STEP 0 - Set up custom variables for preprocessing
-# STEP 1 - Read Dataset
-# STEP 2 - Set best fitting Row Spacing and Column Spacing
-# STEP 3 - Encode integers and labels
-# STEP 4 - Write Dataset
-
 # Apriori Algorithm
-# STEP 5 - Create the superset of itemsets and a transaction_list
-# STEP 6 - Filter the superset of itemsets based on minimum support
-# STEP 7 - Generate n-itemsets until the resulting set is empty
-# STEP 8 - Prepare the resulting itemsets
-# STEP 9 - Calculate the confidence of rules
+# STEP 1 - Create the superset of itemsets and a transaction_list
+# STEP 2 - Filter the superset of itemsets based on minimum support
+# STEP 3 - Generate n-itemsets until the resulting set is empty
+# STEP 4 - Prepare the resulting itemsets
+# STEP 5 - Calculate the confidence of rules
 
-
-def encode(filename, encoded_file_name):
-    """
-    Encode function used specifically for the dataset located in MainDataCSV.csv
-    """
-    # STEP 0 - Custom variables
-    # B - Base for row spacing power
-    # M - minimum column spacing
-    B = 10
-    M = 100
-
-    # STEP 1 - Read dataset
-    df = pd.read_csv(filename)
-    # The values of this dataset
-    values = df.values
-
-    # STEP 2 - Set best fitting Row Spacing and Column Spacing
-    # RS = row spacing variable
-    # CS = column spacing variable
-    RS = np.array([1 for i in range(df.shape[1])])
-    for i in range(values.shape[1] - 1):
-        RS[i] = int(B ** len(str(min(x for x in values[:, i + 1] if x != 0))))
-
-    CT = max(RS) * M
-
-    # STEP 3 - Encode integers and labels
-    # Encoding integers
-    for i in range(len(values.T) - 1):
-        values[:, i + 1] = (values[:, i + 1] // RS[i]) + (i + 1) * int(CT)
-    # Encoding labels
-    # Create a mapping between labels and numbers
-    # fit
-    labels = {}
-    for i, label in enumerate(values.T[0]):
-        labels[label] = i
-    # transform
-    for i in range(values.shape[0]):
-        values[i, 0] = labels[values[i, 0]]
-    # Dataset is ready
-
-    # INSIGHT
-    print("+--------------------------------------------------+")
-    print("|          Preprocessing Insight (Example)         |")
-    print("+--------------------------------------------------+")
-    print(f"Rate        : {len(set(values.flatten()))/len(values.flatten())}")
-    print(f"Proportion  : {len(values.flatten())/len(set(values.flatten()))}")
-    print(f"Row Spacing : {RS}")
-    print(f"Col Spacing : {CT}")
-
-    if encoded_file_name != '':
-        np.savetxt(f"{encoded_file_name}.csv", values, delimiter=',', fmt='%d')
-
-    return values
-
-
-def apriori(values, min_support, min_confidence):
+def apriori(values, min_support, min_metrics, sort):
     """
     Apriori algorithm given a matrix of values, the minimum support and the
     minimum confidence.
+
+    Parameters
+    ----------
+        values : A matrix of values where an association rule is expected to be
+                 found.
+        min_support : A float value between (0, 1] for the minimum support of
+                      an itemset.
+        min_metrics : A tuple of type (min_conf, min_lift, min_lev, min_conv),
+                      where :
+                      - min_conf : The minimum confidence of a rule (X -> Y)
+                      - min_lift : The minimum lift of a rule (X -> Y)
+                      - min_lev  : The minimum leverage of a rule (X -> Y)
+                      - min_conv : The minimum conviction of a rule (X -> Y)
+        sort : An integer with the possible values :
+               - 0 : Sort values by confidence
+               - 1 : Sort values by lift
+               - 2 : Sort values by leverage
+               - 3 : Sort values by conviction
+
+    Returns
+    -------
+    result_items : An array of structure [ [ itemset, support ], ...]
+    result_rules : An array of structure [ [ X, Y, [ metrics ] ] , ... ]
     """
 
     # Internal Functions
@@ -129,7 +88,7 @@ def apriori(values, min_support, min_confidence):
         """
         return float(freq_map[item]) / len(transaction_list)
 
-    # STEP 5 - Create the superset of itemsets and a transaction_list
+    # STEP 1 - Create the superset of itemsets and a transaction_list
     transaction_list = list()  # each row in the csv
     item_set = set()           # superset of item_sets
 
@@ -140,7 +99,7 @@ def apriori(values, min_support, min_confidence):
             # Here 1-itemSet is generated
             item_set.add(frozenset([item]))
 
-    # STEP 6 - Filter the superset of itemsets based on minimum support
+    # STEP 2 - Filter the superset of itemsets based on minimum support
     # Frequency mapping an itemset to its frequency (with default value of 0)
     freq_map = defaultdict(int)
     # Map that keeps track of (n-item_sets : support)
@@ -153,7 +112,7 @@ def apriori(values, min_support, min_confidence):
                                     freq_map,
                                     min_support)
 
-    # STEP 7 - Generate n-itemsets until the resulting set is empty
+    # STEP 3 - Generate n-itemsets until the resulting set is empty
     current_set = one_item_set
     n = 2
     while current_set != set([]):
@@ -173,39 +132,72 @@ def apriori(values, min_support, min_confidence):
         current_set = current_new_set
         n += 1
 
-    # STEP 8 - Prepare the resulting itemsets
+    # STEP 4 - Prepare the resulting itemsets
     # These itemsets have achieved the minimum required support
     result_items = []
     for key, value in large_map.items():
         result_items.extend([(tuple(item), support(item)) for item in value])
 
-    # STEP 9 - Calculate the confidence of rules
+    # STEP 5 - Calculate the confidence of rules
     # Also add to the resulting_rules, those that have achieved the minimum
     # suport
     result_rules = []
+    # For each n-itemset of itemsets
     for key, value in large_map.items():
+
+        # For each itemset in the superset
         for itemset in value:
+
             # Generate all possible subsets from the given itemset that
             # achieved the minimum support
             powerset = map(frozenset, [x for x in subsets(itemset)])
+
             for subset in powerset:
                 # For each generated subset, calculate the difference between
                 # the original and its subsets
                 # This is done so we can calculate:
                 #     subset -> remain
                 remain = itemset.difference(subset)
-                if len(remain) > 0:
-                    confidence = support(itemset) / support(subset)
-                    if confidence >= min_confidence:
-                        # If that rule achieved a minimum support, save it as:
-                        #    subset -> remain    (confidence)
-                        result_rules.append(
-                            ((tuple(subset), tuple(remain)), confidence))
 
-    return result_items, result_rules
+                if len(remain) > 0:
+
+                    # Calculate metrics
+                    supp_x = support(subset)
+                    supp_y = support(remain)
+                    supp_union = support(itemset)
+                    # conf(X -> Y) = supp(X union Y) / supp(X)
+                    confidence = supp_union / supp_x
+                    # lift(X -> Y) = supp(X union Y) / ( supp(X) * supp(Y) )
+                    lift = supp_union / (supp_x * supp_y)
+                    # leverage(X -> Y) = supp(X union Y) - supp(X) * supp(Y)
+                    leverage = supp_union - (supp_x * supp_y)
+                    # conv(X -> Y) = ( 1 - supp(Y) ) / ( 1 - conf(X -> Y) )
+                    if confidence == 1.0:
+                        conviction = 100.0
+                    else:
+                        conviction = (1.0 - supp_y) / (1.0 - confidence)
+
+                    metrics = [confidence, lift, leverage, conviction]
+
+                    # Compare if all the metrics attend the minimum
+                    if len([0 for i in range(len(metrics)) if metrics[i] >= min_metrics[i]]) == len(metrics):
+                        # If that rule achieved a minimum confidence or lift,
+                        # save it as:
+                        #    subset -> remain    [conf, lift, lev, conv]
+                        metrics = [confidence, lift, leverage, conviction]
+
+                        result_rules.append(
+                            [tuple(subset), tuple(remain), tuple(metrics)])
+
+    # result_items = [ [ itemset, support ], [ itemset, support ], ...]
+    # result_rules = [ [ X, Y, [ metrics ] ] , [ X, Y, [ metrics ] ], ... ]
+    return sorted(result_items, key=lambda x: -x[1]), sorted(result_rules, key=lambda x: -x[2][sort])
 
 
 if __name__ == '__main__':
+
+    metrics = ['confidence', 'lift', 'leverage', 'conviction']
+    metric_map = {x: y for x, y in zip(metrics, range(len(metrics)))}
 
     parser = argparse.ArgumentParser(description='''
         Apriori is an algorithm for frequent item set mining and association
@@ -215,45 +207,114 @@ if __name__ == '__main__':
         sufficiently often in the database. The frequent item sets determined
         by Apriori can be used to determine association rules which highlight
         general trends in the database.
-    ''')
-    parser.add_argument('-s', '--support', type=float, default=0.15, dest='s',
-                        help='The minimum support for an itemset to be considered')
+
+        Metrics
+
+        Support
+            Range : (0, 1]
+            Support is the proportion of how many times an itemset appears in
+            the transactions divided by the total amount of transactions.
+
+            supp(X) : frequency(X) / total_transactions
+
+        Confidence
+            Range : (0, 1]
+            Confidence of a rule (X -> Y) is the probability of finding the
+            itemset Y in transactions where the itemset X is also present.
+
+            conf(X -> Y) = supp(X union Y) / supp(X)
+
+        Lift
+            Range : (0, ∞)
+            Lift of a rule (X -> Y) will also take into account the popularity
+            of Y. The smaller the lift is, the more likely it is that the rule
+            (X -> Y) is a coincidence due to Y appearing so many times.
+                - A lift = 1 suggests there is no association
+                - A lift > 1 suggests there is a positive correlation
+                - A lift < 1 suggests there is a negative correlation
+
+            lift(X -> Y) = supp(X union Y) / ( supp(X) * supp(Y) )
+
+        Leverage
+            Range : [-1, 1]
+            Leverage computes the difference between the observed frequency of
+            A and C appearing together and the frequency that would be expected
+            if A and C were independent.
+                - A leverage = 0 indicates independence.
+                - A leverage > 0 indicates positive association
+                - A leverage < 0 indicates negative association
+
+            leverage(X -> Y) = supp(X union Y) - supp(X) * supp(Y)
+
+        Conviction
+            Range : (0, ∞)
+            Conviction of a rule (X -> Y) shows the frequency that that it
+            makes an incorrect prediction. A conviction of 1.2 shows that the
+            rule (X -> Y) would be incorrect 20% more often if the association
+            between X and Y was purely random chance.
+
+            conv(X -> Y) = ( 1 - supp(Y) ) / ( 1 - conf(X -> Y) )
+
+    ''', formatter_class=argparse.RawDescriptionHelpFormatter)
+    parser.add_argument('-s', '--support', type=float, default=0.2, dest='s',
+                        help='The minimum support for an itemset to be considered (default 0.2)')
     parser.add_argument('-c', '--confidence', type=float, default=0.6, dest='c',
-                        help='The minimum confidence for a rule to be considered')
-    parser.add_argument('-f', '--file', type=str, default='example0.csv',
-                        dest='file', help='Filename containing a CSV')
-    parser.add_argument('-o', '--output', type=str, default='', required=False,
-                        dest='out', help='''When running with the example0.csv,
-                                            specify the file name if you wish
-                                            to save the encoded data to a file''')
-    parser.add_argument('-hdr', '--header', dest='h', action='store_true',
+                        help='The minimum confidence for a rule to be considered (default 0.6)')
+    parser.add_argument('-l', '--lift', type=float, default=1.0, dest='l',
+                        help='The minimum lift for a rule to be considered (default 1.0)')
+    parser.add_argument('-lv', '--leverage', type=float, default=0.05, dest='lv',
+                        help='The minimum lift for a rule to be considered (default 0.05)')
+    parser.add_argument('-cv', '--conviction', type=float, default=1.0, dest='cv',
+                        help='The minimum conviction for a rule to be considered (default 1.0)')
+    parser.add_argument('-sort', '--sort_by_metric', type=str,
+                        default='confidence', dest='filter', choices=metrics,
+                        help='Sort the values by a given metric')
+    parser.add_argument('-f', '--file', type=str, required=True, dest='file',
+                        help='Full file (e.g. data.csv) name containing a CSV')
+    parser.add_argument('-hdr', '--header', dest='hdr', action='store_true',
                         help='''Wheather or not the specified csv contains a
                                 header row''')
+    parser.add_argument('-delim', '--delimeter', type=str, dest='d', default=',',
+                        help='''Value delimeter''')
     args = parser.parse_args()
 
-    if (args.file == 'example0.csv'):
-        items, rules = apriori(encode(args.file, args.out), args.s, args.c)
-    else:
-        values = list()
-        if args.h:
-            df = pd.read_csv(args.file).values
-        else:
-            df = pd.read_csv(args.file, header=None).values
-        for row in df:
-            # x == x doesn't work for NaN
-            values.append(list(filter(lambda x: x == x, list(row))))
-        items, rules = apriori(values, args.s, args.c)
+    # Retrieve minimum number for metrics
+    # (confidence, lift, leverage, conviction)
+    min_metrics = (args.c, args.l, args.lv, args.cv)
+
+    # Load CSV data
+    csv_data = []
+    with open(args.file, 'r') as f:
+        for line in f:
+            csv_data.append(frozenset(line.rstrip().split(args.d)))
+
+    # If header is present, skip it
+    if args.hdr:
+        csv_data = csv_data[1:]
+
+    items, rules = apriori(csv_data, args.s, min_metrics, metric_map[args.filter])
+
+    print("\n+--------------------------------------------------+")
+    print("| Apriori Algorithm Results                        |")
+    print("+--------------------------------------------------+")
+    print("| S  - Support                                     |")
+    print("| C  - Confidence                                  |")
+    print("| L  - Lift                                        |")
+    print("| LV - Leverage                                    |")
+    print("| CV - Conviction                                  |")
+    print("+--------------------------------------------------+")
 
     # Printing results
     print("\n+--------------------------------------------------+")
     print("|                     ItemSets                     |")
     print("+--------------------------------------------------+")
-    for item, support in sorted(items, key=lambda x: -x[1]):
-        print("Item [{0:.4f}] : {1}".format(support, str(list(item))))
+    for item, support in items:
+        print("Item S[{0:.4f}] : {1}".format(support, str(list(item))))
 
     print("\n+--------------------------------------------------+")
     print("|                      Rules                       |")
     print("+--------------------------------------------------+")
-    for rule, confidence in sorted(rules, key=lambda x: -x[1]):
-        print("Rule [{0:.4f}] : {1} ----------> {2}"
-              .format(confidence, str(list(rule[0])), str(list(rule[1]))))
+    for X, Y, metrics in rules:
+        print("Rule [ C[{:8.4f}] L[{:8.4f}] LV[{:8.4f}] CV[{:8.4f}] ] : {} ----------> {}"
+              .format(metrics[0], metrics[1], metrics[2], metrics[3],
+                      str(list(X)), str(list(Y))))
