@@ -19,7 +19,7 @@ import pandas as pd
 from collections import defaultdict
 
 
-def encode(filename, output_file, decoder_file, b, min_col, max_row, min_row):
+def encode(filename, output_file, decoder_file, b, min_col, max_row, min_row, cols):
     """
     Encode function used specifically for the dataset located in MainDataCSV.csv
     """
@@ -48,12 +48,12 @@ def encode(filename, output_file, decoder_file, b, min_col, max_row, min_row):
     # STEP 1 - Read dataset
     df = pd.read_csv(filename)
     # The values of this dataset
-    values = df.values
+    values = df.values[:, cols]
 
     # STEP 2 - Set best fitting Row Spacing and Column Spacing
     # RS = row spacing variable
     # CS = column spacing variable
-    RS = np.array([1 for i in range(df.shape[1])])
+    RS = [1 for i in range(df.shape[1])]
     # Skip first column
     for i in range(1, values.shape[1]):
         RS[i] = int(B ** len(str(min(x for x in values[:, i] if x != 0))))
@@ -144,7 +144,11 @@ if __name__ == '__main__':
     parser.add_argument('-rmin', '--min_row_sep', type=int, default=1, dest='rmin',
                         help='''Minimum row separator. Resulting row separator is
                         given by rmin * b''')
+    parser.add_argument('-cols', nargs='+', type=int, dest='cols',
+                        default=[x for x in range(14)], help='''Columns to be
+                                                                accepted (from
+                                                                range [0-13])''')
 
     args = parser.parse_args()
 
-    encode('MainData.csv', args.file, args.dec, args.b, args.col, args.rmax, args.rmin)
+    encode('MainData.csv', args.file, args.dec, args.b, args.col, args.rmax, args.rmin, args.cols)

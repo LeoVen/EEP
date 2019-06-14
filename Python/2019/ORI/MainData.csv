@@ -1,4 +1,4 @@
-﻿NomeDoMunicipio, SituacaoUrbana, SituacaoRural, DensidadePorComodo[0.0-0.5], DensidadePorComodo[0.5-1.0], DensidadePorComodo[1.0-2.0], DensidadePorComodo[2.0-+], DensidadePorDormitorio[1], DensidadePorDormitorio[1-2], DensidadePorDormitorio[2-3], DensidadePorDormitorio[3+], AdequacaoAdequada, AdequacaoSemi, AdequacaoIndadequada
+﻿NomeDoMunicipio, SituacaoUrbana, SituacaoRural, DensidadeMoradorPorComodo[0.0-0.5], DensidadeMoradorPorComodo[0.5-1.0], DensidadeMoradorPorComodo[1.0-2.0], DensidadeMoradorPorComodo[2.0-+], DensidadeMoradorPorDormitorio[1], DensidadeMoradorPorDormitorio[1-2], DensidadeMoradorPorDormitorio[2-3], DensidadeMoradorPorDormitorio[3+], MoradiaAdequada, MoradiaSemiAdequada, MoradiaInadequada
 Adamantina,10766,558,7197,3904,223,0,4829,5779,620,96,10065,1244,15
 Adolfo,1081,119,710,471,19,0,570,571,42,17,989,207,5
 Aguaí,8970,929,4729,4352,769,49,2982,5235,1172,510,7361,2380,158
