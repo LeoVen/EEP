@@ -16,6 +16,7 @@ from collections import defaultdict
 # STEP 4 - Prepare the resulting itemsets
 # STEP 5 - Calculate the confidence of rules
 
+
 def apriori(values, min_support, min_metrics, sort):
     """
     Apriori algorithm given a matrix of values, the minimum support and the
@@ -256,7 +257,7 @@ if __name__ == '__main__':
             conv(X -> Y) = ( 1 - supp(Y) ) / ( 1 - conf(X -> Y) )
 
     ''', formatter_class=argparse.RawDescriptionHelpFormatter)
-    parser.add_argument('-s', '--support', type=float, default=0.2, dest='s',
+    parser.add_argument('-s', '--support', type=float, default=0.15, dest='s',
                         help='The minimum support for an itemset to be considered (default 0.2)')
     parser.add_argument('-c', '--confidence', type=float, default=0.6, dest='c',
                         help='The minimum confidence for a rule to be considered (default 0.6)')
@@ -271,6 +272,10 @@ if __name__ == '__main__':
                         help='Sort the values by a given metric')
     parser.add_argument('-f', '--file', type=str, required=True, dest='file',
                         help='Full file (e.g. data.csv) name containing a CSV')
+    parser.add_argument('-d', '--decoder', type=str, required=False, dest='dec',
+                        default='', help="""Specify the decoder file. It follows
+                        two columns, the first as the key and the second as the
+                        value, separated by ':'""")
     parser.add_argument('-hdr', '--header', dest='hdr', action='store_true',
                         help='''Wheather or not the specified csv contains a
                                 header row''')
@@ -286,35 +291,62 @@ if __name__ == '__main__':
     csv_data = []
     with open(args.file, 'r') as f:
         for line in f:
-            csv_data.append(frozenset(line.rstrip().split(args.d)))
+            csv_data.append(frozenset(x.strip()
+                                      for x in line.rstrip().split(args.d)))
 
     # If header is present, skip it
     if args.hdr:
         csv_data = csv_data[1:]
 
-    items, rules = apriori(csv_data, args.s, min_metrics, metric_map[args.filter])
+    items, rules = apriori(csv_data, args.s, min_metrics,
+                           metric_map[args.filter])
 
     print("\n+--------------------------------------------------+")
     print("| Apriori Algorithm Results                        |")
     print("+--------------------------------------------------+")
-    print("| S  - Support                                     |")
-    print("| C  - Confidence                                  |")
-    print("| L  - Lift                                        |")
-    print("| LV - Leverage                                    |")
-    print("| CV - Conviction                                  |")
+    print("| S  - Support     {:6.3f}                         |".format(args.s))
+    print("| C  - Confidence  {:6.3f}                         |".format(args.c))
+    print("| L  - Lift        {:6.3f}                         |".format(args.l))
+    print("| LV - Leverage    {:6.3f}                         |".format(args.lv))
+    print("| CV - Conviction  {:6.3f}                         |".format(args.cv))
     print("+--------------------------------------------------+")
 
     # Printing results
-    print("\n+--------------------------------------------------+")
-    print("|                     ItemSets                     |")
-    print("+--------------------------------------------------+")
-    for item, support in items:
-        print("Item S[{0:.4f}] : {1}".format(support, str(list(item))))
+    if args.dec == '':
+        # Prints result without decoder
+        print("\n+--------------------------------------------------+")
+        print("|                     ItemSets                     |")
+        print("+--------------------------------------------------+")
+        for item, support in items:
+            print("Item S[{0:.4f}] : {1}".format(support, str(list(item))))
 
-    print("\n+--------------------------------------------------+")
-    print("|                      Rules                       |")
-    print("+--------------------------------------------------+")
-    for X, Y, metrics in rules:
-        print("Rule [ C[{:8.4f}] L[{:8.4f}] LV[{:8.4f}] CV[{:8.4f}] ] : {} ----------> {}"
-              .format(metrics[0], metrics[1], metrics[2], metrics[3],
-                      str(list(X)), str(list(Y))))
+        print("\n+--------------------------------------------------+")
+        print("|                      Rules                       |")
+        print("+--------------------------------------------------+")
+        for X, Y, metrics in rules:
+            print("Rule [ C[{:8.4f}] L[{:8.4f}] LV[{:8.4f}] CV[{:8.4f}] ] : {} ----------> {}"
+                  .format(metrics[0], metrics[1], metrics[2], metrics[3],
+                          str(list(X)), str(list(Y))))
+    else:
+        # Print result with decoder
+        dec = {}
+        # First load it
+        with open(args.dec, 'r') as f:
+            for row in f:
+                l = row.strip().split(':')
+                dec[str(l[0]).strip()] = str(l[1]).strip()
+        # Now print decoded results
+        print("\n+--------------------------------------------------+")
+        print("|                     ItemSets                     |")
+        print("+--------------------------------------------------+")
+        for item, support in items:
+            print("Item S[{0:.4f}] : {1}".format(
+                support, str(list(dec[x] for x in item))))
+
+        print("\n+--------------------------------------------------+")
+        print("|                      Rules                       |")
+        print("+--------------------------------------------------+")
+        for X, Y, metrics in rules:
+            print("Rule [ C[{:8.4f}] L[{:8.4f}] LV[{:8.4f}] CV[{:8.4f}] ] : {} ----------> {}"
+                  .format(metrics[0], metrics[1], metrics[2], metrics[3],
+                          str(list(dec[a] for a in X)), str(list(dec[b] for b in Y))))
