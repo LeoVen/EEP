@@ -25,6 +25,7 @@ CREATE TABLE IF NOT EXISTS oopcrud.todos
 	title VARCHAR(100),
 	description VARCHAR(200),
 	category VARCHAR(50) NOT NULL,
+	due DATE,
 	PRIMARY KEY (id),
 	FOREIGN KEY (category)
 		REFERENCES oopcrud.categories (name)

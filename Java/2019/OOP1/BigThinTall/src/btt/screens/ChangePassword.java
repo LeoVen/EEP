@@ -63,7 +63,7 @@ public class ChangePassword extends javax.swing.JFrame {
         NewPasswordInput = new javax.swing.JPasswordField();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
-        setTitle("Change Password");
+        setTitle("BTT - Change Password");
 
         jPanel1.setBackground(new java.awt.Color(13, 71, 161));
 

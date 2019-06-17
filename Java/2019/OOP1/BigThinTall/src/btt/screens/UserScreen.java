@@ -7,8 +7,9 @@ package btt.screens;
 
 import btt.Main;
 import btt.dao.CategoryDAO;
-import btt.dao.UserDAO;
+import btt.dao.ToDoDAO;
 import btt.db.MySqlDbConnection;
+import btt.model.ToDo;
 import btt.model.UserConfig;
 import btt.util.PopupFactory;
 import btt.util.StringReceiver;
@@ -17,7 +18,6 @@ import java.io.IOException;
 import java.sql.Connection;
 import java.sql.SQLException;
 import java.util.ArrayList;
-import java.util.TreeMap;
 import java.util.TreeSet;
 import javax.imageio.ImageIO;
 import javax.swing.DefaultListModel;
@@ -28,27 +28,36 @@ import javax.swing.DefaultListModel;
  */
 public class UserScreen extends javax.swing.JFrame {
 
+    Connection conn;
     private TreeSet<String> categoryList;
     private UserConfig config;
     private DefaultListModel categories;
+    private DefaultListModel todoList;
 
     /**
      * Creates new form UserScreen
      */
     public UserScreen(UserConfig config) {
-        this.config = config;
         initComponents();
+        this.config = config;
+        this.conn = MySqlDbConnection.getConnection();
+
+        if (conn == null) {
+            PopupFactory.showError(this, "Internal Error");
+            this.dispose();
+        }
+
+        todoList = (DefaultListModel) TodoList.getModel();
         categories = (DefaultListModel) CategoryList.getModel();
         CategoryList.setSelectionBackground(new java.awt.Color(13,71,161));
 
-        try (Connection conn = MySqlDbConnection.getConnection()) {
+        try {
             categoryList = CategoryDAO.getAll(conn, config.userId);
 
             categoryList.forEach( (k) -> {
                 categories.addElement(k);
             });
         } catch (SQLException e) {
-            e.printStackTrace();
             PopupFactory.showError(this, "Failed to load category list.");
         }
 
@@ -56,7 +65,7 @@ public class UserScreen extends javax.swing.JFrame {
         try {
             this.setIconImage(ImageIO.read(new File("images/icon.png")));
         } catch(IOException e) {
-            System.out.println("Icon not found");
+            System.out.println("Icon images/icon.png not found");
         }
     }
 
@@ -77,7 +86,7 @@ public class UserScreen extends javax.swing.JFrame {
         jPanel2 = new javax.swing.JPanel();
         jLabel1 = new javax.swing.JLabel();
         jSeparator1 = new javax.swing.JSeparator();
-        InfoLabel = new javax.swing.JLabel();
+        jButton1 = new javax.swing.JButton();
         TitleBackPanel = new javax.swing.JPanel();
         MainLabel = new javax.swing.JLabel();
         LogoutButton = new javax.swing.JButton();
@@ -92,11 +101,17 @@ public class UserScreen extends javax.swing.JFrame {
 
         MainBackPanel.setBackground(new java.awt.Color(255, 255, 255));
 
-        NewTodoButton.setBackground(new java.awt.Color(13, 71, 161));
+        NewTodoButton.setBackground(new java.awt.Color(0, 77, 64));
         NewTodoButton.setForeground(new java.awt.Color(255, 255, 255));
         NewTodoButton.setText("New To-Do");
         NewTodoButton.setFocusPainted(false);
+        NewTodoButton.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                NewTodoButtonActionPerformed(evt);
+            }
+        });
 
+        TodoList.setModel(new DefaultListModel());
         jScrollPane1.setViewportView(TodoList);
 
         jLabel1.setText("Order by");
@@ -121,7 +136,9 @@ public class UserScreen extends javax.swing.JFrame {
                 .addGap(0, 0, Short.MAX_VALUE))
         );
 
-        InfoLabel.setFont(new java.awt.Font("Tahoma", 0, 14)); // NOI18N
+        jButton1.setBackground(new java.awt.Color(198, 40, 40));
+        jButton1.setForeground(new java.awt.Color(255, 255, 255));
+        jButton1.setText("Delete To-Do");
 
         javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
         jPanel1.setLayout(jPanel1Layout);
@@ -133,7 +150,7 @@ public class UserScreen extends javax.swing.JFrame {
                         .addGap(0, 0, Short.MAX_VALUE)
                         .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
                             .addComponent(NewTodoButton, javax.swing.GroupLayout.DEFAULT_SIZE, 200, Short.MAX_VALUE)
-                            .addComponent(InfoLabel, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                            .addComponent(jButton1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                         .addComponent(jPanel2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                     .addComponent(jScrollPane1))
@@ -145,8 +162,8 @@ public class UserScreen extends javax.swing.JFrame {
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(jPanel1Layout.createSequentialGroup()
                         .addComponent(NewTodoButton, javax.swing.GroupLayout.PREFERRED_SIZE, 28, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(InfoLabel, javax.swing.GroupLayout.DEFAULT_SIZE, 28, Short.MAX_VALUE))
+                        .addGap(4, 4, 4)
+                        .addComponent(jButton1, javax.swing.GroupLayout.PREFERRED_SIZE, 28, javax.swing.GroupLayout.PREFERRED_SIZE))
                     .addComponent(jPanel2, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 446, javax.swing.GroupLayout.PREFERRED_SIZE))
@@ -294,7 +311,16 @@ public class UserScreen extends javax.swing.JFrame {
 
         String categoryClicked = new String(CategoryList.getModel().getElementAt(index));
 
-        System.out.println(categoryClicked);
+        try {
+            ArrayList<ToDo> todoFromDb = ToDoDAO.getFromCategory(conn, categoryClicked);
+
+            todoFromDb.forEach( (k) -> {
+                todoList.add(0, k);
+            });
+        } catch (SQLException ex) {
+            PopupFactory.showError(this, "Internal Error");
+            ex.printStackTrace();
+        }
     }//GEN-LAST:event_CategoryListMouseClicked
 
     private void NewCategoryButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_NewCategoryButtonActionPerformed
@@ -311,7 +337,7 @@ public class UserScreen extends javax.swing.JFrame {
                 PopupFactory.showError(this, "Can not create a category with an empty name");
             } else {
 
-                try (Connection conn = MySqlDbConnection.getConnection()) {
+                try {
                     String categoryName = rec.message.trim();
 
                     if (CategoryDAO.contains(conn, config.userId, categoryName)) {
@@ -336,7 +362,7 @@ public class UserScreen extends javax.swing.JFrame {
 
         StringReceiver rec = new StringReceiver();
 
-        if (categoryList.size() == 0) {
+        if (categoryList.isEmpty()) {
             PopupFactory.showError(this, "There are no categories to be deleted.");
             return;
         }
@@ -347,7 +373,7 @@ public class UserScreen extends javax.swing.JFrame {
         dlt.setVisible(true);
 
         if (!rec.cancelled && rec.message != null) {
-            try (Connection conn = MySqlDbConnection.getConnection()) {
+            try {
                 String categoryName = rec.message.trim();
                 // Remove category from database
                 CategoryDAO.delete(conn, config.userId, categoryName);
@@ -369,11 +395,16 @@ public class UserScreen extends javax.swing.JFrame {
         changePassword.setVisible(true);
     }//GEN-LAST:event_ChangePasswordButtonActionPerformed
 
+    private void NewTodoButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_NewTodoButtonActionPerformed
+        NewTodo nt = new NewTodo(categoryList);
+        nt.setLocationRelativeTo(null);
+        nt.setVisible(true);
+    }//GEN-LAST:event_NewTodoButtonActionPerformed
+
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JList<String> CategoryList;
     private javax.swing.JButton ChangePasswordButton;
     private javax.swing.JButton DeleteCategoryButton;
-    private javax.swing.JLabel InfoLabel;
     private javax.swing.JButton LogoutButton;
     private javax.swing.JPanel MainBackPanel;
     private javax.swing.JLabel MainLabel;
@@ -381,6 +412,7 @@ public class UserScreen extends javax.swing.JFrame {
     private javax.swing.JButton NewTodoButton;
     private javax.swing.JPanel TitleBackPanel;
     private javax.swing.JList<String> TodoList;
+    private javax.swing.JButton jButton1;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JPanel jPanel1;
     private javax.swing.JPanel jPanel2;
