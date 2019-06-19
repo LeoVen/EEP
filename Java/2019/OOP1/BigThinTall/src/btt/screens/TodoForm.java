@@ -29,12 +29,14 @@ public class TodoForm extends javax.swing.JFrame {
 
     private Connection conn;
     private ToDo todo;
+    private UserScreen parent;
     
     /**
      * Creates new form NewTodo
      */
-    public TodoForm(TreeSet<String> categoryList, ToDo td) {
+    public TodoForm(TreeSet<String> categoryList, ToDo td, UserScreen parent) {
         initComponents();
+        this.parent = parent;
 
         // Set the icon for this frame
         try {
@@ -95,7 +97,7 @@ public class TodoForm extends javax.swing.JFrame {
         jLabel5 = new javax.swing.JLabel();
         CancelButton = new javax.swing.JToggleButton();
 
-        setTitle("BTT - New To-Do");
+        setTitle("BTT - To-Do Form");
         setMaximumSize(new java.awt.Dimension(600, 300));
         setMinimumSize(new java.awt.Dimension(600, 300));
         addWindowListener(new java.awt.event.WindowAdapter() {
@@ -261,7 +263,8 @@ public class TodoForm extends javax.swing.JFrame {
                     // Add new to-do
                     try {
                         ToDoDAO.add(conn, title, desc, category, date);
-                        this.dispose();
+                        this.conn.close();
+                        parent.reloadToDoList();
                     } catch(SQLException e) {
                         PopupFactory.showError(this, "Internal Error");
                         e.printStackTrace();
@@ -273,6 +276,7 @@ public class TodoForm extends javax.swing.JFrame {
                     try {
                         ToDoDAO.update(conn, todo.id, title, desc, category, date);
                         this.conn.close();
+                        parent.reloadToDoList();
                     } catch (SQLException e) {
                         PopupFactory.showError(this, "Internal Error");
                         e.printStackTrace();

@@ -473,7 +473,7 @@ public class UserScreen extends javax.swing.JFrame {
 
     private void NewTodoButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_NewTodoButtonActionPerformed
         // Pass in ToDo as null because we are not using the form to update the ToDo
-        TodoForm nt = new TodoForm(categoryList, null);
+        TodoForm nt = new TodoForm(categoryList, null, this);
         nt.setLocationRelativeTo(null);
         nt.setVisible(true);
     }//GEN-LAST:event_NewTodoButtonActionPerformed
@@ -509,7 +509,14 @@ public class UserScreen extends javax.swing.JFrame {
         }
 
         ToDo td = (ToDo)todos.getElementAt(index);
-        // TODO
+
+        try {
+            ToDoDAO.delete(conn, td.id);
+            reloadToDoList();
+        } catch (SQLException e) {
+            PopupFactory.showError(this, "Internal Error");
+            e.printStackTrace();
+        }
     }//GEN-LAST:event_DeleteTodoButtonActionPerformed
 
     private void EditTodoButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_EditTodoButtonActionPerformed
@@ -522,11 +529,29 @@ public class UserScreen extends javax.swing.JFrame {
 
         ToDo td = (ToDo) todos.getElementAt(index);
 
-        TodoForm tf = new TodoForm(categoryList, td);
+        TodoForm tf = new TodoForm(categoryList, td, this);
         tf.setLocationRelativeTo(null);
         tf.setVisible(true);
     }//GEN-LAST:event_EditTodoButtonActionPerformed
 
+    public void reloadToDoList() {
+        if (selectedCategory != null) {
+            try {
+                ArrayList<ToDo> todoFromDb = ToDoDAO.getFromCategory(conn, selectedCategory);
+
+                todos.clear();
+                todoList.clear();
+                todoFromDb.forEach( (k) -> {
+                    todos.add(0, k);
+                    todoList.add(k);
+                });
+            } catch (SQLException e) {
+                PopupFactory.showError(this, "Internal Error");
+                e.printStackTrace();
+            }
+        }
+    }
+    
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JList<String> CategoryList;
     private javax.swing.JButton ChangePasswordButton;

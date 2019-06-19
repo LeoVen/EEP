@@ -71,4 +71,14 @@ public class ToDoDAO {
             pStmt.execute();
         }
     }
+
+    public static void delete(Connection conn, int id) throws SQLException {
+        String query = "DELETE FROM todos WHERE id = ?;";
+
+        try (PreparedStatement pStmt = conn.prepareStatement(query)) {
+            pStmt.setInt(1, id);
+
+            pStmt.execute();
+        }
+    }
 }
