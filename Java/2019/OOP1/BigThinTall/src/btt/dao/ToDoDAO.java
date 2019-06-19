@@ -12,6 +12,7 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
+import java.util.Calendar;
 
 /**
  *
@@ -48,10 +49,26 @@ public class ToDoDAO {
                 String description = rs.getString("description");
                 String category = rs.getString("category");
                 Date date = rs.getDate("due");
-                list.add(new ToDo(id, title, description, category, date));
+                Calendar cal = Calendar.getInstance();
+                cal.setTime(date);
+                list.add(new ToDo(id, title, description, category, cal));
             }
         }
 
         return list;
+    }
+
+    public static void update(Connection conn, int id, String title, String desc, String category, Date date) throws SQLException {
+        String query = "UPDATE todos SET title = ?, description = ?, category = ?, due = ? WHERE id = ?;";
+
+        try(PreparedStatement pStmt = conn.prepareStatement(query)) {
+            pStmt.setString(1, title);
+            pStmt.setString(2, desc);
+            pStmt.setString(3, category);
+            pStmt.setDate(4, date);
+            pStmt.setInt(5, id);
+
+            pStmt.execute();
+        }
     }
 }

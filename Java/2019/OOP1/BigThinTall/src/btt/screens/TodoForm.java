@@ -6,7 +6,9 @@
 package btt.screens;
 
 import btt.dao.ToDoDAO;
+import btt.db.Macros;
 import btt.db.MySqlDbConnection;
+import btt.model.ToDo;
 import btt.util.PopupFactory;
 import java.io.File;
 import java.io.IOException;
@@ -23,22 +25,23 @@ import javax.imageio.ImageIO;
  *
  * @author lvenk
  */
-public class NewTodo extends javax.swing.JFrame {
+public class TodoForm extends javax.swing.JFrame {
 
     private Connection conn;
+    private ToDo todo;
     
     /**
      * Creates new form NewTodo
      */
-    public NewTodo(TreeSet<String> categoryList) {
+    public TodoForm(TreeSet<String> categoryList, ToDo td) {
         initComponents();
-        this.conn = conn;
 
         // Set the icon for this frame
         try {
             this.setIconImage(ImageIO.read(new File("images/icon.png")));
         } catch(IOException e) {
             System.out.println("Icon not found");
+            e.printStackTrace();
         }
 
         for (String s : categoryList) {
@@ -46,13 +49,27 @@ public class NewTodo extends javax.swing.JFrame {
             CategoryCombobox.insertItemAt(s, 0);
         }
 
-        DateInput.setText(new SimpleDateFormat("dd/MM/yyyy").format(new Date(System.currentTimeMillis())));
-        
         this.conn = MySqlDbConnection.getConnection();
-        
+
         if (conn == null) {
             PopupFactory.showError(this, "Internal Error");
             this.dispose();
+        }
+
+        // If this is an update form, ToDo will be a valid instance
+        // Otherwise it is just a new ToDo form
+        this.todo = td;
+        if (todo != null) {
+            AcceptButton.setText("Update ToDo");
+
+            // Set current fields
+            TitleInput.setText(todo.title);
+            DescriptionInput.setText(todo.description);
+            DateInput.setText(ToDo.normalizeStupidDate(todo.due));
+            CategoryCombobox.setSelectedItem(todo.category);
+        } else {
+            // Default date
+            DateInput.setText(new SimpleDateFormat("dd/MM/yyyy").format(new Time(System.currentTimeMillis())));
         }
     }
 
@@ -213,15 +230,56 @@ public class NewTodo extends javax.swing.JFrame {
         if (selected == -1) {
             PopupFactory.showError(this, "Please select a category");
         } else {
+            // Category is selected
             String category = CategoryCombobox.getItemAt(selected);
-            try {
-                Date date = new Date(new SimpleDateFormat("dd/MM/yyyy").parse(DateInput.getText()).getTime());
-                ToDoDAO.add(conn, title, desc, category, date);
-                this.dispose();
-            } catch (ParseException ex) {
-                PopupFactory.showError(this, "Invalid date format.");
-            } catch(SQLException ex) {
-                PopupFactory.showError(this, "Internal Error");
+
+            // Treat the database maximum length
+            String error = "";
+            if (title.length() > Macros.MaxLenToDoTitle) {
+                error = error + "<p>Title must have at most " + Macros.MaxLenToDoTitle + " letters</p>";
+            }
+            if (desc.length() > Macros.MaxLenToDoDesc) {
+                error = error + "<p>Description must have at most " + Macros.MaxLenToDoDesc + " letters</p>";
+            }
+            if (!error.equals("")) {
+                PopupFactory.showError(this, "<html> " + error);
+            } else {
+
+                // Try parse date
+                Date date = null;
+                try {
+                    date = new Date(new SimpleDateFormat("dd/MM/yyyy").parse(DateInput.getText()).getTime());
+                } catch (ParseException e) {
+                    PopupFactory.showError(this, "Invalid date format.");
+                    e.printStackTrace();
+                }
+
+                // Now all parameters are checked
+
+                // Now check if this is an update form or a new to-do form
+                if (todo == null) {
+                    // Add new to-do
+                    try {
+                        ToDoDAO.add(conn, title, desc, category, date);
+                        this.dispose();
+                    } catch(SQLException e) {
+                        PopupFactory.showError(this, "Internal Error");
+                        e.printStackTrace();
+                    } finally {
+                        this.dispose();
+                    }
+                } else {
+                    // Update current to-do
+                    try {
+                        ToDoDAO.update(conn, todo.id, title, desc, category, date);
+                        this.conn.close();
+                    } catch (SQLException e) {
+                        PopupFactory.showError(this, "Internal Error");
+                        e.printStackTrace();
+                    } finally {
+                        this.dispose();
+                    }
+                }
             }
         }
     }//GEN-LAST:event_AcceptButtonActionPerformed
@@ -229,8 +287,9 @@ public class NewTodo extends javax.swing.JFrame {
     private void CancelButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_CancelButtonActionPerformed
         try {
             this.conn.close();
-        } catch (SQLException ex) {
+        } catch (SQLException e) {
             PopupFactory.showError(this, "Internal Error");
+            e.printStackTrace();
         }
         this.dispose();
     }//GEN-LAST:event_CancelButtonActionPerformed
@@ -238,8 +297,9 @@ public class NewTodo extends javax.swing.JFrame {
     private void formWindowClosing(java.awt.event.WindowEvent evt) {//GEN-FIRST:event_formWindowClosing
         try {
             this.conn.close();
-        } catch (SQLException ex) {
+        } catch (SQLException e) {
             PopupFactory.showError(this, "Internal Error");
+            e.printStackTrace();
         }
     }//GEN-LAST:event_formWindowClosing
 

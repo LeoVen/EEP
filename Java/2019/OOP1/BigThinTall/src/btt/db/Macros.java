@@ -28,4 +28,10 @@ public class Macros {
     public static int MaxLenUsername = 50;
 
     public static int MaxLenEmail = 200;
+
+    public static int MaxLenCategoryName = 50;
+
+    public static int MaxLenToDoTitle = 100;
+
+    public static int MaxLenToDoDesc = 200;
 }

@@ -29,4 +29,5 @@ CREATE TABLE IF NOT EXISTS oopcrud.todos
 	PRIMARY KEY (id),
 	FOREIGN KEY (category)
 		REFERENCES oopcrud.categories (name)
+		ON DELETE CASCADE
 );
