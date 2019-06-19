@@ -1,8 +1,3 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
 package btt.dao;
 
 import btt.model.ToDo;
@@ -14,10 +9,7 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.Calendar;
 
-/**
- *
- * @author lvenk
- */
+
 public class ToDoDAO {
 
     public static void add(Connection conn, String title, String desc, String category, Date date) throws SQLException {

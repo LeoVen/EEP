@@ -1,17 +1,9 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
 package btt.util;
 
 import btt.screens.ErrorMessage;
 import btt.screens.SuccessMessage;
 
-/**
- *
- * @author lvenk
- */
+
 public class PopupFactory {
     
     public static void showError(java.awt.Frame parent, String errorMessage) {

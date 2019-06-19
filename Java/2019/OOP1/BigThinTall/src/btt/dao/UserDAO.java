@@ -1,8 +1,3 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
 package btt.dao;
 
 import java.sql.Connection;
@@ -11,10 +6,7 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import javafx.util.Pair;
 
-/**
- *
- * @author lvenk
- */
+
 public class UserDAO {
 
     public static boolean contains(Connection conn, String username) throws SQLException {
