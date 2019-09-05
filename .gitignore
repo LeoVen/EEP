@@ -1,7 +1,6 @@
 *.~sql
 *.pyc
 
-
 # C/C++
 obj
 bin
@@ -28,6 +27,7 @@ DataStructures/.vs/
 
 #vscode
 .vscode
+.vs/
 /Java/2019/OOP1/App1/nbproject/private/
 /Java/2019/OOP1/App1/build/
 /Java/2019/OOP1/App1/dist/
@@ -41,3 +41,6 @@ DataStructures/.vs/
 /Java/2019/OOP1/MessageEvent/build/
 /Java/2019/OOP1/MouseEvents/nbproject/private/
 /Java/2019/OOP1/MouseEvents/build/
+/Java/2019/OOP2/CRUD_Singleton/nbproject/private/
+/Java/2019/OOP2/CRUD/nbproject/private/
+/Java/2019/OOP2/CRUD/build/
