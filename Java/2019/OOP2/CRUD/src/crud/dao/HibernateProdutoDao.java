@@ -1,13 +1,13 @@
 package crud.dao;
 
-import crud.dao.i.ProdutoDAO;
 import crud.vo.Produto;
 import java.util.List;
-import net.sf.ehcache.hibernate.HibernateUtil;
 import org.hibernate.Session;
 import org.hibernate.Transaction;
+import crud.dao.i.IProdutoDao;
+import crud.util.HibernateUtil;
 
-public class HibernateProdutoDAO implements ProdutoDAO {
+public class HibernateProdutoDao implements IProdutoDao {
 
     @Override
     public void create(Produto produto) {

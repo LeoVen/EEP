@@ -1,13 +1,13 @@
 package crud.dao;
 
 import crud.DBConnection;
-import crud.dao.i.ProdutoDAO;
 import crud.vo.Produto;
 import java.sql.ResultSet;
 import java.util.ArrayList;
 import java.util.List;
+import crud.dao.i.IProdutoDao;
 
-public class JDBCProdutoDAO implements ProdutoDAO {
+public class JdbcProdutoDao implements IProdutoDao {
 
     @Override
     public void create(Produto produto) throws Exception {

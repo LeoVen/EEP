@@ -89,8 +89,8 @@ public class Login extends javax.swing.JFrame {
         String senha = new String(pass);
         if (usuario.equals(senha)) { //isto é só um exemplo!!!!! Não use no trabalho!!!
             this.setVisible(false);
-            CRUD aula11 = new CRUD();
-            aula11.setVisible(true);
+            CRUD crud = new CRUD();
+            crud.setVisible(true);
         } else {
             JOptionPane.showMessageDialog(this,
                     "Errrooooou",

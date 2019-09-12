@@ -1,23 +1,25 @@
 package crud;
 
-import crud.dao.JDBCProdutoDAO;
-import crud.dao.i.ProdutoDAO;
 import crud.vo.Produto;
 import java.util.List;
 import javax.swing.JOptionPane;
 import javax.swing.table.DefaultTableModel;
+import crud.dao.i.IProdutoDao;
+import crud.factory.DaoAbstractFactory;
 
 public class CRUD extends javax.swing.JFrame {
 
+    private int accessType = DaoAbstractFactory.JDBC;
+
     public CRUD() {
         initComponents();
-        listarTabela();
+        listTableData();
     }
 
-    private void listarTabela() {
+    private void listTableData() {
         ((DefaultTableModel) jTable1.getModel()).setRowCount(0);
         try {
-            ProdutoDAO produtoDAO = new JDBCProdutoDAO();
+            IProdutoDao produtoDAO = DaoAbstractFactory.getFactory(accessType).createProdutoDAO();
             List<Produto> produtos = produtoDAO.retrieveAll();
 
             for (Produto produto : produtos) {
@@ -54,6 +56,7 @@ public class CRUD extends javax.swing.JFrame {
         jButton3 = new javax.swing.JButton();
         jButton4 = new javax.swing.JButton();
         jButton5 = new javax.swing.JButton();
+        jComboBox1 = new javax.swing.JComboBox<>();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setTitle("Cadastro de Produtos");
@@ -137,6 +140,13 @@ public class CRUD extends javax.swing.JFrame {
             }
         });
 
+        jComboBox1.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "JDBC", "HIBERNATE" }));
+        jComboBox1.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jComboBox1ActionPerformed(evt);
+            }
+        });
+
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
@@ -163,13 +173,15 @@ public class CRUD extends javax.swing.JFrame {
                             .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                             .addComponent(jButton1, javax.swing.GroupLayout.PREFERRED_SIZE, 75, javax.swing.GroupLayout.PREFERRED_SIZE))
                         .addComponent(jTextField2, javax.swing.GroupLayout.PREFERRED_SIZE, 378, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 73, Short.MAX_VALUE)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
                     .addComponent(jButton2, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                     .addComponent(jButton3, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                     .addComponent(jButton4, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                     .addComponent(jButton5, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-                .addGap(97, 97, 97))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addComponent(jComboBox1, javax.swing.GroupLayout.PREFERRED_SIZE, 80, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap())
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -178,7 +190,8 @@ public class CRUD extends javax.swing.JFrame {
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel1)
                     .addComponent(jTextField1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(jButton2))
+                    .addComponent(jButton2)
+                    .addComponent(jComboBox1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel2)
@@ -219,11 +232,11 @@ public class CRUD extends javax.swing.JFrame {
             //INSERT INTO produto VALUES(null,'sdfsdf','fgdgd',1000)
 
             Produto produto = new Produto(0, nome, preco, qtd);
-            ProdutoDAO produtoDAO = new JDBCProdutoDAO();
+            IProdutoDao produtoDAO = DaoAbstractFactory.getFactory(accessType).createProdutoDAO();
             produtoDAO.create(produto);
 
             limparCampos();
-            listarTabela();
+            listTableData();
         } catch (Exception e) {
             JOptionPane.showMessageDialog(this,
                     e.getMessage(),
@@ -236,7 +249,7 @@ public class CRUD extends javax.swing.JFrame {
         limparCampos();
         reiniciarBotoes();
         jTable1.clearSelection();
-        listarTabela();
+        listTableData();
     }//GEN-LAST:event_jButton1ActionPerformed
 
     private void jButton2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton2ActionPerformed
@@ -281,11 +294,10 @@ public class CRUD extends javax.swing.JFrame {
                     qtd
             );
 
-            ProdutoDAO produtoDAO = new JDBCProdutoDAO();
-            produtoDAO.update(produto);
+            IProdutoDao produtoDAO = DaoAbstractFactory.getFactory(accessType).createProdutoDAO();
 
             limparCampos();
-            listarTabela();
+            listTableData();
             reiniciarBotoes();
         } catch (Exception e) {
             JOptionPane.showMessageDialog(this,
@@ -308,7 +320,7 @@ public class CRUD extends javax.swing.JFrame {
             Produto produto = new Produto();
             produto.setIdProduto(Integer.parseInt(jTextField1.getText()));
 
-            ProdutoDAO produtoDAO = new JDBCProdutoDAO();
+            IProdutoDao produtoDAO = DaoAbstractFactory.getFactory(accessType).createProdutoDAO();
             produtoDAO.delete(produto);
 
             JOptionPane.showMessageDialog(this,
@@ -322,9 +334,19 @@ public class CRUD extends javax.swing.JFrame {
                     JOptionPane.ERROR_MESSAGE);
         }
         limparCampos();
-        listarTabela();
+        listTableData();
         reiniciarBotoes();
     }//GEN-LAST:event_jButton5ActionPerformed
+
+    private void jComboBox1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jComboBox1ActionPerformed
+        String selection = jComboBox1.getSelectedItem().toString();
+
+        if (selection.equals("JDBC")) {
+            accessType = DaoAbstractFactory.JDBC;
+        } else if (selection.equals("HIBERNATE")) {
+            accessType = DaoAbstractFactory.HIBERNATE;
+        }
+    }//GEN-LAST:event_jComboBox1ActionPerformed
 
     private void carregarCampos(int linha) {
         DefaultTableModel model = (DefaultTableModel) jTable1.getModel();
@@ -363,6 +385,7 @@ public class CRUD extends javax.swing.JFrame {
     private javax.swing.JButton jButton3;
     private javax.swing.JButton jButton4;
     private javax.swing.JButton jButton5;
+    private javax.swing.JComboBox<String> jComboBox1;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;
