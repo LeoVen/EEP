@@ -1,0 +1,7 @@
+<resources>
+    <string name="app_name">CurrencyConvert</string>
+    <string name="valor_real">Valor Real</string>
+    <string name="valor_dolar">Valor em dolar</string>
+    <string name="digitar_valor">Por favor digite o valor em reais</string>
+    <string name="calcular">Calcular</string>
+</resources>
