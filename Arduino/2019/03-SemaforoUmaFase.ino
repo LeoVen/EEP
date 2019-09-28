@@ -20,9 +20,9 @@
 
 // Pinos
 const int pinoLedVerde = 12;
-const int pinoLedAmarelo = 10;
-const int pinoLedVermelho = 9;
-const int pinoSensor = 7;
+const int pinoLedAmarelo = 11;
+const int pinoLedVermelho = 10;
+const int pinoSensor = 8;
 
 // Variaveis de configuracao
 const int delayLedAmarelo = 2000; // 2 s
@@ -38,6 +38,7 @@ void setup()
     pinMode(pinoLedVermelho, OUTPUT);
     pinMode(pinoLedAmarelo, OUTPUT);
     pinMode(pinoLedVerde, OUTPUT);
+    pinMode(pinoSensor, INPUT);
 
     digitalWrite(pinoLedVermelho, HIGH);
 }
@@ -57,6 +58,8 @@ void loop()
 
     int sensor = digitalRead(pinoSensor);
 
+    sensor = sensor == HIGH ? LOW : HIGH;
+
     if (sensor == HIGH && ligadoVermelho)
     {
         digitalWrite(pinoLedVermelho, LOW);
@@ -68,7 +71,7 @@ void loop()
         ligadoVermelho = false;
         ligadoVerde = true;
 
-        Serial.write("VERDE");
+        Serial.write("VERDE\n");
     }
     else if (sensor == LOW && ligadoVerde)
     {
@@ -81,15 +84,17 @@ void loop()
         ligadoVermelho = true;
         ligadoVerde = false;
 
-        Serial.write("VERMELHO");
+        Serial.write("VERMELHO\n");
     }
+
+    delay(100);
 }
 
 void pulsoAmarelo()
 {
-    digitalWrite(pinoLedAramelo, HIGH);
+    digitalWrite(pinoLedAmarelo, HIGH);
 
-    Serial.write("AMARELO");
+    Serial.write("AMARELO\n");
 
     delay(delayLedAmarelo);
 
