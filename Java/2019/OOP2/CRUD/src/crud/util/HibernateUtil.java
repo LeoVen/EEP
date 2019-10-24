@@ -15,8 +15,8 @@ public class HibernateUtil {
             logger.info("Trying to create a test connection with database");
             Configuration configuration = new Configuration().configure();
             configuration.configure();
-            StandardServiceRegistryBuilder builder = new StandardServiceRegistryBuilder().applySettings(configuration
-                    .getProperties());
+            StandardServiceRegistryBuilder builder = new StandardServiceRegistryBuilder()
+                    .applySettings(configuration.getProperties());
             sessionFactory = configuration.buildSessionFactory(builder.build());
         } catch (Throwable ex) {
             System.out.println("SessionFactory creation failed with error" + ex);
