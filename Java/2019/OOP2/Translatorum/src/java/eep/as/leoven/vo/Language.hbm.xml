@@ -1,0 +1,21 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+"http://www.hibernate.org/dtd/hibernate-mapping-3.0.dtd">
+<!-- Generated 24/10/2019 01:23:23 by Hibernate Tools 4.3.1 -->
+<hibernate-mapping>
+    <class name="eep.as.leoven.vo.Language" table="language" catalog="translatorum" optimistic-lock="version">
+        <id name="id" type="int">
+            <column name="id" />
+            <generator class="assigned" />
+        </id>
+        <property name="name" type="string">
+            <column name="name" length="100" not-null="true" />
+        </property>
+        <set name="words" table="word" inverse="true" lazy="true" fetch="select">
+            <key>
+                <column name="language" not-null="true" />
+            </key>
+            <one-to-many class="eep.as.leoven.vo.Word" />
+        </set>
+    </class>
+</hibernate-mapping>
