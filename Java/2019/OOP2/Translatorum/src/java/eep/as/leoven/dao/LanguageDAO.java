@@ -25,8 +25,10 @@ package eep.as.leoven.dao;
 
 import eep.as.leoven.util.HibernateUtil;
 import eep.as.leoven.vo.Language;
+import java.util.List;
 import java.util.Set;
 import java.util.TreeSet;
+import org.hibernate.HibernateException;
 import org.hibernate.Session;
 import org.hibernate.Transaction;
 
@@ -36,10 +38,7 @@ import org.hibernate.Transaction;
  */
 public class LanguageDAO {
 
-    Session session;
-
     public LanguageDAO() {
-        session = HibernateUtil.getSessionFactory().getCurrentSession();
     }
 
     /**
@@ -50,8 +49,23 @@ public class LanguageDAO {
      * @return A single instance of a {@link Language} of the given id.
      */
     public Language get(int id) {
-        return (Language) session.createQuery("from Language where id = " + id)
-                .uniqueResult();
+        Session session = null;
+        Language language = null;
+        try {
+            session = HibernateUtil.getSessionFactory().openSession();
+
+            language = (Language) session.createQuery("from Language where id = " + id).uniqueResult();
+
+            session.flush();
+        } catch (HibernateException e) {
+
+        } finally {
+            if (session != null) {
+                session.close();
+            }
+        }
+
+        return language;
     }
 
     /**
@@ -60,7 +74,25 @@ public class LanguageDAO {
      * @return All languages in the database.
      */
     public Set<Language> getAll() {
-        return new TreeSet(session.createQuery("from Language").list());
+        Session session = null;
+        TreeSet<Language> ret = null;
+        try {
+            session = HibernateUtil.getSessionFactory().openSession();
+            List<Language> languages = session.createQuery("from Language").list();
+
+            session.flush();
+
+            ret = new TreeSet<>((l1, l2) -> l1.getName().compareTo(l2.getName()));
+            ret.addAll(languages);
+        } catch (HibernateException e) {
+
+        } finally {
+            if (session != null) {
+                session.close();
+            }
+        }
+
+        return ret;
     }
 
     /**
@@ -69,10 +101,25 @@ public class LanguageDAO {
      * @param language new language to be created.
      */
     public void create(Language language) {
-        Transaction transaction = session.beginTransaction();
-        session.save(language);
-        session.flush();
-        transaction.commit();
+        Session session = null;
+        Transaction transaction = null;
+        try {
+            session = HibernateUtil.getSessionFactory().openSession();
+            transaction = session.beginTransaction();
+
+            session.save(language);
+            session.flush();
+
+            transaction.commit();
+        } catch (HibernateException e) {
+            if (transaction != null) {
+                transaction.rollback();
+            }
+        } finally {
+            if (session != null) {
+                session.close();
+            }
+        }
     }
 
     /**
@@ -92,26 +139,75 @@ public class LanguageDAO {
      * @param language Representation of a modified language.
      */
     public void update(Language language) {
-        Transaction transaction = session.beginTransaction();
-        session.update(language);
-        session.flush();
-        transaction.commit();
+        Session session = null;
+        Transaction transaction = null;
+        try {
+            session = HibernateUtil.getSessionFactory().openSession();
+            transaction = session.beginTransaction();
+
+            session.update(language);
+            session.flush();
+
+            transaction.commit();
+        } catch (HibernateException e) {
+            if (transaction != null) {
+                transaction.rollback();
+            }
+        } finally {
+            if (session != null) {
+                session.close();
+            }
+        }
     }
 
     /**
      * Updates a language given an id and a name separately.
      *
-     * @param id    The id of an existing {@link Language}
-     * @param name  The new name of a {@link Language}
+     * @param id The id of an existing {@link Language}
+     * @param name The new name of a {@link Language}
+     */
+    public void update(int id, String name) {
+        Language language = new Language(id, name, new TreeSet());
+        update(language);
+    }
+
+    /**
+     * Updates a language given an id and a name separately with all of its
+     * current words mapped.
+     *
+     * @param id The id of an existing {@link Language}
+     * @param name The new name of a {@link Language}
+     * @param words Current words of the given language
      */
     public void update(int id, String name, Set words) {
         Language language = new Language(id, name, words);
         update(language);
     }
 
-    @Override
-    protected void finalize() throws Throwable {
-        super.finalize();
-        session.close();
+    /**
+     * Deletes a language by a given id.
+     *
+     * @param id Language id to be deleted
+     */
+    public void delete(int id) {
+        Session session = null;
+        Transaction transaction = null;
+        try {
+            session = HibernateUtil.getSessionFactory().openSession();
+            transaction = session.beginTransaction();
+
+            session.delete(new Language(id, ""));
+            session.flush();
+
+            transaction.commit();
+        } catch (Exception e) {
+            if (transaction != null) {
+                transaction.rollback();
+            }
+        } finally {
+            if (session != null) {
+                session.close();
+            }
+        }
     }
 }

@@ -7,7 +7,9 @@
 
 <struts-config>
     <form-beans>
+        <form-bean name="DeleteLanguageActionForm" type="eep.as.leoven.forms.DeleteLanguageActionForm"/>
         <form-bean name="CreateLanguageActionForm" type="eep.as.leoven.forms.CreateLanguageActionForm"/>
+        <form-bean name="UpdateLanguageActionForm" type="eep.as.leoven.forms.UpdateLanguageActionForm"/>
     </form-beans>
 
     <global-exceptions>
@@ -20,7 +22,13 @@
 
     <action-mappings>
         <action input="/CreateLanguage" name="CreateLanguageActionForm" path="/CreateLanguage" scope="session" type="eep.as.leoven.actions.CreateLanguageAction">
-            <forward name="success" path="/CreateLanguageSuccess.jsp" />
+            <forward name="success" path="/index.jsp" redirect="true" />
+        </action>
+        <action input="/UpdateLanguage" name="UpdateLanguageActionForm" path="/UpdateLanguage" scope="session" type="eep.as.leoven.actions.UpdateLanguageAction">
+            <forward name="success" path="/index.jsp" redirect="true" />
+        </action>
+        <action input="/DeleteLanguage" name="DeleteLanguageActionForm" path="/DeleteLanguage" scope="session" type="eep.as.leoven.actions.DeleteLanguageAction">
+            <forward name="success" path="/index.jsp" redirect="true" />
         </action>
     </action-mappings>
 
