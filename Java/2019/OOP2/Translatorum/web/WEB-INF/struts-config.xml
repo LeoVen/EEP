@@ -13,7 +13,7 @@
     </form-beans>
 
     <global-exceptions>
-
+        <exception key="error.exception" type="java.lang.Exception" path="/error.jsp" />
     </global-exceptions>
 
     <global-forwards>
@@ -32,6 +32,6 @@
         </action>
     </action-mappings>
 
-    <message-resources parameter="eep/as/leoven/resources/ApplicationResource"/>    
+    <message-resources parameter="eep/as/leoven/resources/ApplicationResource"/>
 
 </struts-config>

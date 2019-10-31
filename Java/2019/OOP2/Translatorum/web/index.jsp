@@ -4,15 +4,17 @@
     Author     : Leonardo Vencovsky (https://github.com/LeoVen/)
 --%>
 
-<%@page import="eep.as.leoven.dao.LanguageDAO"%>
-<%@page import="eep.as.leoven.vo.Language"%>
-<%@page import="java.util.Set"%>
 <%@ taglib uri="http://struts.apache.org/tags-bean" prefix="bean" %>
 <%@ taglib uri="http://struts.apache.org/tags-html" prefix="html" %>
 <%@ taglib uri="http://struts.apache.org/tags-logic" prefix="logic" %>
 
+<%@page import="eep.as.leoven.dao.LanguageDAO"%>
+<%@page import="eep.as.leoven.vo.Language"%>
+<%@page import="java.util.Set"%>
+
 <%@page contentType="text/html"%>
 <%@page pageEncoding="UTF-8"%>
+<%-- <%@page errorPage="error.jsp" %> --%>
 
 <%
     Set<Language> languages = new LanguageDAO().getAll();
@@ -30,6 +32,7 @@
     <body>
         <div class="row flex-stretch">
             <div class="col s12 m4 l3 left-view">
+                <html:errors/>
                 <p>Available Languages</p>
                 <ul class="collection">
                     <% for (Language language : languages) {%>
@@ -56,13 +59,14 @@
         </div>
 
         <!-- MODALS -->
-        <div id="createLangModal" class="modal">
+        <div id="createLanguageModal" class="modal">
             <div class="modal-content">
                 <div class="container">
                     <h4>Create Language</h4>
                     <html:form action="CreateLanguage">
+                        <p class="error-message" id="createLanguageError"></p>
                         <html:text styleId="createLanguageName" name="CreateLanguageActionForm" property="languageName"/>
-                        <html:submit value="Create" styleClass="btn"/>
+                        <html:submit styleId="createLanguageSubmit" value="Create" styleClass="btn"/>
                     </html:form>
                     <html:errors/>
                 </div>
@@ -72,12 +76,13 @@
             </div>
         </div>
 
-        <div id="editLangModal" class="modal">
+        <div id="editLanguageModal" class="modal">
             <div class="modal-content">
                 <div class="container">
                     <h4>Edit Language</h4>
                     <html:form action="UpdateLanguage">
                         <div class="row">
+                            <p class="error-message" id="editLanguageError"></p>
                             <div class="col s2 margin0">
                                 <html:text styleId="editLanguageId" name="UpdateLanguageActionForm" property="languageId"/>
                             </div>
@@ -85,7 +90,7 @@
                                 <html:text styleId="editLanguageName" name="UpdateLanguageActionForm" property="languageName"/>
                             </div>
                         </div>
-                        <html:submit value="Update" styleClass="btn"/>
+                        <html:submit styleId="editLanguageSubmit" value="Update" styleClass="btn"/>
                     </html:form>
                     <html:errors/>
                 </div>
@@ -95,7 +100,7 @@
             </div>
         </div>
 
-        <div id="deleteLangModal" class="modal">
+        <div id="deleteLanguageModal" class="modal">
             <div class="modal-content">
                 <div class="container">
                     <h4>Confirm Action</h4>

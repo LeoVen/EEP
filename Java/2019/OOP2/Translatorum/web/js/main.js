@@ -26,20 +26,25 @@ $(document).ready(function () {
     // the "href" attribute of the modal trigger must specify the modal ID that wants to be triggered
     $('.modal').modal();
     $('#createLanguageName').attr('placeholder', 'Language Name');
+
+    $('#createLanguageSubmit').on('click', (event) => validateCreateLang(event));
+    $('#editLanguageSubmit').on('click', (event) => validateEditLang(event));
 });
 
 function createLangModal() {
+    $('#createLanguageError').text('');
     $('#createLanguageName').val('');
-    $('#createLangModal').modal('open');
+    $('#createLanguageModal').modal('open');
 }
 
 function editLangModal(id, name) {
+    $('#editLanguageError').text('');
     $('#editLanguageName').val(name);
     $('#editLanguageName').attr('placeholder', 'Language Name');
     $('#editLanguageName').focus();
     $('#editLanguageId').val(id);
     $('#editLanguageId').attr('readonly', 'readonly');
-    $('#editLangModal').modal('open');
+    $('#editLanguageModal').modal('open');
 }
 
 function deleteLangModal(id, name) {
@@ -47,5 +52,24 @@ function deleteLangModal(id, name) {
     $('#deleteLanguageName').attr('readonly', 'readonly');
     $('#deleteLanguageId').val(id);
     $('#deleteLanguageId').attr('readonly', 'readonly');
-    $('#deleteLangModal').modal('open');
+    $('#deleteLanguageModal').modal('open');
 }
+
+function validateCreateLang(event) {
+    let createLangValue = $('#createLanguageName').val();
+    if (createLangValue === "" || createLangValue.length > 100) {
+        $('#createLanguageError').text('Language Name must not be empty and must be less than 100 characters');
+        event.preventDefault();
+        event.stopPropagation();
+    }
+}
+
+function validateEditLang(event) {
+    let createLangValue = $('#editLanguageName').val();
+    if (createLangValue === "" || createLangValue.length > 100) {
+        $('#editLanguageError').text('Language Name must not be empty and must be less than 100 characters');
+        event.preventDefault();
+        event.stopPropagation();
+    }
+}
+

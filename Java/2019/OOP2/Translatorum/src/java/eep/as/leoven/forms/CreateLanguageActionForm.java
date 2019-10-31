@@ -59,11 +59,8 @@ public class CreateLanguageActionForm extends org.apache.struts.action.ActionFor
      */
     @Override
     public ActionErrors validate(ActionMapping mapping, HttpServletRequest request) {
-        ActionErrors errors = new ActionErrors();
-        if (getLanguageName() == null || getLanguageName().length() < 1) {
-            errors.add("languageName", new ActionMessage("error.languageName.required"));
-        }
-        return errors;
+        // Validation is done in the front-end
+        return new ActionErrors();
     }
 
     /**

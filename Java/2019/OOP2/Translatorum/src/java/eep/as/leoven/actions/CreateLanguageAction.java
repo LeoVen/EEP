@@ -37,7 +37,6 @@ import org.apache.struts.action.ActionMapping;
  */
 public class CreateLanguageAction extends org.apache.struts.action.Action {
 
-    /* forward name="success" path="" */
     private static final String SUCCESS = "success";
 
     /**

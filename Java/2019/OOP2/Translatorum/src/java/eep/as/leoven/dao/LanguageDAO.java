@@ -58,7 +58,7 @@ public class LanguageDAO {
 
             session.flush();
         } catch (HibernateException e) {
-
+            throw e;
         } finally {
             if (session != null) {
                 session.close();
@@ -85,7 +85,7 @@ public class LanguageDAO {
             ret = new TreeSet<>((l1, l2) -> l1.getName().compareTo(l2.getName()));
             ret.addAll(languages);
         } catch (HibernateException e) {
-
+            throw e;
         } finally {
             if (session != null) {
                 session.close();
@@ -115,6 +115,7 @@ public class LanguageDAO {
             if (transaction != null) {
                 transaction.rollback();
             }
+            throw e;
         } finally {
             if (session != null) {
                 session.close();
@@ -153,6 +154,7 @@ public class LanguageDAO {
             if (transaction != null) {
                 transaction.rollback();
             }
+            throw e;
         } finally {
             if (session != null) {
                 session.close();
@@ -200,10 +202,11 @@ public class LanguageDAO {
             session.flush();
 
             transaction.commit();
-        } catch (Exception e) {
+        } catch (HibernateException e) {
             if (transaction != null) {
                 transaction.rollback();
             }
+            throw e;
         } finally {
             if (session != null) {
                 session.close();
