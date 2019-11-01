@@ -33,6 +33,7 @@ $(document).ready(function () {
     $('#selectLanguageSubmit').on('click', (event) => validateSelectLanguage(event));
     $('#createWordSubmit').on('click', (event) => validateCreateWord(event));
     $('#editWordSubmit').on('click', (event) => validateEditWord(event));
+    $('#selectTranslationSubmit').on('click', (event) => selectTranslationSubmit(event));
 
     $('.listingText').each(function () {
         let text = $(this).text();
@@ -163,3 +164,50 @@ function validateEditWord(event) {
 /* -----------------------------------------------------------------------------
  * Translation
  ---------------------------------------------------------------------------- */
+
+/* Select Translation */
+var selectLangStep = 0;
+function selectTranslationModal() {
+    selectLangStep = 0;
+    $('#selectLanguageName1').val('');
+    $('#selectLanguageName1').addClass('border-selection');
+    $('#selectLanguageName1').attr('readonly', 'readonly');
+    $('#selectLanguageName2').val('');
+    $('#selectLanguageName2').attr('readonly', 'readonly');
+    $('#selectLanguageName2').removeClass('border-selection');
+    $('#selectTranslationModal').modal('open');
+}
+
+function selectTranslationSelection(id, name) {
+    /* Make a loop */
+    if (selectLangStep === 0) {
+        $('#selectLanguageId1').val(id);
+        $('#selectLanguageName1').val(name);
+        $('#selectLanguageName1').toggleClass('border-selection');
+        $('#selectLanguageName2').toggleClass('border-selection');
+        selectLangStep = 1;
+    } else if (selectLangStep === 1) {
+        $('#selectLanguageId2').val(id);
+        $('#selectLanguageName2').val(name);
+        $('#selectLanguageName1').toggleClass('border-selection');
+        $('#selectLanguageName2').toggleClass('border-selection');
+        selectLangStep = 0;
+    } else {
+        Materialize.toast('Something went wrong. Please refresh the page.');
+    }
+}
+
+function selectTranslationSubmit(event) {
+    let selectLang1 = $('#selectLanguageName1').val();
+    let selectLang2 = $('#selectLanguageName2').val();
+
+    if (selectLang1 === "" || selectLang2 === "" || selectLang1.length > 100 || selectLang2.length > 100) {
+        Materialize.toast('Please select two valid languages', 4000);
+        event.preventDefault();
+        event.stopPropagation();
+    } else if (selectLang1 === selectLang2) {
+        Materialize.toast('Please select two different languages', 4000);
+        event.preventDefault();
+        event.stopPropagation();
+    }
+}

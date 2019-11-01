@@ -42,33 +42,6 @@ public class LanguageDAO {
     }
 
     /**
-     * Returns a single instance of a {@link Language} by a matching id.
-     *
-     * @param id Id to be searched in the database.
-     *
-     * @return A single instance of a {@link Language} of the given id.
-     */
-    public Language get(int id) {
-        Session session = null;
-        Language language = null;
-        try {
-            session = HibernateUtil.getSessionFactory().openSession();
-
-            language = (Language) session.createQuery("from Language where id = " + id).uniqueResult();
-
-            session.flush();
-        } catch (HibernateException e) {
-            throw e;
-        } finally {
-            if (session != null) {
-                session.close();
-            }
-        }
-
-        return language;
-    }
-
-    /**
      * Returns all languages currently created in the database.
      *
      * @return All languages in the database.
@@ -96,35 +69,9 @@ public class LanguageDAO {
     }
 
     /**
-     * Returns a single language from the database or null if there is none.
+     * Creates a new language.
      *
-     * @return A single instance of any language or null if none
-     */
-    public Language getOne() {
-        Session session = null;
-        Language language = null;
-        try {
-            session = HibernateUtil.getSessionFactory().openSession();
-            List<Language> langList = (List<Language>) session.createQuery("from Language").list();
-
-            language = langList.isEmpty() ? null : langList.get(0);
-
-            session.flush();
-        } catch (HibernateException e) {
-            throw e;
-        } finally {
-            if (session != null) {
-                session.close();
-            }
-        }
-
-        return language;
-    }
-
-    /**
-     * Creates a new {@link Language}
-     *
-     * @param language new language to be created.
+     * @param language New language to be created.
      */
     public void create(Language language) {
         Session session = null;
@@ -150,18 +97,7 @@ public class LanguageDAO {
     }
 
     /**
-     * Creates a new {@link Language} a language name.
-     *
-     * @param name New language name.
-     */
-    public void create(String name) {
-        Language language = new Language(0, name);
-        create(language);
-    }
-
-    /**
-     * Updates a given language using a new one. Note that is must have a valid
-     * id.
+     * Updates a given language using a new one. It must have a valid id.
      *
      * @param language Representation of a modified language.
      */
@@ -189,42 +125,18 @@ public class LanguageDAO {
     }
 
     /**
-     * Updates a language given an id and a name separately.
+     * Deletes a language from database. At least its id is required.
      *
-     * @param id The id of an existing {@link Language}
-     * @param name The new name of a {@link Language}
+     * @param language Language to be deleted.
      */
-    public void update(int id, String name) {
-        Language language = new Language(id, name, new TreeSet());
-        update(language);
-    }
-
-    /**
-     * Updates a language given an id and a name separately with all of its
-     * current words mapped.
-     *
-     * @param id The id of an existing {@link Language}
-     * @param name The new name of a {@link Language}
-     * @param words Current words of the given language
-     */
-    public void update(int id, String name, Set words) {
-        Language language = new Language(id, name, words);
-        update(language);
-    }
-
-    /**
-     * Deletes a language by a given id.
-     *
-     * @param id Language id to be deleted
-     */
-    public void delete(int id) {
+    public void delete(Language language) {
         Session session = null;
         Transaction transaction = null;
         try {
             session = HibernateUtil.getSessionFactory().openSession();
             transaction = session.beginTransaction();
 
-            session.delete(new Language(id, ""));
+            session.delete(language);
             session.flush();
 
             transaction.commit();

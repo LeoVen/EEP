@@ -21,48 +21,12 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
  * THE SOFTWARE.
  */
-package eep.as.leoven.forms;
-
-import javax.servlet.http.HttpServletRequest;
-
-import org.apache.struts.action.ActionErrors;
-import org.apache.struts.action.ActionMapping;
+package eep.as.leoven.dao;
 
 /**
  *
  * @author Leonardo Vencovsky (https://github.com/LeoVen/)
  */
-public class DeleteLanguageActionForm extends org.apache.struts.action.ActionForm {
-
-    private int languageId;
-
-    /**
-     *
-     */
-    public DeleteLanguageActionForm() {
-        super();
-        // TODO Auto-generated constructor stub
-    }
-
-    /**
-     * This is the action called from the Struts framework.
-     *
-     * @param mapping The ActionMapping used to select this instance.
-     * @param request The HTTP Request we are processing.
-     * @return
-     */
-    @Override
-    public ActionErrors validate(ActionMapping mapping, HttpServletRequest request) {
-        // Validation is done in the front-end
-        return new ActionErrors();
-    }
-
-    public int getLanguageId() {
-        return languageId;
-    }
-
-    public void setLanguageId(int id) {
-        this.languageId = id;
-    }
-
+public class TranslationDAO {
+    
 }

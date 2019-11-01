@@ -32,14 +32,18 @@ import org.apache.struts.action.ActionMapping;
  *
  * @author Leonardo Vencovsky (https://github.com/LeoVen/)
  */
-public class DeleteLanguageActionForm extends org.apache.struts.action.ActionForm {
+public class SelectTranslationActionForm extends org.apache.struts.action.ActionForm {
 
-    private int languageId;
+    int languageId1;
+    String languageName1;
+
+    int languageId2;
+    String languageName2;
 
     /**
      *
      */
-    public DeleteLanguageActionForm() {
+    public SelectTranslationActionForm() {
         super();
         // TODO Auto-generated constructor stub
     }
@@ -57,12 +61,36 @@ public class DeleteLanguageActionForm extends org.apache.struts.action.ActionFor
         return new ActionErrors();
     }
 
-    public int getLanguageId() {
-        return languageId;
+    public int getLanguageId1() {
+        return languageId1;
     }
 
-    public void setLanguageId(int id) {
-        this.languageId = id;
+    public void setLanguageId1(int languageId1) {
+        this.languageId1 = languageId1;
+    }
+
+    public String getLanguageName1() {
+        return languageName1;
+    }
+
+    public void setLanguageName1(String languageName1) {
+        this.languageName1 = languageName1;
+    }
+
+    public int getLanguageId2() {
+        return languageId2;
+    }
+
+    public void setLanguageId2(int languageId2) {
+        this.languageId2 = languageId2;
+    }
+
+    public String getLanguageName2() {
+        return languageName2;
+    }
+
+    public void setLanguageName2(String languageName2) {
+        this.languageName2 = languageName2;
     }
 
 }

@@ -25,6 +25,7 @@ package eep.as.leoven.actions;
 
 import eep.as.leoven.dao.LanguageDAO;
 import eep.as.leoven.forms.DeleteLanguageActionForm;
+import eep.as.leoven.vo.Language;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import org.apache.struts.action.ActionForm;
@@ -57,7 +58,7 @@ public class DeleteLanguageAction extends org.apache.struts.action.Action {
 
         DeleteLanguageActionForm formBean = (DeleteLanguageActionForm) form;
 
-        new LanguageDAO().delete(formBean.getLanguageId());
+        new LanguageDAO().delete(new Language(formBean.getLanguageId(), ""));
 
         return mapping.findForward(SUCCESS);
     }

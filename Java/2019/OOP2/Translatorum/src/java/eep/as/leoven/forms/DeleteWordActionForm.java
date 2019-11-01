@@ -52,6 +52,7 @@ public class DeleteWordActionForm extends org.apache.struts.action.ActionForm {
      * @param request The HTTP Request we are processing.
      * @return
      */
+    @Override
     public ActionErrors validate(ActionMapping mapping, HttpServletRequest request) {
         // Validation is done in the front-end
         return new ActionErrors();

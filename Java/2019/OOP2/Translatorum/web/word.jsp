@@ -4,21 +4,26 @@
     Author     : Leonardo Vencovsky (https://github.com/LeoVen/)
 --%>
 
+<%@ taglib uri="http://struts.apache.org/tags-bean" prefix="bean" %>
+<%@ taglib uri="http://struts.apache.org/tags-html" prefix="html" %>
+<%@ taglib uri="http://struts.apache.org/tags-logic" prefix="logic" %>
+
 <%@page import="eep.as.leoven.dao.WordDAO"%>
 <%@page import="java.util.List"%>
 <%@page import="eep.as.leoven.vo.Word"%>
 <%@page import="eep.as.leoven.vo.Language"%>
 <%@page import="eep.as.leoven.controller.PageContentController"%>
 
-<%@ taglib uri="http://struts.apache.org/tags-bean" prefix="bean" %>
-<%@ taglib uri="http://struts.apache.org/tags-html" prefix="html" %>
-<%@ taglib uri="http://struts.apache.org/tags-logic" prefix="logic" %>
-
 <%@page contentType="text/html"%>
 <%@page pageEncoding="UTF-8"%>
 <%@page errorPage="error.jsp" %>
 
 <%
+    // Prevent caching
+    if (PageContentController.noCaching) {
+        response.setDateHeader("Expires", 0);
+    }
+
     Language currentLanguage = PageContentController.getCurrentLanguage();
 
     List<Word> words = new WordDAO().getByLanguage(currentLanguage);

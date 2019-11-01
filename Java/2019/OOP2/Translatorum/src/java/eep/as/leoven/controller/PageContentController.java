@@ -32,13 +32,13 @@ import eep.as.leoven.vo.Language;
  */
 public class PageContentController {
 
+    static public boolean noCaching = true;
+
     static Language currentLanguage = null;
 
-    static {
-        Language tmpLang = new LanguageDAO().getOne();
-        currentLanguage = new Language(tmpLang.getId(), tmpLang.getName(),
-                tmpLang.getWords());
-    }
+    static Language translationLanguage1 = null;
+
+    static Language translationLanguage2 = null;
 
     public static Language getCurrentLanguage() {
         return currentLanguage;
@@ -49,6 +49,28 @@ public class PageContentController {
                 currentLanguage.getId(),
                 currentLanguage.getName(),
                 currentLanguage.getWords());
+    }
+
+    public static Language getTranslationLanguage1() {
+        return translationLanguage1;
+    }
+
+    public static void setTranslationLanguage1(Language translationLanguage1) {
+        PageContentController.translationLanguage1 = new Language(
+                translationLanguage1.getId(),
+                translationLanguage1.getName(),
+                translationLanguage1.getWords());
+    }
+
+    public static Language getTranslationLanguage2() {
+        return translationLanguage2;
+    }
+
+    public static void setTranslationLanguage2(Language translationLanguage2) {
+        PageContentController.translationLanguage2 = new Language(
+                translationLanguage2.getId(),
+                translationLanguage2.getName(),
+                translationLanguage2.getWords());
     }
 
 }

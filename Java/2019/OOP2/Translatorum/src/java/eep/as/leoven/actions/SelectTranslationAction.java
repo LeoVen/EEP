@@ -21,48 +21,49 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
  * THE SOFTWARE.
  */
-package eep.as.leoven.forms;
+package eep.as.leoven.actions;
 
+import eep.as.leoven.controller.PageContentController;
+import eep.as.leoven.forms.SelectTranslationActionForm;
+import eep.as.leoven.vo.Language;
 import javax.servlet.http.HttpServletRequest;
-
-import org.apache.struts.action.ActionErrors;
+import javax.servlet.http.HttpServletResponse;
+import org.apache.struts.action.ActionForm;
+import org.apache.struts.action.ActionForward;
 import org.apache.struts.action.ActionMapping;
 
 /**
  *
  * @author Leonardo Vencovsky (https://github.com/LeoVen/)
  */
-public class DeleteLanguageActionForm extends org.apache.struts.action.ActionForm {
+public class SelectTranslationAction extends org.apache.struts.action.Action {
 
-    private int languageId;
-
-    /**
-     *
-     */
-    public DeleteLanguageActionForm() {
-        super();
-        // TODO Auto-generated constructor stub
-    }
+    /* forward name="success" path="" */
+    private static final String SUCCESS = "success";
 
     /**
      * This is the action called from the Struts framework.
      *
      * @param mapping The ActionMapping used to select this instance.
+     * @param form The optional ActionForm bean for this request.
      * @param request The HTTP Request we are processing.
+     * @param response The HTTP Response we are processing.
+     * @throws java.lang.Exception
      * @return
      */
     @Override
-    public ActionErrors validate(ActionMapping mapping, HttpServletRequest request) {
-        // Validation is done in the front-end
-        return new ActionErrors();
-    }
+    public ActionForward execute(ActionMapping mapping, ActionForm form,
+            HttpServletRequest request, HttpServletResponse response)
+            throws Exception {
 
-    public int getLanguageId() {
-        return languageId;
-    }
+        SelectTranslationActionForm beanForm = (SelectTranslationActionForm) form;
 
-    public void setLanguageId(int id) {
-        this.languageId = id;
-    }
+        Language lang1 = new Language(beanForm.getLanguageId1(), beanForm.getLanguageName1());
+        Language lang2 = new Language(beanForm.getLanguageId2(), beanForm.getLanguageName2());
 
+        PageContentController.setTranslationLanguage1(lang1);
+        PageContentController.setTranslationLanguage2(lang2);
+
+        return mapping.findForward(SUCCESS);
+    }
 }

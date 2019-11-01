@@ -25,6 +25,7 @@ package eep.as.leoven.actions;
 
 import eep.as.leoven.dao.LanguageDAO;
 import eep.as.leoven.forms.CreateLanguageActionForm;
+import eep.as.leoven.vo.Language;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import org.apache.struts.action.ActionForm;
@@ -54,9 +55,9 @@ public class CreateLanguageAction extends org.apache.struts.action.Action {
             HttpServletRequest request, HttpServletResponse response)
             throws Exception {
 
-        CreateLanguageActionForm languageForm = (CreateLanguageActionForm) form;
+        CreateLanguageActionForm beanForm = (CreateLanguageActionForm) form;
 
-        new LanguageDAO().create(languageForm.getLanguageName());
+        new LanguageDAO().create(new Language(0, beanForm.getLanguageName()));
 
         return mapping.findForward(SUCCESS);
     }

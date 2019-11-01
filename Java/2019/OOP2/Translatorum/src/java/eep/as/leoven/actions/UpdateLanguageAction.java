@@ -25,6 +25,7 @@ package eep.as.leoven.actions;
 
 import eep.as.leoven.dao.LanguageDAO;
 import eep.as.leoven.forms.UpdateLanguageActionForm;
+import eep.as.leoven.vo.Language;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import org.apache.struts.action.ActionForm;
@@ -57,7 +58,7 @@ public class UpdateLanguageAction extends org.apache.struts.action.Action {
 
         UpdateLanguageActionForm formBean = (UpdateLanguageActionForm) form;
 
-        new LanguageDAO().update(formBean.getLanguageId(), formBean.getLanguageName());
+        new LanguageDAO().update(new Language(formBean.getLanguageId(), formBean.getLanguageName()));
 
         return mapping.findForward(SUCCESS);
     }

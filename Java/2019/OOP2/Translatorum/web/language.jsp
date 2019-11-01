@@ -8,6 +8,7 @@
 <%@ taglib uri="http://struts.apache.org/tags-html" prefix="html" %>
 <%@ taglib uri="http://struts.apache.org/tags-logic" prefix="logic" %>
 
+<%@page import="eep.as.leoven.controller.PageContentController"%>
 <%@page import="eep.as.leoven.dao.LanguageDAO"%>
 <%@page import="eep.as.leoven.vo.Language"%>
 <%@page import="java.util.Set"%>
@@ -17,6 +18,11 @@
 <%@page errorPage="error.jsp" %>
 
 <%
+    // Prevent caching
+    if (PageContentController.noCaching) {
+        response.setDateHeader("Expires", 0);
+    }
+
     Set<Language> languages = new LanguageDAO().getAll();
 %>
 

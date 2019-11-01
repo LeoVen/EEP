@@ -7,6 +7,7 @@
 
 <struts-config>
     <form-beans>
+        <form-bean name="SelectTranslationActionForm" type="eep.as.leoven.forms.SelectTranslationActionForm"/>
         <form-bean name="DeleteWordActionForm" type="eep.as.leoven.forms.DeleteWordActionForm"/>
         <form-bean name="UpdateWordActionForm" type="eep.as.leoven.forms.UpdateWordActionForm"/>
         <form-bean name="CreateWordActionForm" type="eep.as.leoven.forms.CreateWordActionForm"/>
@@ -46,8 +47,9 @@
         <action input="/DeleteWord" name="DeleteWordActionForm" path="/DeleteWord" scope="session" type="eep.as.leoven.actions.DeleteWordAction">
             <forward name="success" path="/word.jsp" redirect="true" />
         </action>
+        <action input="/SelectTranslation" name="SelectTranslationActionForm" path="/SelectTranslation" scope="session" type="eep.as.leoven.actions.SelectTranslationAction">
+            <forward name="success" path="/translation.jsp" redirect="true" />
+        </action>
     </action-mappings>
-
-    <message-resources parameter="eep/as/leoven/resources/ApplicationResource"/>
 
 </struts-config>

@@ -4,19 +4,33 @@
     Author     : Leonardo Vencovsky (https://github.com/LeoVen/)
 --%>
 
-<%@page import="eep.as.leoven.vo.Language"%>
-<%@page import="eep.as.leoven.controller.PageContentController"%>
-
+<%@page import="eep.as.leoven.dao.WordDAO"%>
+<%@page import="java.util.List"%>
+<%@page import="eep.as.leoven.vo.Word"%>
 <%@ taglib uri="http://struts.apache.org/tags-bean" prefix="bean" %>
 <%@ taglib uri="http://struts.apache.org/tags-html" prefix="html" %>
 <%@ taglib uri="http://struts.apache.org/tags-logic" prefix="logic" %>
+
+<%@page import="eep.as.leoven.vo.Language"%>
+<%@page import="eep.as.leoven.controller.PageContentController"%>
 
 <%@page contentType="text/html"%>
 <%@page pageEncoding="UTF-8"%>
 <%@page errorPage="error.jsp" %>
 
 <%
-    Language currentLanguage = PageContentController.getCurrentLanguage();
+    // Prevent caching
+    if (PageContentController.noCaching) {
+        response.setDateHeader("Expires", 0);
+    }
+
+    Language lang1 = PageContentController.getTranslationLanguage1();
+    Language lang2 = PageContentController.getTranslationLanguage2();
+
+    WordDAO wordDao = new WordDAO();
+
+    List<Word> words1 = wordDao.getByLanguage(lang1);
+    List<Word> words2 = wordDao.getByLanguage(lang2);
 %>
 
 <!DOCTYPE html>
@@ -36,8 +50,8 @@
             </a>
         </div>
 
-        <h1>Welcome Home</h1>
-        <h3><%= currentLanguage.getName()%></h3>
+        <h3><%= lang1.getName()%></h3>
+        <h3><%= lang2.getName()%></h3>
         <script src="https://code.jquery.com/jquery-3.4.1.min.js" integrity="sha256-CSXorXvZcTkaix6Yvo6HppcZGetbYMGWSFlBw8HfCJo=" crossorigin="anonymous"></script>
         <script src="https://cdnjs.cloudflare.com/ajax/libs/materialize/0.100.2/js/materialize.min.js"></script>
         <script src="js/main.js"></script>
