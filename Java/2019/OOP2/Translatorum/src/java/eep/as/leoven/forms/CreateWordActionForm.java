@@ -32,15 +32,16 @@ import org.apache.struts.action.ActionMapping;
  *
  * @author Leonardo Vencovsky (https://github.com/LeoVen/)
  */
-public class UpdateLanguageActionForm extends org.apache.struts.action.ActionForm {
+public class CreateWordActionForm extends org.apache.struts.action.ActionForm {
 
     private int languageId;
     private String languageName;
+    private String word;
 
     /**
      *
      */
-    public UpdateLanguageActionForm() {
+    public CreateWordActionForm() {
         super();
         // TODO Auto-generated constructor stub
     }
@@ -71,6 +72,14 @@ public class UpdateLanguageActionForm extends org.apache.struts.action.ActionFor
 
     public void setLanguageName(String languageName) {
         this.languageName = languageName;
+    }
+
+    public String getWord() {
+        return word;
+    }
+
+    public void setWord(String word) {
+        this.word = word;
     }
 
 }

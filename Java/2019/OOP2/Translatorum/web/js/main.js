@@ -25,12 +25,24 @@
 $(document).ready(function () {
     // the "href" attribute of the modal trigger must specify the modal ID that wants to be triggered
     $('.modal').modal();
+    $('select').material_select();
     $('#createLanguageName').attr('placeholder', 'Language Name');
 
     $('#createLanguageSubmit').on('click', (event) => validateCreateLang(event));
     $('#editLanguageSubmit').on('click', (event) => validateEditLang(event));
+    $('#selectLanguageSubmit').on('click', (event) => validateSelectLanguage(event));
+
+    $('.languageNameText').each(function () {
+        let text = $(this).text();
+        if (text.length > 30) {
+            $(this).text(text.slice(0, 30) + '...');
+        }
+    });
 });
 
+/* -----------------------------------------------------------------------------
+ * Language
+ ---------------------------------------------------------------------------- */
 function createLangModal() {
     $('#createLanguageError').text('');
     $('#createLanguageName').val('');
@@ -73,3 +85,35 @@ function validateEditLang(event) {
     }
 }
 
+/* Select Language */
+function selectLanguageModalOpen() {
+    $('#selectLanguageId').attr('readonly', 'readonly');
+    $('#selectLanguageId').val(0);
+    $('#selectLanguageName').attr('readonly', 'readonly');
+    $('#selectLanguageName').val('');
+    $('#selectLanguageModal').modal('open');
+}
+
+function selectLanguageSelection(id, languageName) {
+    $('#selectLanguageId').attr('readonly', 'readonly');
+    $('#selectLanguageId').val(id);
+    $('#selectLanguageName').attr('readonly', 'readonly');
+    $('#selectLanguageName').val(languageName);
+}
+
+function validateSelectLanguage() {
+    let selectLanguageName = $('#selectLanguageName').val();
+    if (selectLanguageName === "" || selectLanguageName.length > 100) {
+        Materialize.toast('Language Name must not be empty and must be less than 100 characters', 4000);
+        event.preventDefault();
+        event.stopPropagation();
+    }
+}
+
+/* -----------------------------------------------------------------------------
+ * Word
+ ---------------------------------------------------------------------------- */
+
+/* -----------------------------------------------------------------------------
+ * Translation
+ ---------------------------------------------------------------------------- */

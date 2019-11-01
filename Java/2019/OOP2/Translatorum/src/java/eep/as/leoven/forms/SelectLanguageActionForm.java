@@ -32,7 +32,7 @@ import org.apache.struts.action.ActionMapping;
  *
  * @author Leonardo Vencovsky (https://github.com/LeoVen/)
  */
-public class UpdateLanguageActionForm extends org.apache.struts.action.ActionForm {
+public class SelectLanguageActionForm extends org.apache.struts.action.ActionForm {
 
     private int languageId;
     private String languageName;
@@ -40,7 +40,7 @@ public class UpdateLanguageActionForm extends org.apache.struts.action.ActionFor
     /**
      *
      */
-    public UpdateLanguageActionForm() {
+    public SelectLanguageActionForm() {
         super();
         // TODO Auto-generated constructor stub
     }

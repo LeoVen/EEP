@@ -18,6 +18,15 @@ public class Word implements java.io.Serializable {
     public Word() {
     }
 
+    public Word(int id) {
+        this.id = id;
+    }
+
+    public Word(Language language, String word) {
+        this.language = language;
+        this.word = word;
+    }
+
     public Word(int id, Language language, String word) {
         this.id = id;
         this.language = language;

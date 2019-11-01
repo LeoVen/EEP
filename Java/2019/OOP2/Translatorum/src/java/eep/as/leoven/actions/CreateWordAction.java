@@ -21,56 +21,38 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
  * THE SOFTWARE.
  */
-package eep.as.leoven.forms;
+package eep.as.leoven.actions;
 
 import javax.servlet.http.HttpServletRequest;
-
-import org.apache.struts.action.ActionErrors;
+import javax.servlet.http.HttpServletResponse;
+import org.apache.struts.action.ActionForm;
+import org.apache.struts.action.ActionForward;
 import org.apache.struts.action.ActionMapping;
 
 /**
  *
  * @author Leonardo Vencovsky (https://github.com/LeoVen/)
  */
-public class UpdateLanguageActionForm extends org.apache.struts.action.ActionForm {
+public class CreateWordAction extends org.apache.struts.action.Action {
 
-    private int languageId;
-    private String languageName;
-
-    /**
-     *
-     */
-    public UpdateLanguageActionForm() {
-        super();
-        // TODO Auto-generated constructor stub
-    }
+    /* forward name="success" path="" */
+    private static final String SUCCESS = "success";
 
     /**
      * This is the action called from the Struts framework.
      *
      * @param mapping The ActionMapping used to select this instance.
+     * @param form The optional ActionForm bean for this request.
      * @param request The HTTP Request we are processing.
+     * @param response The HTTP Response we are processing.
+     * @throws java.lang.Exception
      * @return
      */
-    public ActionErrors validate(ActionMapping mapping, HttpServletRequest request) {
-        // Validation is done in the front-end
-        return new ActionErrors();
+    @Override
+    public ActionForward execute(ActionMapping mapping, ActionForm form,
+            HttpServletRequest request, HttpServletResponse response)
+            throws Exception {
+        
+        return mapping.findForward(SUCCESS);
     }
-
-    public int getLanguageId() {
-        return languageId;
-    }
-
-    public void setLanguageId(int languageId) {
-        this.languageId = languageId;
-    }
-
-    public String getLanguageName() {
-        return languageName;
-    }
-
-    public void setLanguageName(String languageName) {
-        this.languageName = languageName;
-    }
-
 }

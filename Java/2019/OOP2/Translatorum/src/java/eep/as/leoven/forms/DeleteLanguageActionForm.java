@@ -52,8 +52,8 @@ public class DeleteLanguageActionForm extends org.apache.struts.action.ActionFor
      * @return
      */
     public ActionErrors validate(ActionMapping mapping, HttpServletRequest request) {
-        ActionErrors errors = new ActionErrors();
-        return errors;
+        // Validation is done in the front-end
+        return new ActionErrors();
     }
 
     public int getLanguageId() {

@@ -96,6 +96,32 @@ public class LanguageDAO {
     }
 
     /**
+     * Returns a single language from the database or null if there is none.
+     *
+     * @return A single instance of any language or null if none
+     */
+    public Language getOne() {
+        Session session = null;
+        Language language = null;
+        try {
+            session = HibernateUtil.getSessionFactory().openSession();
+            List<Language> langList = (List<Language>) session.createQuery("from Language").list();
+
+            language = langList.isEmpty() ? null : langList.get(0);
+
+            session.flush();
+        } catch (HibernateException e) {
+            throw e;
+        } finally {
+            if (session != null) {
+                session.close();
+            }
+        }
+
+        return language;
+    }
+
+    /**
      * Creates a new {@link Language}
      *
      * @param language new language to be created.
@@ -213,4 +239,5 @@ public class LanguageDAO {
             }
         }
     }
+
 }

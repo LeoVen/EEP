@@ -21,6 +21,9 @@
     <body>
         <div class="error-center card">
             <div class="center-align">
+                <% if (exception != null) { %>
+                <p><%= exception.getMessage() %></p>
+                <% } %>
                 <html:errors/>
                 <br>
                 <a href="index.jsp" class="btn">Return</a>

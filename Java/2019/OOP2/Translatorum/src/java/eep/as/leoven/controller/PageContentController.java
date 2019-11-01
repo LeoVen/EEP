@@ -21,56 +21,34 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
  * THE SOFTWARE.
  */
-package eep.as.leoven.forms;
+package eep.as.leoven.controller;
 
-import javax.servlet.http.HttpServletRequest;
-
-import org.apache.struts.action.ActionErrors;
-import org.apache.struts.action.ActionMapping;
+import eep.as.leoven.dao.LanguageDAO;
+import eep.as.leoven.vo.Language;
 
 /**
  *
  * @author Leonardo Vencovsky (https://github.com/LeoVen/)
  */
-public class UpdateLanguageActionForm extends org.apache.struts.action.ActionForm {
+public class PageContentController {
 
-    private int languageId;
-    private String languageName;
+    static Language currentLanguage = null;
 
-    /**
-     *
-     */
-    public UpdateLanguageActionForm() {
-        super();
-        // TODO Auto-generated constructor stub
+    static {
+        Language tmpLang = new LanguageDAO().getOne();
+        currentLanguage = new Language(tmpLang.getId(), tmpLang.getName(),
+                tmpLang.getWords());
     }
 
-    /**
-     * This is the action called from the Struts framework.
-     *
-     * @param mapping The ActionMapping used to select this instance.
-     * @param request The HTTP Request we are processing.
-     * @return
-     */
-    public ActionErrors validate(ActionMapping mapping, HttpServletRequest request) {
-        // Validation is done in the front-end
-        return new ActionErrors();
+    public static Language getCurrentLanguage() {
+        return currentLanguage;
     }
 
-    public int getLanguageId() {
-        return languageId;
-    }
-
-    public void setLanguageId(int languageId) {
-        this.languageId = languageId;
-    }
-
-    public String getLanguageName() {
-        return languageName;
-    }
-
-    public void setLanguageName(String languageName) {
-        this.languageName = languageName;
+    public static void setCurrentLanguage(Language currentLanguage) {
+        PageContentController.currentLanguage = new Language(
+                currentLanguage.getId(),
+                currentLanguage.getName(),
+                currentLanguage.getWords());
     }
 
 }

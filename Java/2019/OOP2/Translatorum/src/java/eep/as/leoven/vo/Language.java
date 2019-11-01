@@ -16,6 +16,10 @@ public class Language implements java.io.Serializable {
     public Language() {
     }
 
+    public Language(int id) {
+        this.id = id;
+    }
+
     public Language(int id, String name) {
         this.id = id;
         this.name = name;

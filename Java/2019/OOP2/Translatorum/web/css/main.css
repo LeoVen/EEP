@@ -35,14 +35,8 @@ html, body {
     margin: 0;
 }
 
-.left-view {
-    border-right: solid #455a64 1px;
-    overflow-y: scroll;
-    max-height: 100%;
-}
-
 .margin0 {
-    margin: 0;
+    margin: 0 !important;
 }
 
 .margin-bottom {
@@ -51,9 +45,42 @@ html, body {
 
 .error-message {
     color: #f44336;
-    font-size: 10px;
+    font-size: 10px !important;
 }
 
+.flex-space-between {
+    display: flex;
+    justify-content: space-between;
+}
+
+/* index.jsp */
+.index-page-content {
+    height: 400px;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+}
+
+#selectLanguageModal .modal-content {
+    height: 600px !important;
+}
+
+/* language.jsp */
+.centered-card {
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+}
+
+/* Language list, word list, translation list */
+.listing {
+    width: 500px;
+    height: 300px;
+    overflow-y: auto;
+}
+
+/* error.jsp */
 .error-center {
     width: 400px;
     height: auto;
