@@ -21,10 +21,10 @@
     <body>
         <div class="error-center card">
             <div class="center-align">
+                <p>Something went wrong...</p>
                 <% if (exception != null) { %>
                 <p><%= exception.getMessage() %></p>
                 <% } %>
-                <html:errors/>
                 <br>
                 <a href="index.jsp" class="btn">Return</a>
             </div>

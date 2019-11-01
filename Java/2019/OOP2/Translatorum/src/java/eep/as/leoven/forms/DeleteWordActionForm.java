@@ -21,48 +21,56 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
  * THE SOFTWARE.
  */
-package eep.as.leoven.actions;
+package eep.as.leoven.forms;
 
-import eep.as.leoven.dao.WordDAO;
-import eep.as.leoven.forms.CreateWordActionForm;
-import eep.as.leoven.vo.Language;
 import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
-import org.apache.struts.action.ActionForm;
-import org.apache.struts.action.ActionForward;
+
+import org.apache.struts.action.ActionErrors;
 import org.apache.struts.action.ActionMapping;
 
 /**
  *
  * @author Leonardo Vencovsky (https://github.com/LeoVen/)
  */
-public class CreateWordAction extends org.apache.struts.action.Action {
+public class DeleteWordActionForm extends org.apache.struts.action.ActionForm {
 
-    /* forward name="success" path="" */
-    private static final String SUCCESS = "success";
+    private int wordId;
+    private String word;
+
+    /**
+     *
+     */
+    public DeleteWordActionForm() {
+        super();
+        // TODO Auto-generated constructor stub
+    }
 
     /**
      * This is the action called from the Struts framework.
      *
      * @param mapping The ActionMapping used to select this instance.
-     * @param form The optional ActionForm bean for this request.
      * @param request The HTTP Request we are processing.
-     * @param response The HTTP Response we are processing.
-     * @throws java.lang.Exception
      * @return
      */
-    @Override
-    public ActionForward execute(ActionMapping mapping, ActionForm form,
-            HttpServletRequest request, HttpServletResponse response)
-            throws Exception {
-
-        CreateWordActionForm formBean = (CreateWordActionForm) form;
-
-        Language language = new Language(formBean.getLanguageId(),
-                formBean.getLanguageName());
-
-        new WordDAO().create(language, formBean.getWord());
-
-        return mapping.findForward(SUCCESS);
+    public ActionErrors validate(ActionMapping mapping, HttpServletRequest request) {
+        // Validation is done in the front-end
+        return new ActionErrors();
     }
+
+    public int getWordId() {
+        return wordId;
+    }
+
+    public void setWordId(int wordId) {
+        this.wordId = wordId;
+    }
+
+    public String getWord() {
+        return word;
+    }
+
+    public void setWord(String word) {
+        this.word = word;
+    }
+
 }

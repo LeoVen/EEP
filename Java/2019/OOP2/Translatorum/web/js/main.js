@@ -31,10 +31,12 @@ $(document).ready(function () {
     $('#createLanguageSubmit').on('click', (event) => validateCreateLang(event));
     $('#editLanguageSubmit').on('click', (event) => validateEditLang(event));
     $('#selectLanguageSubmit').on('click', (event) => validateSelectLanguage(event));
+    $('#createWordSubmit').on('click', (event) => validateCreateWord(event));
+    $('#editWordSubmit').on('click', (event) => validateEditWord(event));
 
-    $('.languageNameText').each(function () {
+    $('.listingText').each(function () {
         let text = $(this).text();
-        if (text.length > 30) {
+        if (text.length > 40) {
             $(this).text(text.slice(0, 30) + '...');
         }
     });
@@ -70,7 +72,7 @@ function deleteLangModal(id, name) {
 function validateCreateLang(event) {
     let createLangValue = $('#createLanguageName').val();
     if (createLangValue === "" || createLangValue.length > 100) {
-        $('#createLanguageError').text('Language Name must not be empty and must be less than 100 characters');
+        Materialize.toast('Language Name must not be empty and must be less than 100 characters', 4000);
         event.preventDefault();
         event.stopPropagation();
     }
@@ -79,14 +81,14 @@ function validateCreateLang(event) {
 function validateEditLang(event) {
     let createLangValue = $('#editLanguageName').val();
     if (createLangValue === "" || createLangValue.length > 100) {
-        $('#editLanguageError').text('Language Name must not be empty and must be less than 100 characters');
+        Materialize.toast('Language Name must not be empty and must be less than 100 characters', 4000);
         event.preventDefault();
         event.stopPropagation();
     }
 }
 
 /* Select Language */
-function selectLanguageModalOpen() {
+function selectLanguageModal() {
     $('#selectLanguageId').attr('readonly', 'readonly');
     $('#selectLanguageId').val(0);
     $('#selectLanguageName').attr('readonly', 'readonly');
@@ -101,10 +103,10 @@ function selectLanguageSelection(id, languageName) {
     $('#selectLanguageName').val(languageName);
 }
 
-function validateSelectLanguage() {
+function validateSelectLanguage(event) {
     let selectLanguageName = $('#selectLanguageName').val();
     if (selectLanguageName === "" || selectLanguageName.length > 100) {
-        Materialize.toast('Language Name must not be empty and must be less than 100 characters', 4000);
+        Materialize.toast('Please select a valid language', 4000);
         event.preventDefault();
         event.stopPropagation();
     }
@@ -113,6 +115,50 @@ function validateSelectLanguage() {
 /* -----------------------------------------------------------------------------
  * Word
  ---------------------------------------------------------------------------- */
+
+function createWordModal(id, name) {
+    $('#createWordLanguageId').val(id);
+    $('#createWordLanguageId').attr('readonly', 'readonly');
+    $('#createWordLanguageName').val(name);
+    $('#createWordLanguageName').attr('readonly', 'readonly');
+    $('#createWordWord').val('');
+    $('#createWordWord').attr('placeholder', 'Word Text');
+    $('#createWordModal').modal('open');
+}
+
+function editWordModal(langId, wordId, word) {
+    $('#editWordWord').val(word);
+    $('#editWordId').val(wordId);
+    $('#editWordId').attr('readonly', 'readonly');
+    $('#editWordLanguageId').val(langId);
+    $('#editWordModal').modal('open');
+}
+
+function deleteWordModal(wordId, word) {
+    $('#deleteWordWord').val(word);
+    $('#deleteWordWord').attr('readonly', 'readonly');
+    $('#deleteWordId').val(wordId);
+    $('#deleteWordId').attr('readonly', 'readonly');
+    $('#deleteWordModal').modal('open');
+}
+
+function validateCreateWord(event) {
+    let createWordValue = $('#createWordWord').val();
+    if (createWordValue === "" || createWordValue.length > 200) {
+        Materialize.toast('Word must not be empty and must be less than 200 characters', 4000);
+        event.preventDefault();
+        event.stopPropagation();
+    }
+}
+
+function validateEditWord(event) {
+    let editWordWord = $('#editWordWord').val();
+    if (editWordWord === "" || editWordWord.length > 100) {
+        Materialize.toast('Word must not be empty and must be less than 200 characters', 4000);
+        event.preventDefault();
+        event.stopPropagation();
+    }
+}
 
 /* -----------------------------------------------------------------------------
  * Translation

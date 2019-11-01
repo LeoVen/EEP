@@ -39,6 +39,10 @@ html, body {
     margin: 0 !important;
 }
 
+.display-none {
+    display: none;
+}
+
 .margin-bottom {
     margin-bottom: 60px;
 }

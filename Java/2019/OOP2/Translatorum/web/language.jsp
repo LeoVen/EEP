@@ -46,7 +46,7 @@
                         <ul class="collection">
                             <% for (Language language : languages) {%>
                             <li class="collection-item">
-                                <span class="languageNameText"><%= language.getName()%></span>
+                                <span class="listingText"><%= language.getName()%></span>
                                 <a href="javascript:deleteLangModal(<%= language.getId()%>, '<%= language.getName()%>')" class="secondary-content">
                                     <i class="material-icons red-text">delete</i>
                                 </a>
@@ -71,7 +71,6 @@
                 <div class="container">
                     <h4>Create Language</h4>
                     <html:form action="CreateLanguage">
-                        <p class="error-message" id="createLanguageError"></p>
                         <html:text styleId="createLanguageName" name="CreateLanguageActionForm" property="languageName"/>
                         <div class="flex-space-between">
                             <html:submit styleId="createLanguageSubmit" value="Create" styleClass="btn blue"/>
@@ -90,7 +89,6 @@
                     <h4>Edit Language</h4>
                     <html:form action="UpdateLanguage">
                         <div class="row">
-                            <p class="error-message" id="editLanguageError"></p>
                             <div class="col s2 margin0">
                                 <html:text styleId="editLanguageId" name="UpdateLanguageActionForm" property="languageId"/>
                             </div>
@@ -111,7 +109,7 @@
         <div id="deleteLanguageModal" class="modal">
             <div class="modal-content">
                 <div class="container">
-                    <h4>Confirm Action</h4>
+                    <h4>Delete Language</h4>
                     <p>Are you sure you want to delete this Language? </p>
                     <p>This action will delete all the words and translations associated with it.</p>
                     <html:form action="DeleteLanguage">
@@ -128,11 +126,11 @@
                             <a href="#!" class="modal-close btn red">Close</a>
                         </div>
                     </html:form>
-                    <html:errors/>
                 </div>
             </div>
         </div>
         <!-- END MODALS -->
+
         <script src="https://code.jquery.com/jquery-3.4.1.min.js" integrity="sha256-CSXorXvZcTkaix6Yvo6HppcZGetbYMGWSFlBw8HfCJo=" crossorigin="anonymous"></script>
         <script src="https://cdnjs.cloudflare.com/ajax/libs/materialize/0.100.2/js/materialize.min.js"></script>
         <script src="js/main.js"></script>

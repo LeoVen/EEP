@@ -24,8 +24,9 @@
 package eep.as.leoven.actions;
 
 import eep.as.leoven.dao.WordDAO;
-import eep.as.leoven.forms.CreateWordActionForm;
+import eep.as.leoven.forms.UpdateWordActionForm;
 import eep.as.leoven.vo.Language;
+import eep.as.leoven.vo.Word;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import org.apache.struts.action.ActionForm;
@@ -36,7 +37,7 @@ import org.apache.struts.action.ActionMapping;
  *
  * @author Leonardo Vencovsky (https://github.com/LeoVen/)
  */
-public class CreateWordAction extends org.apache.struts.action.Action {
+public class UpdateWordAction extends org.apache.struts.action.Action {
 
     /* forward name="success" path="" */
     private static final String SUCCESS = "success";
@@ -56,12 +57,13 @@ public class CreateWordAction extends org.apache.struts.action.Action {
             HttpServletRequest request, HttpServletResponse response)
             throws Exception {
 
-        CreateWordActionForm formBean = (CreateWordActionForm) form;
+        UpdateWordActionForm formBean = (UpdateWordActionForm) form;
 
-        Language language = new Language(formBean.getLanguageId(),
-                formBean.getLanguageName());
+        Language language = new Language(formBean.getLanguageId());
 
-        new WordDAO().create(language, formBean.getWord());
+        Word word = new Word(formBean.getWordId(), language, formBean.getWord());
+
+        new WordDAO().update(word);
 
         return mapping.findForward(SUCCESS);
     }

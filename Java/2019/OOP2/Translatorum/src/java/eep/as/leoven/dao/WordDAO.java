@@ -40,6 +40,13 @@ public class WordDAO {
     public WordDAO() {
     }
 
+    /**
+     * Gets all words that are from a given language.
+     *
+     * @param language The language to be matched for each word.
+     *
+     * @return Returns a list of words that are part of the specified language.
+     */
     public List<Word> getByLanguage(Language language) {
         Session session = null;
         List<Word> words = null;
@@ -64,6 +71,12 @@ public class WordDAO {
         return words;
     }
 
+    /**
+     * Creates a word from a language reference and its text string.
+     *
+     * @param language The word's language reference.
+     * @param text The text that represents a word.
+     */
     public void create(Language language, String text) {
         Session session = null;
         Transaction transaction = null;
@@ -73,6 +86,63 @@ public class WordDAO {
             transaction = session.beginTransaction();
 
             session.save(word);
+            session.flush();
+
+            transaction.commit();
+        } catch (HibernateException e) {
+            if (transaction != null) {
+                transaction.rollback();
+            }
+            throw e;
+        } finally {
+            if (session != null) {
+                session.close();
+            }
+        }
+    }
+
+    /**
+     * Updates a given word. The word must contains at least its id, its word
+     * text and a language with an id.
+     *
+     * @param word The word to be updated in the database.
+     */
+    public void update(Word word) {
+        Session session = null;
+        Transaction transaction = null;
+        try {
+            session = HibernateUtil.getSessionFactory().openSession();
+            transaction = session.beginTransaction();
+
+            session.update(word);
+            session.flush();
+
+            transaction.commit();
+        } catch (HibernateException e) {
+            if (transaction != null) {
+                transaction.rollback();
+            }
+            throw e;
+        } finally {
+            if (session != null) {
+                session.close();
+            }
+        }
+    }
+
+    /**
+     * Deletes a word from the database. The word must contain at least its id.
+     *
+     * @param word A word to be deleted from the database.
+     */
+    public void delete(Word word) {
+        Session session = null;
+        Transaction transaction = null;
+        try {
+            session = HibernateUtil.getSessionFactory().openSession();
+            transaction = session.beginTransaction();
+
+            session.delete(word);
             session.flush();
 
             transaction.commit();

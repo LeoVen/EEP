@@ -44,29 +44,29 @@
         <div class="centered-card">
             <div class="card">
                 <div class="card-content">
-                    <span class="card-title">Create words for <%= currentLanguage.getName() %></span>
+                    <span class="card-title">Create words for <%= currentLanguage.getName()%></span>
                     <div class="listing">
                         <% if (words != null) { %>
-                        <div class="collection">
+                        <ul class="collection">
                             <% for (Word word : words) {%>
                             <li class="collection-item">
-                                <span class="languageNameText"><%= word.getWord()%></span>
+                                <span class="listingText"><%= word.getWord()%></span>
                                 <a href="javascript:deleteWordModal(<%= word.getId()%>, '<%= word.getWord()%>')" class="secondary-content">
                                     <i class="material-icons red-text">delete</i>
                                 </a>
-                                <a href="javascript:editWordModal(<%= word.getId()%>, '<%= word.getWord()%>')" class="secondary-content">
+                                <a href="javascript:editWordModal(<%= currentLanguage.getId()%>, <%= word.getId()%>, '<%= word.getWord()%>')" class="secondary-content">
                                     <i class="material-icons blue-text">edit</i>
                                 </a>
                             </li>
                             <% }%>
-                        </div>
-                        <% } else { %>
-                        <p>You have not created any words for <%= currentLanguage.getName() %> yet...</p>
+                        </ul>
+                        <% } else {%>
+                        <p>You have not created any words for <%= currentLanguage.getName()%> yet...</p>
                         <% }%>
                     </div>
                 </div>
                 <div class="card-action center-align">
-                    <a href="javascript:createLangModal()" class="btn green"><i class="material-icons">add</i></a>
+                    <a href="javascript:createWordModal(<%= currentLanguage.getId()%>, '<%= currentLanguage.getName()%>')" class="btn green"><i class="material-icons">add</i></a>
                 </div>
             </div>
         </div>
@@ -78,14 +78,71 @@
                 <div class="container">
                     <h4>Create Word</h4>
                     <html:form action="CreateWord">
-                        <p class="error-message" id="createWordError"></p>
-                        <html:text styleId="createWordName" name="CreateWordActionForm" property="word"/>
+                        <div class="row">
+                            <div class="col s2 margin0">
+                                <html:text styleId="createWordLanguageId" name="CreateWordActionForm" property="languageId"/>
+                            </div>
+                            <div class="col s10">
+                                <html:text styleId="createWordLanguageName" name="CreateWordActionForm" property="languageName"/>
+                            </div>
+                        </div>
+                        <html:text styleId="createWordWord" name="CreateWordActionForm" property="word"/>
                         <div class="flex-space-between">
-                            <html:submit styleId="createLanguageSubmit" value="Create" styleClass="btn blue"/>
+                            <html:submit styleId="createWordSubmit" value="Create" styleClass="btn blue"/>
                             <a href="#!" class="modal-close btn red">Cancel</a>
                         </div>
                     </html:form>
-                    <html:errors/>
+                </div>
+            </div>
+        </div>
+
+        <!-- EDIT WORD -->
+        <div id="editWordModal" class="modal">
+            <div class="modal-content">
+                <div class="container">
+                    <h4>Edit Word</h4>
+                    <html:form action="UpdateWord">
+                        <div class="row">
+                            <div class="col s2 margin0">
+                                <html:text styleId="editWordId" name="UpdateWordActionForm" property="wordId"/>
+                            </div>
+                            <div class="col s10">
+                                <html:text styleId="editWordWord" name="UpdateWordActionForm" property="word"/>
+                            </div>
+                        </div>
+                        <div class="display-none">
+                            <html:text styleId="editWordLanguageId" name="UpdateWordActionForm" property="languageId" styleClass="display-none" />
+                        </div>
+                        <div class="flex-space-between">
+                            <html:submit styleId="editWordSubmit" value="Update" styleClass="btn blue"/>
+                            <a href="#!" class="modal-close btn red">Cancel</a>
+                        </div>
+                    </html:form>
+                </div>
+            </div>
+        </div>
+
+        <!-- DELETE WORD -->
+        <div id="deleteWordModal" class="modal">
+            <div class="modal-content">
+                <div class="container">
+                    <h4>Delete Word</h4>
+                    <p>Are you sure you want to delete this Word? </p>
+                    <p>This action will delete all the translations that are associated with it.</p>
+                    <html:form action="DeleteWord">
+                        <div class="row">
+                            <div class="col s2 margin0">
+                                <html:text styleId="deleteWordId" name="DeleteWordActionForm" property="wordId"/>
+                            </div>
+                            <div class="col s10">
+                                <html:text styleId="deleteWordWord" name="DeleteWordActionForm" property="word"/>
+                            </div>
+                        </div>
+                        <div class="flex-space-between">
+                            <html:submit styleId="deleteWordSubmit" value="Delete" styleClass="btn blue"/>
+                            <a href="#!" class="modal-close btn red">Cancel</a>
+                        </div>
+                    </html:form>
                 </div>
             </div>
         </div>

@@ -45,7 +45,7 @@
                             <br>
                             <div class="flex-space-between">
                                 <a href="language.jsp" class="btn white orange-text">Languages</a>
-                                <a href="javascript:selectLanguageModalOpen()" class="modal-trigger btn white orange-text">Words</a>
+                                <a href="javascript:selectLanguageModal()" class="modal-trigger btn white orange-text">Words</a>
                                 <a href="translation.jsp" class="btn white orange-text">Translations</a>
                             </div>
                         </div>
@@ -68,7 +68,7 @@
                 <ul class="collection hover">
                     <% for (Language lang : languages) {%>
                     <a href="javascript:selectLanguageSelection(<%= lang.getId()%>, '<%= lang.getName()%>')" class="collection-item">
-                        <%= lang.getName()%>
+                        <span class="listingText"><%= lang.getName()%></span>
                     </a>
                     <% } %>
                 </ul>
