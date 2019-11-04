@@ -8,11 +8,11 @@
 <%@ taglib uri="http://struts.apache.org/tags-html" prefix="html" %>
 <%@ taglib uri="http://struts.apache.org/tags-logic" prefix="logic" %>
 
-<%@page import="eep.as.leoven.dao.WordDAO"%>
 <%@page import="java.util.List"%>
+<%@page import="eep.as.leoven.controller.PageContentController"%>
+<%@page import="eep.as.leoven.dao.WordDAO"%>
 <%@page import="eep.as.leoven.vo.Word"%>
 <%@page import="eep.as.leoven.vo.Language"%>
-<%@page import="eep.as.leoven.controller.PageContentController"%>
 
 <%@page contentType="text/html"%>
 <%@page pageEncoding="UTF-8"%>

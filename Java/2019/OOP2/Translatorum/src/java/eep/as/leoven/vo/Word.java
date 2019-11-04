@@ -1,5 +1,5 @@
 package eep.as.leoven.vo;
-// Generated 24/10/2019 01:23:23 by Hibernate Tools 4.3.1
+// Generated 04/11/2019 19:07:04 by Hibernate Tools 4.3.1
 
 import java.util.HashSet;
 import java.util.Set;

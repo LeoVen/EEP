@@ -26,14 +26,14 @@ $(document).ready(function () {
     // the "href" attribute of the modal trigger must specify the modal ID that wants to be triggered
     $('.modal').modal();
     $('select').material_select();
-    $('#createLanguageName').attr('placeholder', 'Language Name');
 
     $('#createLanguageSubmit').on('click', (event) => validateCreateLang(event));
     $('#editLanguageSubmit').on('click', (event) => validateEditLang(event));
     $('#selectLanguageSubmit').on('click', (event) => validateSelectLanguage(event));
     $('#createWordSubmit').on('click', (event) => validateCreateWord(event));
     $('#editWordSubmit').on('click', (event) => validateEditWord(event));
-    $('#selectTranslationSubmit').on('click', (event) => selectTranslationSubmit(event));
+    $('#validateSelectTranslation').on('click', (event) => validateSelectTranslation(event));
+    $('#createTranslationSubmit').on('click', (event) => validateCreateTranslation(event));
 
     $('.listingText').each(function () {
         let text = $(this).text();
@@ -41,6 +41,15 @@ $(document).ready(function () {
             $(this).text(text.slice(0, 30) + '...');
         }
     });
+
+    /* translation.jsp */
+    $('#createTranslationWord1').attr('readonly', 'readonly');
+    $('#createTranslationWord2').attr('readonly', 'readonly');
+
+    if (langId1 !== undefined && langId2 !== undefined) {
+        $('#createTranslationLanguageId1').val(langId1);
+        $('#createTranslationLanguageId2').val(langId2);
+    }
 });
 
 /* -----------------------------------------------------------------------------
@@ -49,6 +58,7 @@ $(document).ready(function () {
 function createLangModal() {
     $('#createLanguageError').text('');
     $('#createLanguageName').val('');
+    $('#createLanguageName').attr('placeholder', 'Language Name');
     $('#createLanguageModal').modal('open');
 }
 
@@ -165,6 +175,34 @@ function validateEditWord(event) {
  * Translation
  ---------------------------------------------------------------------------- */
 
+function selectWordForTranslation(part, id, word) {
+    if (part === 1) {
+        $('#createTranslationWordId1').val(id);
+        $('#createTranslationWord1').val(word);
+    } else if (part === 2) {
+        $('#createTranslationWordId2').val(id);
+        $('#createTranslationWord2').val(word);
+    } else {
+        Materialize.typeof('Front-end error: unknown ' + part);
+    }
+}
+
+function validateCreateTranslation(event) {
+    if (langId1 === undefined && langId2 === undefined) {
+        Materialize.toast('Server Error: languages ID were not brought up to front-end', 4000);
+        return;
+    }
+
+    let word1 = $('#createTranslationWord1').val();
+    let word2 = $('#createTranslationWord2').val();
+
+    if (word1 === undefined || word1 === '' || word2 === undefined || word2 === '') {
+        Materialize.toast('Please select a valid word', 4000);
+        event.preventDefault();
+        event.stopPropagation();
+    }
+}
+
 /* Select Translation */
 var selectLangStep = 0;
 function selectTranslationModal() {
@@ -193,11 +231,11 @@ function selectTranslationSelection(id, name) {
         $('#selectLanguageName2').toggleClass('border-selection');
         selectLangStep = 0;
     } else {
-        Materialize.toast('Something went wrong. Please refresh the page.');
+        Materialize.toast('Something went wrong. Please refresh the page.', 4000);
     }
 }
 
-function selectTranslationSubmit(event) {
+function validateSelectTranslation(event) {
     let selectLang1 = $('#selectLanguageName1').val();
     let selectLang2 = $('#selectLanguageName2').val();
 

@@ -86,6 +86,31 @@ html, body {
     transform: translate(-50%, -50%);
 }
 
+/* translation.jsp */
+.big-card-parent {
+    box-sizing: border-box;
+    width: 100%;
+    height: calc(100% - 1em);
+    padding: calc(3%);
+}
+
+.big-card-child {
+    box-sizing: border-box;
+    width: 100%;
+    height: 100%;
+    padding: 20px;
+}
+
+.word-listing {
+    height: 300px;
+    overflow-y: auto;
+}
+
+.createTranslationWord {
+    max-width: 400px;
+}
+
+
 /* Language list, word list, translation list */
 .listing {
     width: 500px;

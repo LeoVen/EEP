@@ -1,12 +1,12 @@
 <?xml version="1.0"?>
 <!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
 "http://www.hibernate.org/dtd/hibernate-mapping-3.0.dtd">
-<!-- Generated 24/10/2019 01:23:23 by Hibernate Tools 4.3.1 -->
+<!-- Generated 04/11/2019 19:07:05 by Hibernate Tools 4.3.1 -->
 <hibernate-mapping>
-    <class name="eep.as.leoven.vo.Language" table="language" catalog="translatorum" optimistic-lock="version">
+    <class name="eep.as.leoven.vo.Language" table="language" catalog="translatorum">
         <id name="id" type="int">
             <column name="id" />
-            <generator class="assigned" />
+            <generator class="assigned"></generator>
         </id>
         <property name="name" type="string">
             <column name="name" length="100" not-null="true" />

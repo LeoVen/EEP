@@ -24,6 +24,7 @@
                 <p>Something went wrong...</p>
                 <% if (exception != null) { %>
                 <p><%= exception.getMessage() %></p>
+                <p><%= exception.getCause()%></p>
                 <% } %>
                 <br>
                 <a href="index.jsp" class="btn">Return</a>

@@ -8,8 +8,8 @@
 <%@ taglib uri="http://struts.apache.org/tags-html" prefix="html" %>
 <%@ taglib uri="http://struts.apache.org/tags-logic" prefix="logic" %>
 
-<%@page import="eep.as.leoven.controller.PageContentController"%>
 <%@page import="java.util.Set"%>
+<%@page import="eep.as.leoven.controller.PageContentController"%>
 <%@page import="eep.as.leoven.dao.LanguageDAO"%>
 <%@page import="eep.as.leoven.vo.Language"%>
 
@@ -55,6 +55,8 @@
                                 <a href="javascript:selectLanguageModal()" class="modal-trigger btn white orange-text">Words</a>
                                 <a href="javascript:selectTranslationModal()" class="btn white orange-text">Translations</a>
                             </div>
+                            <br>
+                            <a href="dictionary.jsp" class="btn white orange-text">Dictionary</a>
                         </div>
                         <div>
                             <p>Developers: Igor Prata, Leonardo Vencovsky, Yan Trevizam</p>
