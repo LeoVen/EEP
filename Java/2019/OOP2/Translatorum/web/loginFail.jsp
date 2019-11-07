@@ -1,6 +1,6 @@
 <%-- 
-    Document   : error
-    Created on : 26/10/2019, 00:27:03
+    Document   : loginFail
+    Created on : 07/11/2019, 01:04:08
     Author     : Leonardo Vencovsky (https://github.com/LeoVen/)
 --%>
 
@@ -10,7 +10,7 @@
 
 <%@page contentType="text/html"%>
 <%@page pageEncoding="UTF-8"%>
-<%@page isErrorPage="true" %>
+<%@page errorPage="error.jsp" %>
 <!DOCTYPE html>
 <html>
     <head>
@@ -18,20 +18,14 @@
         <link rel="stylesheet" href="css/materialize.css">
         <link rel="stylesheet" href="css/main.css">
         <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-        <title>Translatorum - Error</title>
+        <title>Translatorum - Login Fail</title>
     </head>
     <body>
         <div class="error-center card">
             <div class="card-content">
-                <span class="card-title">Error</span>
-                <p>Something went wrong...</p>
-                <% if (exception != null) {%>
-                <p><%= exception.getMessage()%></p>
-                <p><%= exception.getCause()%></p>
-                <% exception.printStackTrace(); %>
-                <% }%>
+                <span class="card-title">Login Failed</span>
+                <br>
                 <div class="center-align">
-                    <br>
                     <a href="index.jsp" class="btn">Return</a>
                 </div>
             </div>

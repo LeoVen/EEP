@@ -9,7 +9,7 @@
 <%@ taglib uri="http://struts.apache.org/tags-logic" prefix="logic" %>
 
 <%@page import="java.util.List"%>
-<%@page import="eep.as.leoven.controller.PageContentController"%>
+<%@page import="eep.as.leoven.controller.ApplicationController"%>
 <%@page import="eep.as.leoven.dao.WordDAO"%>
 <%@page import="eep.as.leoven.vo.Word"%>
 <%@page import="eep.as.leoven.vo.Language"%>
@@ -19,13 +19,18 @@
 <%@page errorPage="error.jsp" %>
 
 <%
+    // Check user login
+    if (ApplicationController.getCurrentUser() == null) {
+        response.sendRedirect("unauthorized.jsp");
+    }
+
     // Prevent caching
-    if (PageContentController.noCaching) {
+    if (ApplicationController.isNoCaching()) {
         response.setDateHeader("Expires", 0);
     }
 
-    Language lang1 = PageContentController.getTranslationLanguage1();
-    Language lang2 = PageContentController.getTranslationLanguage2();
+    Language lang1 = ApplicationController.getTranslationLanguage1();
+    Language lang2 = ApplicationController.getTranslationLanguage2();
 
     WordDAO wordDao = new WordDAO();
 
@@ -36,11 +41,11 @@
 <!DOCTYPE html>
 <html>
     <head>
-        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/materialize/0.100.2/css/materialize.min.css">
         <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons">
-        <link rel="stylesheet" href="${pageContext.request.contextPath}/css/main.css" type="text/css" >
+        <link rel="stylesheet" href="css/materialize.css">
+        <link rel="stylesheet" href="css/main.css">
         <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-        <title>Translatorum</title>
+        <title>Translatorum - Translation</title>
     </head>
     <body>
         <!-- FAB -->
@@ -59,10 +64,12 @@
                             <span class="card-title center-align"><%= lang1.getName()%></span>
                             <div class="word-listing">
                                 <ul class="collection">
+                                    <% if (words1 != null) {%>
                                     <% for (Word word : words1) {%>
                                     <a href="javascript:selectWordForTranslation(1, <%= word.getId()%>, '<%= word.getWord()%>')" class="collection-item">
                                         <span class="listingText"><%= word.getWord()%></span>
                                     </a>
+                                    <% } %>
                                     <% }%>
                                 </ul>
                             </div>
@@ -71,10 +78,12 @@
                             <span class="card-title center-align"><%= lang2.getName()%></span>
                             <div class="word-listing">
                                 <ul class="collection">
+                                    <% if (words2 != null) { %>
                                     <% for (Word word : words2) {%>
                                     <a href="javascript:selectWordForTranslation(2, <%= word.getId()%>, '<%= word.getWord()%>')" class="collection-item">
                                         <span class="listingText"><%= word.getWord()%></span>
                                     </a>
+                                    <% }%>
                                     <% }%>
                                 </ul>
                             </div>
@@ -88,7 +97,7 @@
                             <html:text styleId="createTranslationWordId2" name="CreateTranslationActionForm" property="wordId2"/>
                         </div>
                         <div class="flex-space-around">
-                            <html:text styleId="createTranslationWord1" name="CreateTranslationActionForm" property="word1" styleClass="createTranslationWord"/>
+                            <html:text styleId="createTranslationWord1" name="CreateTranslationActionForm" property="word1" styleClass="createTranslationWord" value=""/>
                             <div class="valign-wrapper">
                                 <div class="center-align">
                                     <i class="material-icons">arrow_back_ios</i>
@@ -96,7 +105,7 @@
                                     <i class="material-icons">arrow_forward_ios</i>
                                 </div>
                             </div>
-                            <html:text styleId="createTranslationWord2" name="CreateTranslationActionForm" property="word2" styleClass="createTranslationWord"/>
+                            <html:text styleId="createTranslationWord2" name="CreateTranslationActionForm" property="word2" styleClass="createTranslationWord" value=""/>
                         </div>
                         <div class="center-align">
                             <html:submit styleId="createTranslationSubmit" styleClass="btn-flat white orange-text" value="Add Translation"/>
@@ -110,8 +119,8 @@
             const langId1 = '<%= lang1.getId()%>';
             const langId2 = '<%= lang2.getId()%>';
         </script>
-        <script src="https://code.jquery.com/jquery-3.4.1.min.js" integrity="sha256-CSXorXvZcTkaix6Yvo6HppcZGetbYMGWSFlBw8HfCJo=" crossorigin="anonymous"></script>
-        <script src="https://cdnjs.cloudflare.com/ajax/libs/materialize/0.100.2/js/materialize.min.js"></script>
+        <script src="js/jquery-3.4.1.js"></script>
+        <script src="js/materialize.js"></script>
         <script src="js/main.js"></script>
     </body>
 </html>

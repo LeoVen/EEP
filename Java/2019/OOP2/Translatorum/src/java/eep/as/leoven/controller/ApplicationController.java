@@ -24,14 +24,17 @@
 package eep.as.leoven.controller;
 
 import eep.as.leoven.vo.Language;
+import eep.as.leoven.vo.User;
 
 /**
  *
  * @author Leonardo Vencovsky (https://github.com/LeoVen/)
  */
-public class PageContentController {
+public class ApplicationController {
 
-    static public boolean noCaching = true;
+    static boolean noCaching = true;
+
+    static User currentUser = null;
 
     static Language currentLanguage = null;
 
@@ -39,12 +42,28 @@ public class PageContentController {
 
     static Language translationLanguage2 = null;
 
+    public static boolean isNoCaching() {
+        return noCaching;
+    }
+
+    public static void setNoCaching(boolean noCaching) {
+        ApplicationController.noCaching = noCaching;
+    }
+
+    public static User getCurrentUser() {
+        return currentUser;
+    }
+
+    public static void setCurrentUser(User currentUser) {
+        ApplicationController.currentUser = currentUser;
+    }
+
     public static Language getCurrentLanguage() {
         return currentLanguage;
     }
 
     public static void setCurrentLanguage(Language currentLanguage) {
-        PageContentController.currentLanguage = new Language(
+        ApplicationController.currentLanguage = new Language(
                 currentLanguage.getId(),
                 currentLanguage.getName(),
                 currentLanguage.getWords());
@@ -55,7 +74,7 @@ public class PageContentController {
     }
 
     public static void setTranslationLanguage1(Language translationLanguage1) {
-        PageContentController.translationLanguage1 = new Language(
+        ApplicationController.translationLanguage1 = new Language(
                 translationLanguage1.getId(),
                 translationLanguage1.getName(),
                 translationLanguage1.getWords());
@@ -66,7 +85,7 @@ public class PageContentController {
     }
 
     public static void setTranslationLanguage2(Language translationLanguage2) {
-        PageContentController.translationLanguage2 = new Language(
+        ApplicationController.translationLanguage2 = new Language(
                 translationLanguage2.getId(),
                 translationLanguage2.getName(),
                 translationLanguage2.getWords());

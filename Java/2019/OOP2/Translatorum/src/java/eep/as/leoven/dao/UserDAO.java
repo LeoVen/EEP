@@ -24,10 +24,7 @@
 package eep.as.leoven.dao;
 
 import eep.as.leoven.util.DbConnection;
-import eep.as.leoven.vo.Language;
-import java.util.List;
-import java.util.Set;
-import java.util.TreeSet;
+import eep.as.leoven.vo.User;
 import org.hibernate.HibernateException;
 import org.hibernate.Session;
 import org.hibernate.Transaction;
@@ -36,48 +33,21 @@ import org.hibernate.Transaction;
  *
  * @author Leonardo Vencovsky (https://github.com/LeoVen/)
  */
-public class LanguageDAO {
-
-    public LanguageDAO() {
-    }
+public class UserDAO {
 
     /**
-     * Returns all languages currently created in the database.
+     * Creates a user in the database.
      *
-     * @return All languages in the database.
+     * @param user The user to be created in the database
      */
-    public Set<Language> getAll() {
-        Session session = null;
-        TreeSet<Language> ret = null;
-        try {
-            session = DbConnection.getInstance().getSession();
-            List<Language> languages = session.createQuery("from Language").list();
-
-            ret = new TreeSet<>((l1, l2) -> l1.getName().compareTo(l2.getName()));
-            ret.addAll(languages);
-
-            session.flush();
-        } catch (HibernateException e) {
-            throw e;
-        } finally {
-        }
-
-        return ret;
-    }
-
-    /**
-     * Creates a new language.
-     *
-     * @param language New language to be created.
-     */
-    public void create(Language language) {
+    public void create(User user) {
         Session session = null;
         Transaction transaction = null;
         try {
             session = DbConnection.getInstance().getSession();
             transaction = session.beginTransaction();
 
-            session.save(language);
+            session.save(user);
             session.flush();
 
             transaction.commit();
@@ -91,50 +61,52 @@ public class LanguageDAO {
     }
 
     /**
-     * Updates a given language using a new one. It must have a valid id.
+     * Checks if a pair of user name and password are present in the database.
      *
-     * @param language Representation of a modified language.
+     * @param userName User name to be matched.
+     * @param userPassword User password to be matched.
+     *
+     * @return Returns true if there is a user with a matching user name and
+     * password.
      */
-    public void update(Language language) {
+    public User match(String userName, String userPassword) {
         Session session = null;
-        Transaction transaction = null;
         try {
             session = DbConnection.getInstance().getSession();
-            transaction = session.beginTransaction();
 
-            session.update(language);
-            session.flush();
+            Object obj = session.createQuery("from User u where u.name = '" + userName
+                    + "' and u.password = '" + userPassword + "'").uniqueResult();
 
-            transaction.commit();
-        } catch (HibernateException e) {
-            if (transaction != null) {
-                transaction.rollback();
+            if (obj != null) {
+                return (User) obj;
             }
+
+            session.flush();
+        } catch (HibernateException e) {
             throw e;
         } finally {
         }
+
+        return null;
     }
 
     /**
-     * Deletes a language from database. At least its id is required.
+     * Returns true if the given user name already exists in the database,
+     * otherwise false.
      *
-     * @param language Language to be deleted.
+     * @param name The name to be checked its existence in the database.
+     *
+     * @return Returns true if the user name already exists in the database, or
+     * false if not.
      */
-    public void delete(Language language) {
-        Session session = null;
-        Transaction transaction = null;
+    public boolean contains(String name) {
         try {
-            session = DbConnection.getInstance().getSession();
-            transaction = session.beginTransaction();
+            Session session = DbConnection.getInstance().getSession();
 
-            session.delete(language);
-            session.flush();
+            Object obj = session.createQuery("from User u where u.name = '" + name + "'").uniqueResult();
 
-            transaction.commit();
+            return obj != null;
         } catch (HibernateException e) {
-            if (transaction != null) {
-                transaction.rollback();
-            }
             throw e;
         } finally {
         }

@@ -24,8 +24,10 @@
 package eep.as.leoven.actions;
 
 import eep.as.leoven.controller.ApplicationController;
-import eep.as.leoven.forms.SelectLanguageActionForm;
-import eep.as.leoven.vo.Language;
+import eep.as.leoven.dao.UserDAO;
+import eep.as.leoven.forms.SignupActionForm;
+import eep.as.leoven.util.PasswordEncryption;
+import eep.as.leoven.vo.User;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import org.apache.struts.action.ActionForm;
@@ -36,10 +38,11 @@ import org.apache.struts.action.ActionMapping;
  *
  * @author Leonardo Vencovsky (https://github.com/LeoVen/)
  */
-public class SelectLanguageAction extends org.apache.struts.action.Action {
+public class SignupAction extends org.apache.struts.action.Action {
 
     /* forward name="success" path="" */
     private static final String SUCCESS = "success";
+    private static final String FAILURE = "failure";
 
     /**
      * This is the action called from the Struts framework.
@@ -56,12 +59,21 @@ public class SelectLanguageAction extends org.apache.struts.action.Action {
             HttpServletRequest request, HttpServletResponse response)
             throws Exception {
 
-        SelectLanguageActionForm beanForm = (SelectLanguageActionForm) form;
+        SignupActionForm beanForm = (SignupActionForm) form;
 
-        Language language = new Language(beanForm.getLanguageId(),
-                beanForm.getLanguageName());
+        String password = PasswordEncryption.getSHA1(beanForm.getUserPassword());
 
-        ApplicationController.setCurrentLanguage(language);
+        User user = new User(beanForm.getUserName(), password);
+
+        UserDAO userDao = new UserDAO();
+
+        if (userDao.contains(user.getName())) {
+            return mapping.findForward(FAILURE);
+        }
+
+        userDao.create(user);
+
+        ApplicationController.setCurrentUser(user);
 
         return mapping.findForward(SUCCESS);
     }

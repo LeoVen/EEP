@@ -21,48 +21,57 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
  * THE SOFTWARE.
  */
-package eep.as.leoven.actions;
+package eep.as.leoven.forms;
 
-import eep.as.leoven.controller.ApplicationController;
-import eep.as.leoven.forms.SelectLanguageActionForm;
-import eep.as.leoven.vo.Language;
 import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
-import org.apache.struts.action.ActionForm;
-import org.apache.struts.action.ActionForward;
+
+import org.apache.struts.action.ActionErrors;
 import org.apache.struts.action.ActionMapping;
 
 /**
  *
  * @author Leonardo Vencovsky (https://github.com/LeoVen/)
  */
-public class SelectLanguageAction extends org.apache.struts.action.Action {
+public class SignupActionForm extends org.apache.struts.action.ActionForm {
 
-    /* forward name="success" path="" */
-    private static final String SUCCESS = "success";
+    private String userName;
+    private String userPassword;
+
+    /**
+     *
+     */
+    public SignupActionForm() {
+        super();
+        // TODO Auto-generated constructor stub
+    }
 
     /**
      * This is the action called from the Struts framework.
      *
      * @param mapping The ActionMapping used to select this instance.
-     * @param form The optional ActionForm bean for this request.
      * @param request The HTTP Request we are processing.
-     * @param response The HTTP Response we are processing.
-     * @throws java.lang.Exception
      * @return
      */
     @Override
-    public ActionForward execute(ActionMapping mapping, ActionForm form,
-            HttpServletRequest request, HttpServletResponse response)
-            throws Exception {
-
-        SelectLanguageActionForm beanForm = (SelectLanguageActionForm) form;
-
-        Language language = new Language(beanForm.getLanguageId(),
-                beanForm.getLanguageName());
-
-        ApplicationController.setCurrentLanguage(language);
-
-        return mapping.findForward(SUCCESS);
+    public ActionErrors validate(ActionMapping mapping, HttpServletRequest request) {
+        // Validation is done in the front-end
+        return new ActionErrors();
     }
+
+    public String getUserName() {
+        return userName;
+    }
+
+    public void setUserName(String userName) {
+        this.userName = userName;
+    }
+
+    public String getUserPassword() {
+        return userPassword;
+    }
+
+    public void setUserPassword(String userPassword) {
+        this.userPassword = userPassword;
+    }
+
 }

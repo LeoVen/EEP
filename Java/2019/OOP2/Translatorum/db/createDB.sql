@@ -7,8 +7,8 @@ USE `translatorum`;
 CREATE TABLE IF NOT EXISTS `user`
 (
     `id` INTEGER UNSIGNED NOT NULL AUTO_INCREMENT,
-    `name` VARCHAR(100) NOT NULL,
-    `password` CHAR(32) NOT NULL,
+    `name` VARCHAR(100) UNIQUE NOT NULL,
+    `password` CHAR(40) NOT NULL,
     PRIMARY KEY(`id`)
 ) DEFAULT CHARSET = UTF8;
 

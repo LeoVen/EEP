@@ -23,7 +23,7 @@
  */
 package eep.as.leoven.actions;
 
-import eep.as.leoven.controller.PageContentController;
+import eep.as.leoven.controller.ApplicationController;
 import eep.as.leoven.forms.SelectTranslationActionForm;
 import eep.as.leoven.vo.Language;
 import javax.servlet.http.HttpServletRequest;
@@ -61,8 +61,8 @@ public class SelectTranslationAction extends org.apache.struts.action.Action {
         Language lang1 = new Language(beanForm.getLanguageId1(), beanForm.getLanguageName1());
         Language lang2 = new Language(beanForm.getLanguageId2(), beanForm.getLanguageName2());
 
-        PageContentController.setTranslationLanguage1(lang1);
-        PageContentController.setTranslationLanguage2(lang2);
+        ApplicationController.setTranslationLanguage1(lang1);
+        ApplicationController.setTranslationLanguage2(lang2);
 
         return mapping.findForward(SUCCESS);
     }

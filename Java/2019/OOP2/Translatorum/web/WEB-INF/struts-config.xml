@@ -7,6 +7,9 @@
 
 <struts-config>
     <form-beans>
+        <form-bean name="SignupActionForm" type="eep.as.leoven.forms.SignupActionForm"/>
+        <form-bean name="LogoutActionForm" type="eep.as.leoven.forms.LogoutActionForm"/>
+        <form-bean name="LoginActionForm" type="eep.as.leoven.forms.LoginActionForm"/>
         <form-bean name="CreateTranslationActionForm" type="eep.as.leoven.forms.CreateTranslationActionForm"/>
         <form-bean name="SelectTranslationActionForm" type="eep.as.leoven.forms.SelectTranslationActionForm"/>
         <form-bean name="DeleteWordActionForm" type="eep.as.leoven.forms.DeleteWordActionForm"/>
@@ -53,6 +56,17 @@
         </action>
         <action input="/CreateTranslation" name="CreateTranslationActionForm" path="/CreateTranslation" scope="session" type="eep.as.leoven.actions.CreateTranslationAction" >
             <forward name="success" path="/translation.jsp" redirect="true" />
+        </action>
+        <action input="/Login" name="LoginActionForm" path="/Login" scope="session" type="eep.as.leoven.actions.LoginAction">
+            <forward name="success" path="/main.jsp" redirect="true" />
+            <forward name="failure" path="/loginFail.jsp" redirect="true" />
+        </action>
+        <action input="/Logout" name="LogoutActionForm" path="/Logout" scope="session" type="eep.as.leoven.actions.LogoutAction">
+            <forward name="success" path="/index.jsp" redirect="true" />
+        </action>
+        <action input="/Signup" name="SignupActionForm" path="/Signup" scope="session" type="eep.as.leoven.actions.SignupAction">
+            <forward name="success" path="/main.jsp" redirect="true" />
+            <forward name="failure" path="/duplicateUser.jsp" redirect="true" />
         </action>
     </action-mappings>
 

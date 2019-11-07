@@ -9,7 +9,7 @@
 <%@ taglib uri="http://struts.apache.org/tags-logic" prefix="logic" %>
 
 <%@page import="java.util.List"%>
-<%@page import="eep.as.leoven.controller.PageContentController"%>
+<%@page import="eep.as.leoven.controller.ApplicationController"%>
 <%@page import="eep.as.leoven.dao.WordDAO"%>
 <%@page import="eep.as.leoven.vo.Word"%>
 <%@page import="eep.as.leoven.vo.Language"%>
@@ -19,12 +19,17 @@
 <%@page errorPage="error.jsp" %>
 
 <%
+    // Check user login
+    if (ApplicationController.getCurrentUser() == null) {
+        response.sendRedirect("unauthorized.jsp");
+    }
+
     // Prevent caching
-    if (PageContentController.noCaching) {
+    if (ApplicationController.isNoCaching()) {
         response.setDateHeader("Expires", 0);
     }
 
-    Language currentLanguage = PageContentController.getCurrentLanguage();
+    Language currentLanguage = ApplicationController.getCurrentLanguage();
 
     List<Word> words = new WordDAO().getByLanguage(currentLanguage);
 %>
@@ -32,11 +37,11 @@
 <!DOCTYPE html>
 <html>
     <head>
-        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/materialize/0.100.2/css/materialize.min.css">
         <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons">
-        <link rel="stylesheet" href="${pageContext.request.contextPath}/css/main.css" type="text/css" >
+        <link rel="stylesheet" href="css/materialize.css">
+        <link rel="stylesheet" href="css/main.css">
         <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-        <title>Translatorum</title>
+        <title>Translatorum - Word</title>
     </head>
     <body>
         <!-- FAB -->
@@ -152,8 +157,8 @@
             </div>
         </div>
 
-        <script src="https://code.jquery.com/jquery-3.4.1.min.js" integrity="sha256-CSXorXvZcTkaix6Yvo6HppcZGetbYMGWSFlBw8HfCJo=" crossorigin="anonymous"></script>
-        <script src="https://cdnjs.cloudflare.com/ajax/libs/materialize/0.100.2/js/materialize.min.js"></script>
+        <script src="js/jquery-3.4.1.js"></script>
+        <script src="js/materialize.js"></script>
         <script src="js/main.js"></script>
     </body>
 </html>

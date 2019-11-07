@@ -23,9 +23,17 @@
  */
 
 $(document).ready(function () {
-    // the "href" attribute of the modal trigger must specify the modal ID that wants to be triggered
+    if (typeof M === 'undefined') {
+        alert('Error, Materialize library not loaded');
+        return;
+    }
+
     $('.modal').modal();
-    $('select').material_select();
+    $('select').formSelect();
+
+    $('#loginSubmit').on('click', (event) => validateLogin(event));
+    $('#signupSubmit').on('click', (event) => validateSignup(event));
+    $('#logoutSubmitFake').on('click', () => $('#logoutSubmit').click());
 
     $('#createLanguageSubmit').on('click', (event) => validateCreateLang(event));
     $('#editLanguageSubmit').on('click', (event) => validateEditLang(event));
@@ -42,15 +50,50 @@ $(document).ready(function () {
         }
     });
 
+    /* index.jsp */
+    resetFieldsIndex();
+
     /* translation.jsp */
     $('#createTranslationWord1').attr('readonly', 'readonly');
     $('#createTranslationWord2').attr('readonly', 'readonly');
 
-    if (langId1 !== undefined && langId2 !== undefined) {
+    if (typeof langId1 !== 'undefined' && typeof langId2 !== 'undefined') {
         $('#createTranslationLanguageId1').val(langId1);
         $('#createTranslationLanguageId2').val(langId2);
     }
 });
+
+/* -----------------------------------------------------------------------------
+ * User
+ ---------------------------------------------------------------------------- */
+function resetFieldsIndex() {
+    $('#loginUserName').val("");
+    $('#loginUserPassword').val("");
+    $('#signupUserName').val("");
+    $('#signupUserPassword').val("");
+}
+
+function validateLogin(event) {
+    let user = $('#loginUserName').val();
+    let pass = $('#loginUserPassword').val();
+
+    if (user === "" || pass === "" || user.length > 100 || pass.length > 100) {
+        M.toast({html: 'User and Password must not be empty and must be less than 100 characters'});
+        event.preventDefault();
+        event.stopPropagation();
+    }
+}
+
+function validateSignup(event) {
+    let user = $('#signupUserName').val();
+    let pass = $('#signupUserPassword').val();
+
+    if (user === "" || pass === "" || user.length > 100 || pass.length > 100) {
+        M.toast({html: 'User and Password must not be empty and must be less than 100 characters'});
+        event.preventDefault();
+        event.stopPropagation();
+    }
+}
 
 /* -----------------------------------------------------------------------------
  * Language
@@ -83,7 +126,7 @@ function deleteLangModal(id, name) {
 function validateCreateLang(event) {
     let createLangValue = $('#createLanguageName').val();
     if (createLangValue === "" || createLangValue.length > 100) {
-        Materialize.toast('Language Name must not be empty and must be less than 100 characters', 4000);
+        M.toast({html: 'Language Name must not be empty and must be less than 100 characters'});
         event.preventDefault();
         event.stopPropagation();
     }
@@ -92,7 +135,7 @@ function validateCreateLang(event) {
 function validateEditLang(event) {
     let createLangValue = $('#editLanguageName').val();
     if (createLangValue === "" || createLangValue.length > 100) {
-        Materialize.toast('Language Name must not be empty and must be less than 100 characters', 4000);
+        M.toast({html: 'Language Name must not be empty and must be less than 100 characters'});
         event.preventDefault();
         event.stopPropagation();
     }
@@ -117,7 +160,7 @@ function selectLanguageSelection(id, languageName) {
 function validateSelectLanguage(event) {
     let selectLanguageName = $('#selectLanguageName').val();
     if (selectLanguageName === "" || selectLanguageName.length > 100) {
-        Materialize.toast('Please select a valid language', 4000);
+        M.toast({html: 'Please select a valid language'});
         event.preventDefault();
         event.stopPropagation();
     }
@@ -156,7 +199,7 @@ function deleteWordModal(wordId, word) {
 function validateCreateWord(event) {
     let createWordValue = $('#createWordWord').val();
     if (createWordValue === "" || createWordValue.length > 200) {
-        Materialize.toast('Word must not be empty and must be less than 200 characters', 4000);
+        M.toast({html: 'Word must not be empty and must be less than 200 characters'});
         event.preventDefault();
         event.stopPropagation();
     }
@@ -165,7 +208,7 @@ function validateCreateWord(event) {
 function validateEditWord(event) {
     let editWordWord = $('#editWordWord').val();
     if (editWordWord === "" || editWordWord.length > 100) {
-        Materialize.toast('Word must not be empty and must be less than 200 characters', 4000);
+        M.toast({html: 'Word must not be empty and must be less than 200 characters'});
         event.preventDefault();
         event.stopPropagation();
     }
@@ -183,13 +226,13 @@ function selectWordForTranslation(part, id, word) {
         $('#createTranslationWordId2').val(id);
         $('#createTranslationWord2').val(word);
     } else {
-        Materialize.typeof('Front-end error: unknown ' + part);
+        M.toast({html: 'Front-end error: unknown ' + part});
     }
 }
 
 function validateCreateTranslation(event) {
-    if (langId1 === undefined && langId2 === undefined) {
-        Materialize.toast('Server Error: languages ID were not brought up to front-end', 4000);
+    if (typeof langId1 === 'undefined' && typeof langId2 === 'undefined') {
+        M.toast({html: 'Server Error: languages ID were not brought up to front-end'});
         return;
     }
 
@@ -197,9 +240,13 @@ function validateCreateTranslation(event) {
     let word2 = $('#createTranslationWord2').val();
 
     if (word1 === undefined || word1 === '' || word2 === undefined || word2 === '') {
-        Materialize.toast('Please select a valid word', 4000);
+        M.toast({html: 'Please select a valid word'});
         event.preventDefault();
         event.stopPropagation();
+    } else {
+        M.toast({html: 'Translation Created'});
+        $('#createTranslationWord1').val('');
+        $('#createTranslationWord2').val('');
     }
 }
 
@@ -231,7 +278,7 @@ function selectTranslationSelection(id, name) {
         $('#selectLanguageName2').toggleClass('border-selection');
         selectLangStep = 0;
     } else {
-        Materialize.toast('Something went wrong. Please refresh the page.', 4000);
+        M.toast({html: 'Something went wrong. Please refresh the page.'});
     }
 }
 
@@ -240,11 +287,11 @@ function validateSelectTranslation(event) {
     let selectLang2 = $('#selectLanguageName2').val();
 
     if (selectLang1 === "" || selectLang2 === "" || selectLang1.length > 100 || selectLang2.length > 100) {
-        Materialize.toast('Please select two valid languages', 4000);
+        M.toast({html: 'Please select two valid languages'});
         event.preventDefault();
         event.stopPropagation();
     } else if (selectLang1 === selectLang2) {
-        Materialize.toast('Please select two different languages', 4000);
+        M.toast({html: 'Please select two different languages'});
         event.preventDefault();
         event.stopPropagation();
     }

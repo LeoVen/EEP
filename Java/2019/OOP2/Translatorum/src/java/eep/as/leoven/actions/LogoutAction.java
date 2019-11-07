@@ -24,8 +24,6 @@
 package eep.as.leoven.actions;
 
 import eep.as.leoven.controller.ApplicationController;
-import eep.as.leoven.forms.SelectLanguageActionForm;
-import eep.as.leoven.vo.Language;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import org.apache.struts.action.ActionForm;
@@ -36,7 +34,7 @@ import org.apache.struts.action.ActionMapping;
  *
  * @author Leonardo Vencovsky (https://github.com/LeoVen/)
  */
-public class SelectLanguageAction extends org.apache.struts.action.Action {
+public class LogoutAction extends org.apache.struts.action.Action {
 
     /* forward name="success" path="" */
     private static final String SUCCESS = "success";
@@ -56,12 +54,7 @@ public class SelectLanguageAction extends org.apache.struts.action.Action {
             HttpServletRequest request, HttpServletResponse response)
             throws Exception {
 
-        SelectLanguageActionForm beanForm = (SelectLanguageActionForm) form;
-
-        Language language = new Language(beanForm.getLanguageId(),
-                beanForm.getLanguageName());
-
-        ApplicationController.setCurrentLanguage(language);
+        ApplicationController.setCurrentUser(null);
 
         return mapping.findForward(SUCCESS);
     }
