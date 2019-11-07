@@ -23,7 +23,7 @@
  */
 package eep.as.leoven.dao;
 
-import eep.as.leoven.util.HibernateUtil;
+import eep.as.leoven.util.DbConnection;
 import eep.as.leoven.vo.Translation;
 import eep.as.leoven.vo.Word;
 import java.util.List;
@@ -44,26 +44,16 @@ public class TranslationDAO {
      */
     public List<Translation> getAll() {
         Session session = null;
-        Transaction transaction = null;
         List<Translation> translations = null;
         try {
-            session = HibernateUtil.getSessionFactory().openSession();
+            session = DbConnection.getInstance().getSession();
 
-            transaction = session.beginTransaction();
             translations = session.createQuery("from Translation").list();
-
-            transaction.commit();
 
             session.flush();
         } catch (HibernateException e) {
-            if (transaction != null) {
-                transaction.rollback();
-            }
             throw e;
         } finally {
-            if (session != null) {
-                session.close();
-            }
         }
 
         return translations;
@@ -81,7 +71,7 @@ public class TranslationDAO {
         Transaction transaction = null;
         Translation translation = new Translation(0, word1, word2);
         try {
-            session = HibernateUtil.getSessionFactory().openSession();
+            session = DbConnection.getInstance().getSession();
             transaction = session.beginTransaction();
 
             session.save(translation);
@@ -94,9 +84,6 @@ public class TranslationDAO {
             }
             throw e;
         } finally {
-            if (session != null) {
-                session.close();
-            }
         }
     }
 }

@@ -55,13 +55,13 @@ public class DeleteWordAction extends org.apache.struts.action.Action {
     public ActionForward execute(ActionMapping mapping, ActionForm form,
             HttpServletRequest request, HttpServletResponse response)
             throws Exception {
-        
+
         DeleteWordActionForm beanForm = (DeleteWordActionForm) form;
-        
+
         Word word = new Word(beanForm.getWordId(), beanForm.getWord());
-        
+
         new WordDAO().delete(word);
-        
+
         return mapping.findForward(SUCCESS);
     }
 }

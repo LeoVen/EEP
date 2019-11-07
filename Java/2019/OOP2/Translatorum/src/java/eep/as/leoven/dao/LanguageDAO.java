@@ -23,7 +23,7 @@
  */
 package eep.as.leoven.dao;
 
-import eep.as.leoven.util.HibernateUtil;
+import eep.as.leoven.util.DbConnection;
 import eep.as.leoven.vo.Language;
 import java.util.List;
 import java.util.Set;
@@ -50,7 +50,7 @@ public class LanguageDAO {
         Session session = null;
         TreeSet<Language> ret = null;
         try {
-            session = HibernateUtil.getSessionFactory().openSession();
+            session = DbConnection.getInstance().getSession();
             List<Language> languages = session.createQuery("from Language").list();
 
             session.flush();
@@ -60,9 +60,6 @@ public class LanguageDAO {
         } catch (HibernateException e) {
             throw e;
         } finally {
-            if (session != null) {
-                session.close();
-            }
         }
 
         return ret;
@@ -77,7 +74,7 @@ public class LanguageDAO {
         Session session = null;
         Transaction transaction = null;
         try {
-            session = HibernateUtil.getSessionFactory().openSession();
+            session = DbConnection.getInstance().getSession();
             transaction = session.beginTransaction();
 
             session.save(language);
@@ -105,7 +102,7 @@ public class LanguageDAO {
         Session session = null;
         Transaction transaction = null;
         try {
-            session = HibernateUtil.getSessionFactory().openSession();
+            session = DbConnection.getInstance().getSession();
             transaction = session.beginTransaction();
 
             session.update(language);
@@ -133,7 +130,7 @@ public class LanguageDAO {
         Session session = null;
         Transaction transaction = null;
         try {
-            session = HibernateUtil.getSessionFactory().openSession();
+            session = DbConnection.getInstance().getSession();
             transaction = session.beginTransaction();
 
             session.delete(language);

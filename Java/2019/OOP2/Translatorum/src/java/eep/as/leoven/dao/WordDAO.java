@@ -23,7 +23,7 @@
  */
 package eep.as.leoven.dao;
 
-import eep.as.leoven.util.HibernateUtil;
+import eep.as.leoven.util.DbConnection;
 import eep.as.leoven.vo.Language;
 import eep.as.leoven.vo.Word;
 import java.util.List;
@@ -51,7 +51,7 @@ public class WordDAO {
         Session session = null;
         List<Word> words = null;
         try {
-            session = HibernateUtil.getSessionFactory().openSession();
+            session = DbConnection.getInstance().getSession();
 
             words = (List<Word>) session.createQuery("from Word as w where w.language = " + language.getId()).list();
 
@@ -63,9 +63,6 @@ public class WordDAO {
         } catch (HibernateException e) {
             throw e;
         } finally {
-            if (session != null) {
-                session.close();
-            }
         }
 
         return words;
@@ -82,7 +79,7 @@ public class WordDAO {
         Transaction transaction = null;
         Word word = new Word(language, text);
         try {
-            session = HibernateUtil.getSessionFactory().openSession();
+            session = DbConnection.getInstance().getSession();
             transaction = session.beginTransaction();
 
             session.save(word);
@@ -95,9 +92,6 @@ public class WordDAO {
             }
             throw e;
         } finally {
-            if (session != null) {
-                session.close();
-            }
         }
     }
 
@@ -111,7 +105,7 @@ public class WordDAO {
         Session session = null;
         Transaction transaction = null;
         try {
-            session = HibernateUtil.getSessionFactory().openSession();
+            session = DbConnection.getInstance().getSession();
             transaction = session.beginTransaction();
 
             session.update(word);
@@ -124,9 +118,6 @@ public class WordDAO {
             }
             throw e;
         } finally {
-            if (session != null) {
-                session.close();
-            }
         }
     }
 
@@ -139,7 +130,7 @@ public class WordDAO {
         Session session = null;
         Transaction transaction = null;
         try {
-            session = HibernateUtil.getSessionFactory().openSession();
+            session = DbConnection.getInstance().getSession();
             transaction = session.beginTransaction();
 
             session.delete(word);
@@ -152,9 +143,6 @@ public class WordDAO {
             }
             throw e;
         } finally {
-            if (session != null) {
-                session.close();
-            }
         }
     }
 }
