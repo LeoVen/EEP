@@ -1,5 +1,5 @@
 package eep.as.leoven.vo;
-// Generated 04/11/2019 19:07:04 by Hibernate Tools 4.3.1
+// Generated 06/11/2019 23:06:10 by Hibernate Tools 4.3.1
 
 import java.util.HashSet;
 import java.util.Set;
@@ -9,33 +9,38 @@ import java.util.Set;
  */
 public class Language implements java.io.Serializable {
 
-    private int id;
+    private Integer id;
     private String name;
     private Set words = new HashSet(0);
 
     public Language() {
     }
 
-    public Language(int id) {
+    public Language(Integer id) {
         this.id = id;
     }
 
-    public Language(int id, String name) {
+    public Language(Integer id, String name) {
         this.id = id;
         this.name = name;
     }
 
-    public Language(int id, String name, Set words) {
+    public Language(String name, Set words) {
+        this.name = name;
+        this.words = words;
+    }
+
+    public Language(Integer id, String name, Set words) {
         this.id = id;
         this.name = name;
         this.words = words;
     }
 
-    public int getId() {
+    public Integer getId() {
         return this.id;
     }
 
-    public void setId(int id) {
+    public void setId(Integer id) {
         this.id = id;
     }
 

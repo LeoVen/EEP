@@ -51,5 +51,6 @@ Contributor(s):
     <mapping resource="eep/as/leoven/vo/Word.hbm.xml"/>
     <mapping resource="eep/as/leoven/vo/Language.hbm.xml"/>
     <mapping resource="eep/as/leoven/vo/Translation.hbm.xml"/>
+    <mapping resource="eep/as/leoven/vo/User.hbm.xml"/>
   </session-factory>
 </hibernate-configuration>

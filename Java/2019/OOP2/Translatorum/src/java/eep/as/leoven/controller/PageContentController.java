@@ -23,7 +23,6 @@
  */
 package eep.as.leoven.controller;
 
-import eep.as.leoven.dao.LanguageDAO;
 import eep.as.leoven.vo.Language;
 
 /**

@@ -1,5 +1,5 @@
 package eep.as.leoven.vo;
-// Generated 04/11/2019 19:07:04 by Hibernate Tools 4.3.1
+// Generated 06/11/2019 23:06:10 by Hibernate Tools 4.3.1
 
 import java.util.HashSet;
 import java.util.Set;
@@ -9,7 +9,7 @@ import java.util.Set;
  */
 public class Word implements java.io.Serializable {
 
-    private int id;
+    private Integer id;
     private Language language;
     private String word;
     private Set translationsForWord2 = new HashSet(0);
@@ -18,11 +18,11 @@ public class Word implements java.io.Serializable {
     public Word() {
     }
 
-    public Word(int id) {
+    public Word(Integer id) {
         this.id = id;
     }
 
-    public Word(int id, String word) {
+    public Word(Integer id, String word) {
         this.id = id;
         this.word = word;
     }
@@ -32,25 +32,17 @@ public class Word implements java.io.Serializable {
         this.word = word;
     }
 
-    public Word(int id, Language language, String word) {
+    public Word(Integer id, Language language, String word) {
         this.id = id;
         this.language = language;
         this.word = word;
     }
 
-    public Word(int id, Language language, String word, Set translationsForWord2, Set translationsForWord1) {
-        this.id = id;
-        this.language = language;
-        this.word = word;
-        this.translationsForWord2 = translationsForWord2;
-        this.translationsForWord1 = translationsForWord1;
-    }
-
-    public int getId() {
+    public Integer getId() {
         return this.id;
     }
 
-    public void setId(int id) {
+    public void setId(Integer id) {
         this.id = id;
     }
 
