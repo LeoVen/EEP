@@ -105,6 +105,8 @@ public class UserDAO {
 
             Object obj = session.createQuery("from User u where u.name = '" + name + "'").uniqueResult();
 
+            session.flush();
+
             return obj != null;
         } catch (HibernateException e) {
             throw e;

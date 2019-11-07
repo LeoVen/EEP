@@ -88,7 +88,6 @@
                             <a href="#!" class="modal-close btn red">Cancel</a>
                         </div>
                     </html:form>
-                    <html:errors/>
                 </div>
             </div>
         </div>

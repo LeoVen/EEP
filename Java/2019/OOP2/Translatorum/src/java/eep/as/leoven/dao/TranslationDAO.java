@@ -60,6 +60,30 @@ public class TranslationDAO {
     }
 
     /**
+     * Gets a translation from an id.
+     *
+     * @param id Id of a translation.
+     *
+     * @return A single instance of a translation matching an id.
+     */
+    public Translation get(Integer id) {
+        Session session = null;
+        Translation translation = null;
+        try {
+            session = DbConnection.getInstance().getSession();
+
+            translation = (Translation) session.createQuery("from Translation t where t.id = " + id).uniqueResult();
+
+            session.flush();
+        } catch (HibernateException e) {
+            throw e;
+        } finally {
+        }
+
+        return translation;
+    }
+
+    /**
      * Associates a translation between two words. The language id of each word
      * is necessary and the word id.
      *
@@ -75,6 +99,31 @@ public class TranslationDAO {
             transaction = session.beginTransaction();
 
             session.save(translation);
+            session.flush();
+
+            transaction.commit();
+        } catch (HibernateException e) {
+            if (transaction != null) {
+                transaction.rollback();
+            }
+            throw e;
+        } finally {
+        }
+    }
+
+    /**
+     * Deletes a translation from the database. It must have at least its id.
+     *
+     * @param translation The translation to be deleted from the database.
+     */
+    public void delete(Translation translation) {
+        Session session = null;
+        Transaction transaction = null;
+        try {
+            session = DbConnection.getInstance().getSession();
+            transaction = session.beginTransaction();
+
+            session.delete(translation);
             session.flush();
 
             transaction.commit();

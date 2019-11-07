@@ -53,7 +53,13 @@ public class WordDAO {
         try {
             session = DbConnection.getInstance().getSession();
 
-            words = (List<Word>) session.createQuery("from Word as w where w.language = " + language.getId()).list();
+            Object obj = session.createQuery("from Word as w where w.language = " + language.getId()).list();
+
+            if (obj == null) {
+                return null;
+            }
+
+            words = (List<Word>) obj;
 
             if (words.isEmpty()) {
                 words = null;
@@ -66,6 +72,29 @@ public class WordDAO {
         }
 
         return words;
+    }
+
+    /**
+     * Gets a word by a given id.
+     *
+     * @param id The id of a word in the database.
+     *
+     * @return A single instance of a word matching the id.
+     */
+    public Word get(Integer id) {
+        Session session = null;
+        Word word = null;
+        try {
+            session = DbConnection.getInstance().getSession();
+            word = (Word) session.createQuery("from Word w where w.id = " + id).uniqueResult();
+
+            session.flush();
+        } catch (HibernateException e) {
+            throw e;
+        } finally {
+        }
+
+        return word;
     }
 
     /**

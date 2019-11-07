@@ -7,6 +7,7 @@
 
 <struts-config>
     <form-beans>
+        <form-bean name="DeleteTranslationActionForm" type="eep.as.leoven.forms.DeleteTranslationActionForm"/>
         <form-bean name="SignupActionForm" type="eep.as.leoven.forms.SignupActionForm"/>
         <form-bean name="LogoutActionForm" type="eep.as.leoven.forms.LogoutActionForm"/>
         <form-bean name="LoginActionForm" type="eep.as.leoven.forms.LoginActionForm"/>
@@ -67,6 +68,9 @@
         <action input="/Signup" name="SignupActionForm" path="/Signup" scope="session" type="eep.as.leoven.actions.SignupAction">
             <forward name="success" path="/main.jsp" redirect="true" />
             <forward name="failure" path="/duplicateUser.jsp" redirect="true" />
+        </action>
+        <action input="/DeleteTranslation" name="DeleteTranslationActionForm" path="/DeleteTranslation" scope="session" type="eep.as.leoven.actions.DeleteTranslationAction">
+            <forward name="success" path="/dictionary.jsp" redirect="true" />
         </action>
     </action-mappings>
 

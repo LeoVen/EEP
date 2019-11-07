@@ -21,51 +21,47 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
  * THE SOFTWARE.
  */
-package eep.as.leoven.actions;
+package eep.as.leoven.forms;
 
-import eep.as.leoven.dao.WordDAO;
-import eep.as.leoven.forms.UpdateWordActionForm;
-import eep.as.leoven.vo.Word;
 import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
-import org.apache.struts.action.ActionForm;
-import org.apache.struts.action.ActionForward;
+
+import org.apache.struts.action.ActionErrors;
 import org.apache.struts.action.ActionMapping;
 
 /**
  *
  * @author Leonardo Vencovsky (https://github.com/LeoVen/)
  */
-public class UpdateWordAction extends org.apache.struts.action.Action {
+public class DeleteTranslationActionForm extends org.apache.struts.action.ActionForm {
 
-    /* forward name="success" path="" */
-    private static final String SUCCESS = "success";
+    int translationId;
+
+    /**
+     *
+     */
+    public DeleteTranslationActionForm() {
+        super();
+        // TODO Auto-generated constructor stub
+    }
 
     /**
      * This is the action called from the Struts framework.
      *
      * @param mapping The ActionMapping used to select this instance.
-     * @param form The optional ActionForm bean for this request.
      * @param request The HTTP Request we are processing.
-     * @param response The HTTP Response we are processing.
-     * @throws java.lang.Exception
      * @return
      */
     @Override
-    public ActionForward execute(ActionMapping mapping, ActionForm form,
-            HttpServletRequest request, HttpServletResponse response)
-            throws Exception {
+    public ActionErrors validate(ActionMapping mapping, HttpServletRequest request) {
+        // Validation is done in the front-end
+        return new ActionErrors();
+    }
 
-        UpdateWordActionForm formBean = (UpdateWordActionForm) form;
+    public int getTranslationId() {
+        return translationId;
+    }
 
-        WordDAO wordDao = new WordDAO();
-
-        Word word = wordDao.get(formBean.getWordId());
-
-        word.setWord(formBean.getWord());
-
-        wordDao.update(word);
-
-        return mapping.findForward(SUCCESS);
+    public void setTranslationId(int translationId) {
+        this.translationId = translationId;
     }
 }

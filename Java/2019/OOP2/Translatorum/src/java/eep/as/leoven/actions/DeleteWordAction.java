@@ -58,9 +58,11 @@ public class DeleteWordAction extends org.apache.struts.action.Action {
 
         DeleteWordActionForm beanForm = (DeleteWordActionForm) form;
 
-        Word word = new Word(beanForm.getWordId(), beanForm.getWord());
+        WordDAO wordDao = new WordDAO();
 
-        new WordDAO().delete(word);
+        Word word = wordDao.get(beanForm.getWordId());
+
+        wordDao.delete(word);
 
         return mapping.findForward(SUCCESS);
     }

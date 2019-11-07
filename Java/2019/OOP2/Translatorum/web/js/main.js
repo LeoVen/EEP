@@ -40,7 +40,7 @@ $(document).ready(function () {
     $('#selectLanguageSubmit').on('click', (event) => validateSelectLanguage(event));
     $('#createWordSubmit').on('click', (event) => validateCreateWord(event));
     $('#editWordSubmit').on('click', (event) => validateEditWord(event));
-    $('#validateSelectTranslation').on('click', (event) => validateSelectTranslation(event));
+    $('#selectTranslationSubmit').on('click', (event) => validateSelectTranslation(event));
     $('#createTranslationSubmit').on('click', (event) => validateCreateTranslation(event));
 
     $('.listingText').each(function () {
@@ -217,7 +217,6 @@ function validateEditWord(event) {
 /* -----------------------------------------------------------------------------
  * Translation
  ---------------------------------------------------------------------------- */
-
 function selectWordForTranslation(part, id, word) {
     if (part === 1) {
         $('#createTranslationWordId1').val(id);
@@ -295,4 +294,12 @@ function validateSelectTranslation(event) {
         event.preventDefault();
         event.stopPropagation();
     }
+}
+
+/* -----------------------------------------------------------------------------
+ * Dictionary
+ ---------------------------------------------------------------------------- */
+function deleteTranslationSelection(id) {
+    $('#deleteTranslationId').val(id);
+    $('#deleteTranslationSubmit').click();
 }

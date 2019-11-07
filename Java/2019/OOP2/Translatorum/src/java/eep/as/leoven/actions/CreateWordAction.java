@@ -23,6 +23,7 @@
  */
 package eep.as.leoven.actions;
 
+import eep.as.leoven.dao.LanguageDAO;
 import eep.as.leoven.dao.WordDAO;
 import eep.as.leoven.forms.CreateWordActionForm;
 import eep.as.leoven.vo.Language;
@@ -58,8 +59,7 @@ public class CreateWordAction extends org.apache.struts.action.Action {
 
         CreateWordActionForm formBean = (CreateWordActionForm) form;
 
-        Language language = new Language(formBean.getLanguageId(),
-                formBean.getLanguageName());
+        Language language = new LanguageDAO().get(formBean.getLanguageId());
 
         new WordDAO().create(language, formBean.getWord());
 

@@ -66,6 +66,29 @@ public class LanguageDAO {
     }
 
     /**
+     * Retrieves a language from a given id.
+     *
+     * @param id Id to be matched to a certain language id in the database.
+     *
+     * @return A single instance of a language.
+     */
+    public Language get(Integer id) {
+        Session session = null;
+        Language language = null;
+        try {
+            session = DbConnection.getInstance().getSession();
+            language = (Language) session.createQuery("from Language l where l.id = " + id).uniqueResult();
+
+            session.flush();
+        } catch (HibernateException e) {
+            throw e;
+        } finally {
+        }
+
+        return language;
+    }
+
+    /**
      * Creates a new language.
      *
      * @param language New language to be created.

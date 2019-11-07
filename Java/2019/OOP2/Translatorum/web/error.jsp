@@ -30,6 +30,7 @@
                 <p><%= exception.getCause()%></p>
                 <% exception.printStackTrace(); %>
                 <% }%>
+                <html:errors/>
                 <div class="center-align">
                     <br>
                     <a href="index.jsp" class="btn">Return</a>

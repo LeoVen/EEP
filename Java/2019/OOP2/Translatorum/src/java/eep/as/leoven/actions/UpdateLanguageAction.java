@@ -58,7 +58,13 @@ public class UpdateLanguageAction extends org.apache.struts.action.Action {
 
         UpdateLanguageActionForm formBean = (UpdateLanguageActionForm) form;
 
-        new LanguageDAO().update(new Language(formBean.getLanguageId(), formBean.getLanguageName()));
+        LanguageDAO languageDao = new LanguageDAO();
+
+        Language language = languageDao.get(formBean.getLanguageId());
+
+        language.setName(formBean.getLanguageName());
+
+        languageDao.update(language);
 
         return mapping.findForward(SUCCESS);
     }
