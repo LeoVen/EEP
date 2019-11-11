@@ -156,8 +156,21 @@ bool condition(int s1, int s2, int s3, int s4, int s5, int s6, int s7, int s8)
         return false;
 
     // Aqui sensores frontais estão em mesma quantidade
-    // Desempate aquele que tiver mais sensores ligados no total
-    return count(4, s_t) > count(4, s_a);
+    // Desempate aquele que tiver mais sensores somente contando as vias que
+    // tiverem um sensor frontal
+    int t_t = 0; // Travessa
+    int t_a = 0; // Avenida
+
+    if (s1 == LOW && s5 == LOW)
+        t_t++;
+    if (s3 == LOW && s7 == LOW)
+        t_t++;
+    if (s2 == LOW && s6 == LOW)
+        t_a++;
+    if (s4 == LOW && s8 == LOW)
+        t_a++;
+
+    return t_t > t_a;
 }
 
 void debug(int s1, int s2, int s3, int s4, int s5, int s6, int s7, int s8)
