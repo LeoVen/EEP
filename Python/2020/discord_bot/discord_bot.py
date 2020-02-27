@@ -56,10 +56,10 @@ async def on_ready():
 
 @client.event
 async def on_message(message):
-    if message.author == client.user:
+    if message.author == client.user or not message.content.startswith('$'):
         return
 
-    if message.content.startswith(('$help', 'help')):
+    if message.content.startswith('$help'):
         await message.channel.send(help_message)
 
     elif message.content.startswith('$hello'):
