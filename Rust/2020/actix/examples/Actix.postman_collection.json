@@ -1,0 +1,68 @@
+{
+	"info": {
+		"_postman_id": "ccf4891c-7b37-4ec4-8fe4-1643a82a34bb",
+		"name": "Actix",
+		"description": "Actix example tutorial from https://www.youtube.com/watch?v=wFe1g3cLLso",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+	},
+	"item": [
+		{
+			"name": "http:://localhost:8080/login",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n\t\"username\": \"LeoVen\"\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://localhost:8080/login",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"login"
+					]
+				},
+				"description": "Creates a user login"
+			},
+			"response": []
+		},
+		{
+			"name": "http://localhost:8080/send",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n\t\"username\": \"LeoVen\",\n\t\"body\": \"Hi there!\"\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://localhost:8080/send",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"send"
+					]
+				},
+				"description": "Sends a message"
+			},
+			"response": []
+		}
+	]
+}
