@@ -1,3 +1,5 @@
+# 02 - Coding a Layer
+
 # input
 i = [1, 2, 3, 2.5]
 

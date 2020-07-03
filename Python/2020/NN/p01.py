@@ -1,3 +1,5 @@
+# 01 - Intro and Neuron Code
+
 # input
 i = [1.2, 5.1, 2.1]
 
