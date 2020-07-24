@@ -1,6 +1,8 @@
 // intervals.rs
 // 2020/07/23
-// Leonardo Vencovsky
+// Leonardo Vencovsky https://github.com/LeoVen
+//
+// This file uses https://github.com/DanielKeep/cargo-script
 //
 // Interval Arithmetic
 // https://en.wikipedia.org/wiki/Interval_arithmetic
@@ -12,6 +14,8 @@
 // But some operations can be simplified. For example, for addition and subtraction:
 //     Add: [X1, X2] + [Y1, Y2] = [X1 + Y1, X2 + Y2]
 //     Sub: [X1, X2] - [Y1, Y2] = [X1 - Y2, X2 - Y1]
+//
+// http://web.mit.edu/hyperbook/Patrikalakis-Maekawa-Cho/node45.html
 
 use std::cmp;
 use std::fmt;

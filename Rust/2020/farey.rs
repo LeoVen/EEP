@@ -1,5 +1,14 @@
+// farey.rs
+// 2020/07/20
+// Leonardo Vencovsky https://github.com/LeoVen
+//
 // This file uses https://github.com/DanielKeep/cargo-script
+//
+// Decimal Approximation using Farey Sequence
+// https://en.wikipedia.org/wiki/Farey_sequence
+//
 // Based on https://www.johndcook.com/blog/2010/10/20/best-rational-approximation/
+
 use std::env;
 use std::fmt;
 
@@ -123,8 +132,10 @@ fn main() {
 
     let integer = number.trunc();
     let fraction = number.fract();
+    let result = farey.calc(number);
 
     println!("   Integer Part: {}", integer);
     println!("Fractional Part: {}", fraction);
-    println!("       Fraction: {}", farey.calc(number));
+    println!("       Fraction: {}", result);
+    println!("    Best Result: {}", result.value());
 }
