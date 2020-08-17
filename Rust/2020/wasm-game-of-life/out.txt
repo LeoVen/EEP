@@ -1,0 +1,21 @@
+:-) [WARN]: "package.metadata.wasm-pack.wasm-opt" is an unknown key and will be ignored. Please check your Cargo.toml.
+[INFO]: Checking for the Wasm target...
+[INFO]: Compiling to Wasm...
+warning: function is never used: `set_panic_hook`
+ --> src\utils.rs:1:8
+  |
+1 | pub fn set_panic_hook() {
+  |        ^^^^^^^^^^^^^^
+  |
+  = note: `#[warn(dead_code)]` on by default
+
+warning: 1 warning emitted
+
+    Finished release [optimized] target(s) in 0.05s
+[INFO]: Optimizing wasm binaries with `wasm-opt`...
+[wasm-validator error in module] unexpected true: Exported global cannot be mutable, on 
+global$0
+Fatal: error in validating input
+Error: failed to execute `wasm-opt`: exited with exit code: 1
+  full command: "C:\\Users\\LEONARDO.VENCOVSKY\\AppData\\Local\\.wasm-pack\\wasm-opt-171374efd61df962\\wasm-opt.exe" "C:\\Users\\LEONARDO.VENCOVSKY\\Documents\\GitHub\\EEP\\Rust\\2020\\wasm-game-of-life\\pkg\\wasm_game_of_life_bg.wasm" "-o" "C:\\Users\\LEONARDO.VENCOVSKY\\Documents\\GitHub\\EEP\\Rust\\2020\\wasm-game-of-life\\pkg\\wasm_game_of_life_bg.wasm-opt.wasm" "-O"
+To disable `wasm-opt`, add `wasm-opt = false` to your package metadata in your `Cargo.toml`.
