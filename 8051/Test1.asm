@@ -1,0 +1,4 @@
+org 0
+mov	R0,	#0x10
+mov	@R0,	#0xF
+end
