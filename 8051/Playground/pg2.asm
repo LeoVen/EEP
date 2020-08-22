@@ -1,0 +1,18 @@
+; Factorial
+	org	0
+
+	mov	0xA, #0x1	; Result
+	mov	0xB, #0x5	; Factorial of, and counter
+	mov	A, #0x1
+
+fac:
+	mov	A, 0xA
+	mov	B, 0xB
+	mul	AB
+	dec	0xB
+	mov	0xA, A
+	mov	A, 0xB		; if 0xB == 1, stop
+	dec	A
+	jnz	fac
+
+	end
