@@ -3,6 +3,7 @@ import numpy as np
 
 white = (255, 255, 255)
 
+
 if __name__ == '__main__':
     image = cv2.imread('image.jpg')
 

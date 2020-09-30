@@ -1,7 +1,6 @@
 import cv2
 import numpy as np
 
-
 # Shrink ratio (integer)
 ratio = 3
 
