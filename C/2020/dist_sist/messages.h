@@ -17,12 +17,13 @@
 
 enum message_control
 {
-    MSG_CTRL_PING = 0,
-    MSG_CTRL_CREATE = 1,
-    MSG_CTRL_READ = 2,
-    MSG_CTRL_UPDATE = 3,
-    MSG_CTRL_DELETE = 4,
-    MSG_CTRL_SAVE = 5,
+    MSG_CTRL_SHUTDOWN = 0,
+    MSG_CTRL_PING = 1,
+    MSG_CTRL_CREATE = 2,
+    MSG_CTRL_READ = 3,
+    MSG_CTRL_UPDATE = 4,
+    MSG_CTRL_DELETE = 5,
+    MSG_CTRL_SAVE = 6,
     MSG_CTRL_INVALID = -1
 };
 

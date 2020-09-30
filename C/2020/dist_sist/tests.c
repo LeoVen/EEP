@@ -18,6 +18,7 @@ CMC_CREATE_UNIT(ControlMessagesTest, true, {
     });
 
     CMC_CREATE_TEST(msg_ctrl_to_string, {
+        cmc_assert(strcmp(msg_ctrl_to_string(MSG_CTRL_SHUTDOWN), "SHUTDOWN") == 0);
         cmc_assert(strcmp(msg_ctrl_to_string(MSG_CTRL_PING), "PING") == 0);
         cmc_assert(strcmp(msg_ctrl_to_string(MSG_CTRL_CREATE), "CREATE") == 0);
         cmc_assert(strcmp(msg_ctrl_to_string(MSG_CTRL_READ), "READ") == 0);
@@ -100,9 +101,10 @@ CMC_CREATE_UNIT(ControlMessagesTest, true, {
         cmc_assert(msg != NULL);
 
         msg_val = msg_get_val(msg, strlen(msg));
-        cmc_assert(msg_val == NULL);
+        cmc_assert(msg_val != NULL);
 
         free(msg);
+        free(msg_val);
 
         msg = msg_create(MSG_CTRL_PING, "", strlen(""), "", strlen(""));
         cmc_assert(msg != NULL);

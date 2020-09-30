@@ -1,6 +1,7 @@
 #include "messages.h"
 
 static const char *msg_map[] = {
+    "SHUTDOWN",
     "PING",
     "CREATE",
     "READ",
@@ -9,7 +10,7 @@ static const char *msg_map[] = {
     "SAVE",
 };
 
-const size_t msg_map_len = 6;
+const size_t msg_map_len = 7;
 
 char *msg_create(enum message_control ctrl, char *key, size_t key_size, char *val, size_t val_size)
 {
@@ -36,7 +37,7 @@ char *msg_create(enum message_control ctrl, char *key, size_t key_size, char *va
 
 const char *msg_ctrl_to_string(enum message_control ctrl)
 {
-    if (ctrl < 0 || ctrl > 5)
+    if (ctrl < 0 || ctrl > msg_map_len)
         return NULL;
 
     return msg_map[(int)ctrl];
@@ -110,7 +111,7 @@ char *msg_get_val(char *message, size_t msg_size)
         ctrl_idx++;
     }
 
-    if (ctrl_idx == msg_size)
+    if (ctrl_idx == msg_size) // Invalid message
         return NULL;
 
     size_t key_idx = ctrl_idx + 1;
@@ -120,7 +121,7 @@ char *msg_get_val(char *message, size_t msg_size)
         key_idx++;
     }
 
-    if (key_idx == msg_size || key_idx == ctrl_idx)
+    if (key_idx == msg_size || key_idx == ctrl_idx + 1) // Key is empty
         return NULL;
 
     size_t start = key_idx + 1;

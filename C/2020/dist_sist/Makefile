@@ -2,9 +2,8 @@ CC = gcc
 INCLUDE = ../../../../C-Macro-Collections/src
 CFLAGS = -Wall
 BUILD = ./build
-LINKLIB = -lws2_32
-# DEFINES = -DCMC_LOG_COLOR
-DEFINES =
+LINKLIB =
+DEFINES = -DCMC_LOG_COLOR
 
 .PHONY main: server.exe client.exe tests.exe
 
@@ -33,4 +32,4 @@ $(BUILD)/messages.o: messages.c messages.h build_dir
 	mkdir -p $(BUILD)
 
 clean:
-	rm server client tests $(BUILD)/*.o
+	rm -f server.exe client.exe tests.exe $(BUILD)/*.o

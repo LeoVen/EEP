@@ -1,5 +1,3 @@
-#define CMC_LOG_COLOR
-
 #include <errno.h>
 #include <stdio.h>
 #include <unistd.h>
@@ -27,44 +25,46 @@ int main(int argc, char const *argv[])
         return -1;
     }
 
+    int port = atoi(argv[1]);
+
     int listenfd = socket(AF_INET, SOCK_STREAM, 0);
 
     if (listenfd < 0)
     {
-        cmc_log_error("Error opening socket");
+        cmc_log_error("Error creating socket file descriptor.");
         perror("");
         return 1;
     }
     else
     {
-        cmc_log_info("Opened socket successfully");
+        cmc_log_info("Opened socket successfully.");
     }
 
     struct sockaddr_in servaddr;
     memset(&servaddr, 0, sizeof(servaddr));
     servaddr.sin_addr.s_addr = INADDR_ANY;
     servaddr.sin_family = AF_INET;
-    servaddr.sin_port = htons(atoi(argv[1]));
+    servaddr.sin_port = htons(port);
 
     if (bind(listenfd, (struct sockaddr *)&servaddr, sizeof(servaddr)) < 0)
     {
-        cmc_log_error("Could not bind to socket");
+        cmc_log_error("Could not bind to socket.");
         perror("");
         return 2;
     }
     else
     {
-        cmc_log_info("Binded socket successfully");
+        cmc_log_info("Binded to socket successfully.");
     }
 
     if (listen(listenfd, 3) < 0)
     {
-        cmc_log_error("Could not listen to socket");
+        cmc_log_error("Could not listen to socket.");
         perror("");
         return 3;
     }
 
-    cmc_log_info("Listening to connections");
+    cmc_log_info("Listening to connections at %d...", port);
 
     struct sockaddr_in cliaddr;
     unsigned int clientfd, client_size = sizeof(cliaddr);
@@ -72,23 +72,31 @@ int main(int argc, char const *argv[])
     struct dictionary *database = dict_new(1000, 0.6, &dict_methods, (struct dictionary_fval *)&dict_methods);
     char reply[2000];
 
-    while ((clientfd = accept(listenfd, (struct sockaddr *)&cliaddr, &client_size) >= 0))
+    while (((clientfd = accept(listenfd, (struct sockaddr *)&cliaddr, &client_size)) >= 0))
     {
         char *client_ip = inet_ntoa(cliaddr.sin_addr);
         int client_port = ntohs(cliaddr.sin_port);
 
-        cmc_log_info("Connection Accepted from %s:%d", client_ip, client_port);
+        cmc_log_info("Connection Accepted from %s:%d.", client_ip, client_port);
 
         ssize_t length = recv(clientfd, reply, sizeof(reply) - 1, 0);
 
         if (length <= 0)
         {
-            cmc_log_warn("Data received was not valid");
+            if (length == 0)
+            {
+                cmc_log_warn("Received empty message.");
+            }
+            else
+            {
+                cmc_log_warn("Data received was not valid.");
+                perror("");
+            }
             continue;
         }
 
-        reply[length] = '\n';
-        cmc_log_trace("Received message %s", reply);
+        reply[length] = '\0';
+        cmc_log_trace("Received message: %s", reply);
     }
 
     dict_free(database);
