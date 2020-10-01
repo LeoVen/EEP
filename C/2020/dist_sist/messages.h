@@ -14,6 +14,7 @@
 #include <string.h>
 
 #define MSG_SEPARATOR ':'
+#define MSG_MAX_CTRL_SIZE 20 // Max size + a few extra bytes
 
 enum message_control
 {
@@ -59,8 +60,11 @@ char *msg_get_key(char *message, size_t msg_size);
 char *msg_get_val(char *message, size_t msg_size);
 
 /**
- * Parses an entire message. If anything fails, all out parameters are set to NULL and false is returned.
+ * Parses an entire message. If anything fails, ctrl is set to MSG_CTRL_INVALID and false is returned.
  */
-bool msg_parse(char *message, enum message_control *ctrl, char **key, size_t *key_size, char **val, size_t *val_size);
+bool msg_parse(char *message, size_t msg_size,
+               enum message_control *ctrl,
+               char **key, size_t *key_size,
+               char **val, size_t *val_size);
 
 #endif /* MESSAGES_H */

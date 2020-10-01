@@ -48,11 +48,11 @@ enum message_control msg_get_control(char *message, size_t msg_size)
     if (message == NULL || msg_size == 0)
         return MSG_CTRL_INVALID;
 
-    char ctrl[20] = { 0 };
+    char ctrl[MSG_MAX_CTRL_SIZE] = { 0 };
 
     size_t i = 0;
 
-    while (i < msg_size && message[i] != ' ' && i < 19)
+    while (i < msg_size && message[i] != ' ' && i < 49)
     {
         ctrl[i] = message[i];
         i++;
@@ -69,6 +69,9 @@ enum message_control msg_get_control(char *message, size_t msg_size)
 
 char *msg_get_key(char *message, size_t msg_size)
 {
+    if (message == NULL || msg_size == 0)
+        return NULL;
+
     size_t ctrl_idx = 0;
 
     while (ctrl_idx < msg_size && message[ctrl_idx] != ' ')
@@ -104,6 +107,9 @@ char *msg_get_key(char *message, size_t msg_size)
 
 char *msg_get_val(char *message, size_t msg_size)
 {
+    if (message == NULL || msg_size == 0)
+        return NULL;
+
     size_t ctrl_idx = 0;
 
     while (ctrl_idx < msg_size && message[ctrl_idx] != ' ')
@@ -148,7 +154,85 @@ char *msg_get_val(char *message, size_t msg_size)
     return result;
 }
 
-bool msg_parse(char *message, enum message_control *ctrl, char **key, size_t *key_size, char **val, size_t *val_size)
+bool msg_parse(char *message, size_t msg_size,
+               enum message_control *ctrl,
+               char **key, size_t *key_size,
+               char **val, size_t *val_size)
 {
+    if (message == NULL || msg_size == 0)
+        goto error;
+
+    // Get indices
+
+    size_t ctrl_start = 0;
+    size_t ctrl_end = ctrl_start;
+
+    while (ctrl_end < msg_size && message[ctrl_end] != ' ')
+    {
+        ctrl_end++;
+    }
+
+    if (ctrl_end == msg_size || ctrl_end == ctrl_start) // Invalid message
+        goto error;
+
+    size_t key_start = ctrl_end + 1; // Skip white space
+    size_t key_end = key_start;
+
+    while (key_end < msg_size && message[key_end] != MSG_SEPARATOR)
+    {
+        key_end++;
+    }
+
+    if (key_end == msg_size || key_end == key_start) // Key is empty
+        goto error;
+
+    size_t val_start = key_end + 1;
+    size_t val_end = msg_size;
+
+    // Get actual values
+
+    // Ctrl
+    char ctrl_str[MSG_MAX_CTRL_SIZE] = { 0 };
+
+    for (size_t i = ctrl_start, j = 0; i < ctrl_end && j < MSG_MAX_CTRL_SIZE; i++, j++)
+        ctrl_str[j] = message[i];
+
+    *ctrl = MSG_CTRL_INVALID;
+
+    for (size_t i = 0; i < msg_map_len; i++)
+    {
+        if (strcmp(ctrl_str, msg_map[i]) == 0)
+        {
+            *ctrl = (enum message_control)i;
+            break;
+        }
+    }
+
+    if (*ctrl == MSG_CTRL_INVALID)
+        return false;
+
+    // Key
+
+    *key_size = (key_end - key_start) + 2;
+    *key = calloc(1, *key_size);
+
+    for (size_t i = key_start, j = 0; i < key_end && j < *key_size; i++, j++)
+        (*key)[j] = message[i];
+
+    // Val
+    *val_size = (val_end - val_start) + 2;
+    *val = calloc(1, *val_size);
+
+    for (size_t i = val_start, j = 0; i < val_end && j < *val_size; i++, j++)
+    {
+        if (message[i] == '\0')
+            break;
+        (*val)[j] = message[i];
+    }
+
+    return true;
+
+    error:
+    *ctrl = MSG_CTRL_INVALID;
     return false;
 }
