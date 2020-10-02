@@ -9,8 +9,6 @@ bool msg_create_and_test(enum message_control ctrl, char *key, size_t key_size, 
     if (!message)
         return false;
 
-    printf("%s\n", message);
-
     char *out_key = NULL, *out_val = NULL;
     size_t out_key_size = 0, out_val_size = 0;
     enum message_control out_ctrl;
@@ -19,15 +17,7 @@ bool msg_create_and_test(enum message_control ctrl, char *key, size_t key_size, 
                             &out_key, &out_key_size,
                             &out_val, &out_val_size);
 
-    if (out_key)
-        free(out_key);
-    if (out_val)
-        free(out_val);
-
     free(message);
-
-    printf("|%s|%s|%s|%s|\n", key, val, out_key, out_val);
-    printf("|%d|%d|%d|%d|\n", (int)key_size, (int)val_size, (int)out_key_size, (int)out_val_size);
 
     cmc_assert(result);
     cmc_assert_equals(int32_t, ctrl, out_ctrl);
@@ -38,13 +28,20 @@ bool msg_create_and_test(enum message_control ctrl, char *key, size_t key_size, 
     cmc_assert_equals(size_t, key_size, out_key_size);
     cmc_assert_equals(size_t, val_size, out_val_size);
 
-    return result && out_ctrl == ctrl &&
-           strcmp(key, out_key) == 0 &&
-           strcmp(val, out_val) == 0 &&
-           strlen(out_key) == out_key_size &&
-           strlen(out_val) == out_val_size &&
-           key_size == out_key_size &&
-           val_size == out_val_size;
+    result = result && out_ctrl == ctrl &&
+            strcmp(key, out_key) == 0 &&
+            strcmp(val, out_val) == 0 &&
+            strlen(out_key) == out_key_size &&
+            strlen(out_val) == out_val_size &&
+            key_size == out_key_size &&
+            val_size == out_val_size;
+
+    if (out_key)
+        free(out_key);
+    if (out_val)
+        free(out_val);
+
+    return result;
 }
 
 CMC_CREATE_UNIT(ControlMessagesTest, true, {
@@ -161,9 +158,27 @@ CMC_CREATE_UNIT(ControlMessagesTest, true, {
     });
 
     CMC_CREATE_TEST(msg_parse, {
-        char *my_key = "My Key";
-        char *my_val = "My Val";
+        char *my_key = "My Keys";
+        char *my_val = "My Values";
+        char *my_empty_val = "";
+
+        // Non-empty value
         cmc_assert(msg_create_and_test(MSG_CTRL_SHUTDOWN, my_key, strlen(my_key), my_val, strlen(my_val)));
+        cmc_assert(msg_create_and_test(MSG_CTRL_PING, my_key, strlen(my_key), my_val, strlen(my_val)));
+        cmc_assert(msg_create_and_test(MSG_CTRL_CREATE, my_key, strlen(my_key), my_val, strlen(my_val)));
+        cmc_assert(msg_create_and_test(MSG_CTRL_READ, my_key, strlen(my_key), my_val, strlen(my_val)));
+        cmc_assert(msg_create_and_test(MSG_CTRL_UPDATE, my_key, strlen(my_key), my_val, strlen(my_val)));
+        cmc_assert(msg_create_and_test(MSG_CTRL_DELETE, my_key, strlen(my_key), my_val, strlen(my_val)));
+        cmc_assert(msg_create_and_test(MSG_CTRL_SAVE, my_key, strlen(my_key), my_val, strlen(my_val)));
+
+        // Empty value
+        cmc_assert(msg_create_and_test(MSG_CTRL_SHUTDOWN, my_key, strlen(my_key), my_empty_val, strlen(my_empty_val)));
+        cmc_assert(msg_create_and_test(MSG_CTRL_PING, my_key, strlen(my_key), my_empty_val, strlen(my_empty_val)));
+        cmc_assert(msg_create_and_test(MSG_CTRL_CREATE, my_key, strlen(my_key), my_empty_val, strlen(my_empty_val)));
+        cmc_assert(msg_create_and_test(MSG_CTRL_READ, my_key, strlen(my_key), my_empty_val, strlen(my_empty_val)));
+        cmc_assert(msg_create_and_test(MSG_CTRL_UPDATE, my_key, strlen(my_key), my_empty_val, strlen(my_empty_val)));
+        cmc_assert(msg_create_and_test(MSG_CTRL_DELETE, my_key, strlen(my_key), my_empty_val, strlen(my_empty_val)));
+        cmc_assert(msg_create_and_test(MSG_CTRL_SAVE, my_key, strlen(my_key), my_empty_val, strlen(my_empty_val)));
     });
 });
 

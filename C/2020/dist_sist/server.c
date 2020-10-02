@@ -5,6 +5,7 @@
 #include <arpa/inet.h>
 
 #include "macro_collections.h"
+#include "messages.h"
 
 #define CMC_DICTIONARY (dict, dictionary, , char *, char *)
 CMC_CMC_HASHMAP_CORE(PUBLIC, HEADER, CMC_DICTIONARY)
@@ -74,6 +75,7 @@ int main(int argc, char const *argv[])
 
     while (((clientfd = accept(listenfd, (struct sockaddr *)&cliaddr, &client_size)) >= 0))
     {
+        bool shutdown = false;
         char *client_ip = inet_ntoa(cliaddr.sin_addr);
         int client_port = ntohs(cliaddr.sin_port);
 
@@ -97,6 +99,34 @@ int main(int argc, char const *argv[])
 
         reply[length] = '\0';
         cmc_log_trace("Received message: %s", reply);
+
+        char *key = NULL, *val = NULL;
+        enum message_control ctrl;
+        size_t key_len = 0, val_len = 0;
+
+        bool result = msg_parse(reply, length, &ctrl, &key, &key_len, &val, &val_len);
+
+        if (!result)
+        {
+            cmc_log_error("Could not parse received message");
+        }
+        if (ctrl == MSG_CTRL_SHUTDOWN)
+        {
+            cmc_log_info("Shuting down server because: %s", key);
+            shutdown = true;
+        }
+        else
+        {
+            cmc_log_trace("Ctrl : %s", msg_ctrl_to_string(ctrl));
+            cmc_log_trace("Key  : %s", key);
+            cmc_log_trace("Val  : %s", val);
+        }
+
+        free(key);
+        free(val);
+
+        if (shutdown)
+            break;
     }
 
     dict_free(database);

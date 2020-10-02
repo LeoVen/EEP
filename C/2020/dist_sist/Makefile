@@ -7,13 +7,13 @@ DEFINES = -DCMC_LOG_COLOR
 
 .PHONY main: server.exe client.exe tests.exe
 
-server.exe: $(BUILD)/messages.o $(BUILD)/server.o
+server.exe: $(BUILD)/messages.o $(BUILD)/server.o $(BUILD)/netapi.o
 	$(CC) $^ -o $@ $(LINKLIB)
 
-client.exe: $(BUILD)/messages.o $(BUILD)/client.o
+client.exe: $(BUILD)/messages.o $(BUILD)/client.o $(BUILD)/netapi.o
 	$(CC) $^ -o $@ $(LINKLIB)
 
-tests.exe: $(BUILD)/messages.o $(BUILD)/tests.o
+tests.exe: $(BUILD)/messages.o $(BUILD)/tests.o $(BUILD)/netapi.o
 	$(CC) $^ -o $@ $(LINKLIB)
 
 $(BUILD)/server.o: server.c build_dir
@@ -23,6 +23,9 @@ $(BUILD)/client.o: client.c build_dir
 	$(CC) -c $< -o $@ -I $(INCLUDE) $(CFLAGS) $(DEFINES)
 
 $(BUILD)/tests.o: tests.c build_dir
+	$(CC) -c $< -o $@ -I $(INCLUDE) $(CFLAGS) $(DEFINES)
+
+$(BUILD)/netapi.o: netapi.c netapi.h build_dir
 	$(CC) -c $< -o $@ -I $(INCLUDE) $(CFLAGS) $(DEFINES)
 
 $(BUILD)/messages.o: messages.c messages.h build_dir

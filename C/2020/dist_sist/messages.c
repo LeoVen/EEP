@@ -175,7 +175,9 @@ bool msg_parse(char *message, size_t msg_size,
     if (ctrl_end == msg_size || ctrl_end == ctrl_start) // Invalid message
         goto error;
 
-    size_t key_start = ctrl_end + 1; // Skip white space
+    ctrl_end--; // Backtrack from white space
+
+    size_t key_start = ctrl_end + 2; // Skip white space
     size_t key_end = key_start;
 
     while (key_end < msg_size && message[key_end] != MSG_SEPARATOR)
@@ -186,15 +188,17 @@ bool msg_parse(char *message, size_t msg_size,
     if (key_end == msg_size || key_end == key_start) // Key is empty
         goto error;
 
-    size_t val_start = key_end + 1;
-    size_t val_end = msg_size;
+    key_end--; // Backtrack from separator
+
+    size_t val_start = key_end + 2; // Skip separator
+    size_t val_end = msg_size - 1;
 
     // Get actual values
 
     // Ctrl
     char ctrl_str[MSG_MAX_CTRL_SIZE] = { 0 };
 
-    for (size_t i = ctrl_start, j = 0; i < ctrl_end && j < MSG_MAX_CTRL_SIZE; i++, j++)
+    for (size_t i = ctrl_start, j = 0; i <= ctrl_end && j < MSG_MAX_CTRL_SIZE; i++, j++)
         ctrl_str[j] = message[i];
 
     *ctrl = MSG_CTRL_INVALID;
@@ -213,17 +217,17 @@ bool msg_parse(char *message, size_t msg_size,
 
     // Key
 
-    *key_size = (key_end - key_start) + 2;
-    *key = calloc(1, *key_size);
+    *key_size = (key_end - key_start) + 1;
+    *key = calloc(1, *key_size + 1);
 
-    for (size_t i = key_start, j = 0; i < key_end && j < *key_size; i++, j++)
+    for (size_t i = key_start, j = 0; i <= key_end && j < *key_size; i++, j++)
         (*key)[j] = message[i];
 
     // Val
-    *val_size = (val_end - val_start) + 2;
-    *val = calloc(1, *val_size);
+    *val_size = (val_end - val_start) + 1;
+    *val = calloc(1, *val_size + 1);
 
-    for (size_t i = val_start, j = 0; i < val_end && j < *val_size; i++, j++)
+    for (size_t i = val_start, j = 0; i <= val_end && j < *val_size; i++, j++)
     {
         if (message[i] == '\0')
             break;
