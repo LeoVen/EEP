@@ -2,7 +2,7 @@
  * Create / Read Control Messages
  *
  * Every message is a string of the form:
- *      MESSAGE_CONTROL Key key key, key MSG_SEPARATOR value value value
+ *      MESSAGE_CONTROL <message_key>MSG_SEPARATOR<optional_message_value>
  */
 
 #ifndef MESSAGES_H
@@ -14,7 +14,25 @@
 #include <string.h>
 
 #define MSG_SEPARATOR ':'
+#define MSG_MAX_CTRL_SIZE 20 // Max size + a few extra bytes
 
+/**
+ * MSG_CTRL_SHUTDOWN : Shuts down the server
+ *      <key: reason for shutdown>MSG_SEPARATOR<value: ignored>
+ * MSG_CTRL_PING : Asks to receive a response from the server
+ *      <key: ignored>MSG_SEPARATOR<value: ignored>
+ * MSG_CTRL_CREATE : Creates a key mapping to a value
+ *      <key>MSG_SEPARATOR<value>
+ * MSG_CTRL_READ : Gets the value mapped to the provided key
+ *      <key>MSG_SEPARATOR<value: ignored>
+ * MSG_CTRL_UPDATE : Updates an existing key to map to another value
+ *      <key>MSG_SEPARATOR<value: possibly new value>
+ * MSG_CTRL_DELETE : Deletes an existing key
+ *      <key>MSG_SEPARATOR<value: ignored>
+ * MSG_CTRL_SAVE : Creates a file saving the database's state
+ *      <key: file name>MSG_SEPARATOR<value: ignored>
+ * MSG_CTRL_INVALID: An invalid control message
+ */
 enum message_control
 {
     MSG_CTRL_SHUTDOWN = 0,
@@ -59,8 +77,11 @@ char *msg_get_key(char *message, size_t msg_size);
 char *msg_get_val(char *message, size_t msg_size);
 
 /**
- * Parses an entire message. If anything fails, all out parameters are set to NULL and false is returned.
+ * Parses an entire message. If anything fails, ctrl is set to MSG_CTRL_INVALID and false is returned.
  */
-bool msg_parse(char *message, enum message_control *ctrl, char **key, size_t *key_size, char **val, size_t *val_size);
+bool msg_parse(char *message, size_t msg_size,
+               enum message_control *ctrl,
+               char **key, size_t *key_size,
+               char **val, size_t *val_size);
 
 #endif /* MESSAGES_H */
