@@ -6,6 +6,7 @@
 
 #include "macro_collections.h"
 #include "messages.h"
+#include "netapi.h"
 
 #define CMC_DICTIONARY (dict, dictionary, , char *, char *)
 CMC_CMC_HASHMAP_CORE(PUBLIC, HEADER, CMC_DICTIONARY)
@@ -20,68 +21,31 @@ struct dictionary_fkey dict_methods = {
 
 int main(int argc, char const *argv[])
 {
-    if (argc != 2)
-    {
-        cmc_log_fatal("Usage: %s <port_number>", argv[0]);
-        return -1;
-    }
-
-    int port = atoi(argv[1]);
-
-    int listenfd = socket(AF_INET, SOCK_STREAM, 0);
-
-    if (listenfd < 0)
-    {
-        cmc_log_error("Error creating socket file descriptor.");
-        perror("");
-        return 1;
-    }
-    else
-    {
-        cmc_log_info("Opened socket successfully.");
-    }
-
+    int server_fd;
     struct sockaddr_in servaddr;
-    memset(&servaddr, 0, sizeof(servaddr));
-    servaddr.sin_addr.s_addr = INADDR_ANY;
-    servaddr.sin_family = AF_INET;
-    servaddr.sin_port = htons(port);
 
-    if (bind(listenfd, (struct sockaddr *)&servaddr, sizeof(servaddr)) < 0)
-    {
-        cmc_log_error("Could not bind to socket.");
-        perror("");
-        return 2;
-    }
-    else
-    {
-        cmc_log_info("Binded to socket successfully.");
-    }
-
-    if (listen(listenfd, 3) < 0)
-    {
-        cmc_log_error("Could not listen to socket.");
-        perror("");
-        return 3;
-    }
-
-    cmc_log_info("Listening to connections at %d...", port);
+    if (!net_server(&server_fd, &servaddr))
+        return 1;
 
     struct sockaddr_in cliaddr;
-    unsigned int clientfd, client_size = sizeof(cliaddr);
+    int client_fd;
 
     struct dictionary *database = dict_new(1000, 0.6, &dict_methods, (struct dictionary_fval *)&dict_methods);
-    char reply[2000];
+    netapi_recv_buffer reply;
 
-    while (((clientfd = accept(listenfd, (struct sockaddr *)&cliaddr, &client_size)) >= 0))
+    while (true)
     {
+        if (!net_accept(server_fd, &client_fd, &cliaddr))
+        {
+            cmc_log_fatal("Failed to accept message. Shutting down...");
+            break;
+        }
+
+        cmc_log_info("Connection Accepted from %s:%d", inet_ntoa(cliaddr.sin_addr), ntohs(cliaddr.sin_port));
+
         bool shutdown = false;
-        char *client_ip = inet_ntoa(cliaddr.sin_addr);
-        int client_port = ntohs(cliaddr.sin_port);
 
-        cmc_log_info("Connection Accepted from %s:%d.", client_ip, client_port);
-
-        ssize_t length = recv(clientfd, reply, sizeof(reply) - 1, 0);
+        ssize_t length = recv(client_fd, reply, sizeof(reply) - 1, 0);
 
         if (length <= 0)
         {
@@ -130,5 +94,5 @@ int main(int argc, char const *argv[])
     }
 
     dict_free(database);
-    close(listenfd); // Close file descriptor
+    close(server_fd); // Close file descriptor
 }
