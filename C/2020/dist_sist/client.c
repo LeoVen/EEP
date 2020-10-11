@@ -5,55 +5,37 @@
 
 #include "macro_collections.h"
 #include "messages.h"
+#include "netapi.h"
 
 int main(int argc, char const *argv[])
 {
-    if (argc != 3)
+    if (argc != 4)
     {
-        cmc_log_fatal("Usage: %s <port_number> <message>", argv[0]);
+        cmc_log_fatal("Usage: %s <ctrl> <key> <value>", argv[0]);
         return 1;
     }
 
-    int port = atoi(argv[1]);
+    int client_fd;
+    struct sockaddr_in cliaddr;
 
-    int targetdf = socket(AF_INET, SOCK_STREAM, IPPROTO_TCP);
-
-    if (targetdf < 0)
-    {
-        cmc_log_error("Error creating socket file descriptor.");
+    if (!net_client(&client_fd, &cliaddr))
         return 2;
-    }
-    else
+
+    cmc_log_info("Sending message to %d", NETAPI_SERVER_PORT);
+
+    char *msg = msg_create_str((char *)argv[1], (char *)argv[2], strlen(argv[2]), (char *)argv[3], strlen(argv[3]));
+
+    if (!msg)
     {
-        cmc_log_info("Opened socket successfully.");
+        cmc_log_error("Could not create a valid message from given parameters.");
+        return 4;
     }
 
-    struct sockaddr_in targetaddr;
-    memset(&targetaddr, 0, sizeof(targetaddr));
-    targetaddr.sin_addr.s_addr = INADDR_ANY;
-    targetaddr.sin_family = AF_INET;
-    targetaddr.sin_port = htons(port);
+    if (!net_send(client_fd, msg, strlen(msg)))
+        return 5;
 
-    if (connect(targetdf, (struct sockaddr *)&targetaddr, sizeof(targetaddr)) < 0)
-    {
-        cmc_log_error("Could not connect to socket: %d", port);
-        return 3;
-    }
-    else
-    {
-        cmc_log_info("Connected to socket %d", port);
-    }
+    free(msg);
+    close(client_fd); // Close file descriptor
 
-    cmc_log_info("Sending message to %d", port);
-
-    if (send(targetdf, argv[2], strlen(argv[2]), 0) < 0)
-    {
-        cmc_log_error("Could not send message to socket at %d", port);
-    }
-    else
-    {
-        cmc_log_info("Sent %d bytes", strlen(argv[2]));
-    }
-
-    close(targetdf); // Close file descriptor
+    return 0;
 }

@@ -15,6 +15,7 @@
 
 #define MSG_SEPARATOR ':'
 #define MSG_MAX_CTRL_SIZE 20 // Max size + a few extra bytes
+#define MSG_CREATE_FORMAT "%s %s%c%s"
 
 /**
  * MSG_CTRL_SHUTDOWN : Shuts down the server
@@ -53,6 +54,11 @@ extern const size_t msg_map_len;
  * Creates a new control message.
  */
 char *msg_create(enum message_control ctrl, char *key, size_t key_size, char *val, size_t val_size);
+
+/**
+ * Creates a new control message from strings only.
+ */
+char *msg_create_str(char *ctrl_str, char *key, size_t key_size, char *val, size_t val_size);
 
 // PARSING
 

@@ -26,13 +26,25 @@ char *msg_create(enum message_control ctrl, char *key, size_t key_size, char *va
     if (!result)
         return NULL;
 
-    if (snprintf(result, size, "%s %s%c%s", ctrl_str, key, MSG_SEPARATOR, val) < 0)
+    if (snprintf(result, size, MSG_CREATE_FORMAT, ctrl_str, key, MSG_SEPARATOR, val) < 0)
     {
         free(result);
         return NULL;
     }
 
     return result;
+}
+
+char *msg_create_str(char *ctrl_str, char *key, size_t key_size, char *val, size_t val_size)
+{
+    size_t ctrl_size = strlen(ctrl_str);
+
+    enum message_control ctrl = msg_get_control(ctrl_str, ctrl_size);
+
+    if (ctrl == MSG_CTRL_INVALID)
+        return NULL;
+
+    return msg_create(ctrl, key, key_size, val, val_size);
 }
 
 const char *msg_ctrl_to_string(enum message_control ctrl)

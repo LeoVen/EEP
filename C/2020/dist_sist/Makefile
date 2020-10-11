@@ -3,7 +3,7 @@ INCLUDE = ../../../../C-Macro-Collections/src
 CFLAGS = -Wall
 BUILD = ./build
 LINKLIB =
-DEFINES = -DCMC_LOG_COLOR
+DEFINES = -DCMC_LOG_COLOR -DCMC_TEST_COLOR
 
 .PHONY main: server.exe client.exe tests.exe
 

@@ -35,6 +35,10 @@
 typedef char netapi_recv_buffer[2000];
 
 bool net_server(int *out_fd, struct sockaddr_in *out_server);
+bool net_client(int *out_fd, struct sockaddr_in *out_client);
+
 bool net_accept(int server_fd, int *out_client_fd, struct sockaddr_in *out_client);
+
+bool net_send(int fd, void *data, size_t data_len);
 
 #endif /* NETAPI_H */
