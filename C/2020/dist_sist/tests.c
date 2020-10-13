@@ -9,37 +9,30 @@ bool msg_create_and_test(enum message_control ctrl, char *key, size_t key_size, 
     if (!message)
         return false;
 
-    char *out_key = NULL, *out_val = NULL;
-    size_t out_key_size = 0, out_val_size = 0;
-    enum message_control out_ctrl;
+    struct msg_message msg;
 
-    bool result = msg_parse(message, strlen(message), &out_ctrl,
-                            &out_key, &out_key_size,
-                            &out_val, &out_val_size);
+    bool result = msg_parse(message, strlen(message), &msg);
 
     free(message);
 
     cmc_assert(result);
-    cmc_assert_equals(int32_t, ctrl, out_ctrl);
-    cmc_assert(strcmp(key, out_key) == 0);
-    cmc_assert(strcmp(val, out_val) == 0);
-    cmc_assert_equals(size_t, strlen(out_key), out_key_size);
-    cmc_assert_equals(size_t, strlen(out_val), out_val_size);
-    cmc_assert_equals(size_t, key_size, out_key_size);
-    cmc_assert_equals(size_t, val_size, out_val_size);
+    cmc_assert_equals(int32_t, ctrl, msg.ctrl);
+    cmc_assert(strcmp(key, msg.key) == 0);
+    cmc_assert(strcmp(val, msg.val) == 0);
+    cmc_assert_equals(size_t, strlen(msg.key), msg.key_len);
+    cmc_assert_equals(size_t, strlen(msg.val), msg.val_len);
+    cmc_assert_equals(size_t, key_size, msg.key_len);
+    cmc_assert_equals(size_t, val_size, msg.val_len);
 
-    result = result && out_ctrl == ctrl &&
-            strcmp(key, out_key) == 0 &&
-            strcmp(val, out_val) == 0 &&
-            strlen(out_key) == out_key_size &&
-            strlen(out_val) == out_val_size &&
-            key_size == out_key_size &&
-            val_size == out_val_size;
+    result = result && msg.ctrl == ctrl &&
+            strcmp(key, msg.key) == 0 &&
+            strcmp(val, msg.val) == 0 &&
+            strlen(msg.key) == msg.key_len &&
+            strlen(msg.val) == msg.val_len &&
+            key_size == msg.key_len &&
+            val_size == msg.val_len;
 
-    if (out_key)
-        free(out_key);
-    if (out_val)
-        free(out_val);
+    msg_message_destroy(&msg);
 
     return result;
 }

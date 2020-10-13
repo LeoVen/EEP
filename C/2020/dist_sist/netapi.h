@@ -17,8 +17,8 @@
  *      net_accept      -> Accepts connections from clients
  *      net_callback    -> Sends data back to client
  * net_client           -> Creates a client connection
- *      net_receive     -> Receives message error from server
  *      net_shutdown    -> Shutdowns the server
+ *      net_receive     -> Receives message error from server
  *      net_ping        -> Pings the server
  *      net_create      -> Creates an entry
  *      net_read        -> Reads an entry
@@ -30,15 +30,36 @@
  *      net_send     -> Send message to socket
  */
 
+#ifndef NETAPI_SERVER_PORT
 #define NETAPI_SERVER_PORT 1234
+#endif
 
-typedef char netapi_recv_buffer[2000];
+#ifndef NETAPI_RECV_BUFFER_SIZE
+#define NETAPI_RECV_BUFFER_SIZE 2000
+#endif
 
+#ifndef NETAPI_TIMEOUT
+#define NETAPI_TIMEOUT 2 // In seconds
+#endif
+
+typedef char netapi_recv_buffer[NETAPI_RECV_BUFFER_SIZE];
+
+/* Connections */
 bool net_server(int *out_fd, struct sockaddr_in *out_server);
 bool net_client(int *out_fd, struct sockaddr_in *out_client);
 
+/* Server-only */
 bool net_accept(int server_fd, int *out_client_fd, struct sockaddr_in *out_client);
+bool net_callback(int client_fd, char *error_message);
 
+/* Client-only */
+bool net_shutdown(int server_fd, char *reason);
+bool net_create(int server_fd, char *key, char *val);
+bool net_read(int server_fd, char *key, char **out_val);
+
+/* Lower level */
+bool net_sockopt(int socket_fd);
 bool net_send(int fd, void *data, size_t data_len);
+bool net_recv(int fd, netapi_recv_buffer out_buffer, ssize_t *out_len);
 
 #endif /* NETAPI_H */

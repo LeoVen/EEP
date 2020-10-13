@@ -15,27 +15,52 @@ int main(int argc, char const *argv[])
         return 1;
     }
 
-    int client_fd;
+    int server_fd;
     struct sockaddr_in cliaddr;
 
-    if (!net_client(&client_fd, &cliaddr))
+    if (!net_client(&server_fd, &cliaddr))
         return 2;
 
-    cmc_log_info("Sending message to %d", NETAPI_SERVER_PORT);
+    char *msg_str = msg_create_str((char *)argv[1], (char *)argv[2], strlen(argv[2]), (char *)argv[3], strlen(argv[3]));
 
-    char *msg = msg_create_str((char *)argv[1], (char *)argv[2], strlen(argv[2]), (char *)argv[3], strlen(argv[3]));
-
-    if (!msg)
+    if (!msg_str)
     {
-        cmc_log_error("Could not create a valid message from given parameters.");
+        cmc_log_fatal("Could not create a valid message from given parameters.");
+        close(server_fd);
+        return 3;
+    }
+
+    struct msg_message msg;
+
+    if (!msg_parse(msg_str, strlen(msg_str), &msg))
+    {
+        cmc_log_fatal("Could not parse back the message created from the parameters.");
+        close(server_fd);
+        free(msg_str);
         return 4;
     }
 
-    if (!net_send(client_fd, msg, strlen(msg)))
-        return 5;
+    free(msg_str);
 
-    free(msg);
-    close(client_fd); // Close file descriptor
+    if (msg.ctrl == MSG_CTRL_SHUTDOWN)
+    {
+        net_shutdown(server_fd, msg.key);
+    }
+    else if (msg.ctrl == MSG_CTRL_CREATE)
+    {
+        net_create(server_fd, msg.key, msg.val);
+    }
+    else if (msg.ctrl == MSG_CTRL_READ)
+    {
+        char *result;
+        if (net_read(server_fd, msg.key, &result))
+        {
+            cmc_log_info("Got value from server: %s", result);
+        }
+    }
+
+    msg_message_destroy(&msg);
+    close(server_fd);
 
     return 0;
 }

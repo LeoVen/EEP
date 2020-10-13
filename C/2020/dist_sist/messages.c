@@ -8,9 +8,19 @@ static const char *msg_map[] = {
     "UPDATE",
     "DELETE",
     "SAVE",
+    "STATUS",
+    "CALLBACK",
 };
 
-const size_t msg_map_len = 7;
+const size_t msg_map_len = 9;
+
+void msg_message_destroy(struct msg_message *msg)
+{
+    if (msg->key)
+        free(msg->key);
+    if (msg->val)
+        free(msg->val);
+}
 
 char *msg_create(enum message_control ctrl, char *key, size_t key_size, char *val, size_t val_size)
 {
@@ -166,10 +176,7 @@ char *msg_get_val(char *message, size_t msg_size)
     return result;
 }
 
-bool msg_parse(char *message, size_t msg_size,
-               enum message_control *ctrl,
-               char **key, size_t *key_size,
-               char **val, size_t *val_size)
+bool msg_parse(char *message, size_t msg_size, struct msg_message *msg)
 {
     if (message == NULL || msg_size == 0)
         goto error;
@@ -213,42 +220,42 @@ bool msg_parse(char *message, size_t msg_size,
     for (size_t i = ctrl_start, j = 0; i <= ctrl_end && j < MSG_MAX_CTRL_SIZE; i++, j++)
         ctrl_str[j] = message[i];
 
-    *ctrl = MSG_CTRL_INVALID;
+    msg->ctrl = MSG_CTRL_INVALID;
 
     for (size_t i = 0; i < msg_map_len; i++)
     {
         if (strcmp(ctrl_str, msg_map[i]) == 0)
         {
-            *ctrl = (enum message_control)i;
+            msg->ctrl = (enum message_control)i;
             break;
         }
     }
 
-    if (*ctrl == MSG_CTRL_INVALID)
+    if (msg->ctrl == MSG_CTRL_INVALID)
         return false;
 
     // Key
 
-    *key_size = (key_end - key_start) + 1;
-    *key = calloc(1, *key_size + 1);
+    msg->key_len = (key_end - key_start) + 1;
+    msg->key = calloc(1, msg->key_len + 1);
 
-    for (size_t i = key_start, j = 0; i <= key_end && j < *key_size; i++, j++)
-        (*key)[j] = message[i];
+    for (size_t i = key_start, j = 0; i <= key_end && j < msg->key_len; i++, j++)
+        msg->key[j] = message[i];
 
     // Val
-    *val_size = (val_end - val_start) + 1;
-    *val = calloc(1, *val_size + 1);
+    msg->val_len = (val_end - val_start) + 1;
+    msg->val = calloc(1, msg->val_len + 1);
 
-    for (size_t i = val_start, j = 0; i <= val_end && j < *val_size; i++, j++)
+    for (size_t i = val_start, j = 0; i <= val_end && j < msg->val_len; i++, j++)
     {
         if (message[i] == '\0')
             break;
-        (*val)[j] = message[i];
+        msg->val[j] = message[i];
     }
 
     return true;
 
     error:
-    *ctrl = MSG_CTRL_INVALID;
+    msg->ctrl = MSG_CTRL_INVALID;
     return false;
 }
