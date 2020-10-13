@@ -18,8 +18,6 @@
  *      net_callback    -> Sends data back to client
  * net_client           -> Creates a client connection
  *      net_shutdown    -> Shutdowns the server
- *      net_receive     -> Receives message error from server
- *      net_ping        -> Pings the server
  *      net_create      -> Creates an entry
  *      net_read        -> Reads an entry
  *      net_update      -> Updates an entry

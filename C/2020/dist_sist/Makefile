@@ -2,7 +2,7 @@ CC = gcc
 INCLUDE = ../../../../C-Macro-Collections/src
 CFLAGS = -Wall
 BUILD = ./build
-LINKLIB =
+LINKLIB = -pthread
 DEFINES = -DCMC_LOG_COLOR -DCMC_TEST_COLOR
 
 .PHONY main: server.exe client.exe tests.exe

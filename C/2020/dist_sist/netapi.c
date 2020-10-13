@@ -29,7 +29,7 @@ bool net_server(int *out_fd, struct sockaddr_in *out_server)
     }
     else
     {
-        cmc_log_info("Opened socket successfully.");
+        cmc_log_debug("Opened socket successfully.");
     }
 
     memset(out_server, 0, sizeof(struct sockaddr_in));
@@ -45,7 +45,7 @@ bool net_server(int *out_fd, struct sockaddr_in *out_server)
     }
     else
     {
-        cmc_log_info("Binded to socket successfully.");
+        cmc_log_debug("Binded to socket successfully.");
     }
 
     if (listen(*out_fd, 3) < 0)
@@ -72,7 +72,7 @@ bool net_client(int *out_fd, struct sockaddr_in *out_client)
     }
     else
     {
-        cmc_log_info("Opened socket successfully.");
+        cmc_log_debug("Opened socket successfully.");
     }
 
     if (!net_sockopt(*out_fd))
@@ -91,7 +91,7 @@ bool net_client(int *out_fd, struct sockaddr_in *out_client)
     }
     else
     {
-        cmc_log_info("Connected to socket %d", NETAPI_SERVER_PORT);
+        cmc_log_debug("Connected to socket %d", NETAPI_SERVER_PORT);
     }
 
     return true;
@@ -185,7 +185,7 @@ bool net_create(int server_fd, char *key, char *val)
 
     if (!msg_parse(reply, strlen(reply), &msg_recv))
     {
-        cmc_log_error("Could not parse callback from server. |%s|", reply);
+        cmc_log_error("Could not parse callback from server");
         return false;
     }
 
