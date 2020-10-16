@@ -39,7 +39,11 @@
 #endif
 
 #ifndef NETAPI_TIMEOUT
-#define NETAPI_TIMEOUT 2 // In seconds
+#define NETAPI_SERVER_TIMEOUT 300 // In seconds
+#endif
+
+#ifndef NETAPI_CLIENT_TIMEOUT
+#define NETAPI_CLIENT_TIMEOUT 2 // In seconds
 #endif
 
 typedef char netapi_recv_buffer[NETAPI_RECV_BUFFER_SIZE];
@@ -58,7 +62,7 @@ bool net_create(int server_fd, char *key, char *val);
 bool net_read(int server_fd, char *key, char **out_val);
 
 /* Lower level */
-bool net_sockopt(int socket_fd);
+bool net_sockopt(int socket_fd, int seconds);
 bool net_send(int fd, void *data, size_t data_len);
 bool net_recv(int fd, netapi_recv_buffer out_buffer, ssize_t *out_len);
 

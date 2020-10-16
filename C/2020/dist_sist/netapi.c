@@ -3,10 +3,10 @@
 #include "netapi.h"
 
 // Sets default socket options
-bool net_sockopt(int socket_fd)
+bool net_sockopt(int socket_fd, int seconds)
 {
     struct timeval tv;
-    tv.tv_sec = NETAPI_TIMEOUT;
+    tv.tv_sec = seconds;
     tv.tv_usec = 0;
     if (setsockopt(socket_fd, SOL_SOCKET, SO_RCVTIMEO, (const char *)&tv, sizeof(struct timeval)) < 0)
     {
@@ -31,6 +31,9 @@ bool net_server(int *out_fd, struct sockaddr_in *out_server)
     {
         cmc_log_debug("Opened socket successfully.");
     }
+
+    if (!net_sockopt(*out_fd, NETAPI_SERVER_TIMEOUT))
+        return false;
 
     memset(out_server, 0, sizeof(struct sockaddr_in));
     out_server->sin_addr.s_addr = INADDR_ANY;
@@ -75,7 +78,7 @@ bool net_client(int *out_fd, struct sockaddr_in *out_client)
         cmc_log_debug("Opened socket successfully.");
     }
 
-    if (!net_sockopt(*out_fd))
+    if (!net_sockopt(*out_fd, NETAPI_CLIENT_TIMEOUT))
         return false;
 
     memset(out_client, 0, sizeof(struct sockaddr_in));
@@ -151,6 +154,19 @@ bool net_shutdown(int server_fd, char *reason)
     }
 
     free(msg_send);
+
+    // Dummy client to trigger server shutdown
+    int dummy;
+    struct sockaddr_in dummyaddr;
+
+    if (!net_client(&dummy, &dummyaddr))
+    {
+        cmc_log_error("Failed to shutdown server.");
+        return false;
+    }
+
+    close(dummy);
+
     return true;
 }
 

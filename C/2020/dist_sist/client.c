@@ -3,9 +3,13 @@
 #include <sys/socket.h>
 #include <arpa/inet.h>
 
+#define TC_COLOR
+#define MAX_CHARS 100
+
 #include "macro_collections.h"
 #include "messages.h"
 #include "netapi.h"
+#include "terminal_color.h"
 
 bool read_line(char *buffer, int max_len, char *message);
 
@@ -21,15 +25,15 @@ int main(int argc, char const *argv[])
 
     while (true)
     {
-        printf("Commands:\n");
-        printf(" > q | Q    : Quit\n");
-        printf(" > SHUTDOWN : Shuts down the server.\n");
-        printf(" > CREATE   : Creates a new key-value pair.\n");
-        printf(" > READ     : Retrieves an existing key-value pair.\n");
+        printf("\n%sCommands%s:\n", tc_green(), tc_reset());
+        printf(" > %sq%s | %sQ%s    : Quit\n", tc_blue(), tc_reset(), tc_blue(), tc_reset());
+        printf(" > %sSHUTDOWN%s : Shuts down the server.\n", tc_blue(), tc_reset());
+        printf(" > %sCREATE%s   : Creates a new key-value pair.\n", tc_blue(), tc_reset());
+        printf(" > %sREAD%s     : Retrieves an existing key-value pair.\n", tc_blue(), tc_reset());
 
-        char command[NETAPI_RECV_BUFFER_SIZE] = { 0 };
+        char command[MAX_CHARS] = { 0 };
 
-        if (!read_line(command, NETAPI_RECV_BUFFER_SIZE, "Command"))
+        if (!read_line(command, 100, "Command"))
             continue;
 
         if (command[0] == 'q' || command[0] == 'Q')
@@ -38,7 +42,7 @@ int main(int argc, char const *argv[])
             break;
         }
 
-        char key[100], val[100], *result;
+        char key[MAX_CHARS], val[MAX_CHARS], *result;
         enum message_control ctrl = msg_string_to_ctrl(command);
 
         if (ctrl == MSG_CTRL_SHUTDOWN)
@@ -46,8 +50,8 @@ int main(int argc, char const *argv[])
             if (!read_line(key, sizeof(key), "Reason for shutdown"))
                 continue;
 
-            if (!net_shutdown(server_fd, key))
-                break;
+            net_shutdown(server_fd, key);
+            break;
         }
         else if (ctrl == MSG_CTRL_CREATE)
         {
@@ -67,8 +71,12 @@ int main(int argc, char const *argv[])
             if (!net_read(server_fd, key, &result))
                 break;
 
-            printf("[ Result ] > %s\n", result);
+            printf("%s[%s Result %s]%s > %s%s%s\n", tc_red(), tc_reset(), tc_red(), tc_reset(), tc_yellow(), result, tc_reset());
             free(result);
+        }
+        else
+        {
+            cmc_log_error("Unknown command");
         }
     }
 
@@ -79,7 +87,7 @@ int main(int argc, char const *argv[])
 
 bool read_line(char *buffer, int max_len, char *message)
 {
-    printf("[ %s ] > ", message);
+    printf("%s[%s %s %s]%s > ", tc_red(), tc_reset(), message, tc_red(), tc_reset());
 
     if (!fgets(buffer, max_len, stdin))
     {
@@ -87,12 +95,12 @@ bool read_line(char *buffer, int max_len, char *message)
         return false;
     }
 
-    int i = NETAPI_RECV_BUFFER_SIZE - 1;
-    for (; i > 0; i--)
+    int i = 0;
+    for (; i < max_len; i++)
     {
         if (buffer[i] == '\n')
         {
-            buffer[i] = 0;
+            buffer[i] = '\0';
             break;
         }
     }
