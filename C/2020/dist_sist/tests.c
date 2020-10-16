@@ -54,7 +54,7 @@ CMC_CREATE_UNIT(ControlMessagesTest, true, {
 
     CMC_CREATE_TEST(msg_ctrl_to_string, {
         cmc_assert(strcmp(msg_ctrl_to_string(MSG_CTRL_SHUTDOWN), "SHUTDOWN") == 0);
-        cmc_assert(strcmp(msg_ctrl_to_string(MSG_CTRL_PING), "PING") == 0);
+        cmc_assert(strcmp(msg_ctrl_to_string(MSG_CTRL_WAIT), "WAIT") == 0);
         cmc_assert(strcmp(msg_ctrl_to_string(MSG_CTRL_CREATE), "CREATE") == 0);
         cmc_assert(strcmp(msg_ctrl_to_string(MSG_CTRL_READ), "READ") == 0);
         cmc_assert(strcmp(msg_ctrl_to_string(MSG_CTRL_UPDATE), "UPDATE") == 0);
@@ -100,7 +100,7 @@ CMC_CREATE_UNIT(ControlMessagesTest, true, {
         free(msg_key);
         free(msg);
 
-        msg = msg_create(MSG_CTRL_PING, key, strlen(key), "", strlen(""));
+        msg = msg_create(MSG_CTRL_WAIT, key, strlen(key), "", strlen(""));
         cmc_assert(msg != NULL);
 
         msg_key = msg_get_key(msg, strlen(msg));
@@ -110,7 +110,7 @@ CMC_CREATE_UNIT(ControlMessagesTest, true, {
         free(msg);
         free(msg_key);
 
-        msg = msg_create(MSG_CTRL_PING, "", strlen(""), "", strlen(""));
+        msg = msg_create(MSG_CTRL_WAIT, "", strlen(""), "", strlen(""));
         cmc_assert(msg != NULL);
 
         msg_key = msg_get_key(msg, strlen(msg));
@@ -132,7 +132,7 @@ CMC_CREATE_UNIT(ControlMessagesTest, true, {
         free(msg_val);
         free(msg);
 
-        msg = msg_create(MSG_CTRL_PING, key, strlen(key), "", strlen(""));
+        msg = msg_create(MSG_CTRL_WAIT, key, strlen(key), "", strlen(""));
         cmc_assert(msg != NULL);
 
         msg_val = msg_get_val(msg, strlen(msg));
@@ -141,7 +141,7 @@ CMC_CREATE_UNIT(ControlMessagesTest, true, {
         free(msg);
         free(msg_val);
 
-        msg = msg_create(MSG_CTRL_PING, "", strlen(""), "", strlen(""));
+        msg = msg_create(MSG_CTRL_WAIT, "", strlen(""), "", strlen(""));
         cmc_assert(msg != NULL);
 
         msg_val = msg_get_val(msg, strlen(msg));
@@ -157,7 +157,7 @@ CMC_CREATE_UNIT(ControlMessagesTest, true, {
 
         // Non-empty value
         cmc_assert(msg_create_and_test(MSG_CTRL_SHUTDOWN, my_key, strlen(my_key), my_val, strlen(my_val)));
-        cmc_assert(msg_create_and_test(MSG_CTRL_PING, my_key, strlen(my_key), my_val, strlen(my_val)));
+        cmc_assert(msg_create_and_test(MSG_CTRL_WAIT, my_key, strlen(my_key), my_val, strlen(my_val)));
         cmc_assert(msg_create_and_test(MSG_CTRL_CREATE, my_key, strlen(my_key), my_val, strlen(my_val)));
         cmc_assert(msg_create_and_test(MSG_CTRL_READ, my_key, strlen(my_key), my_val, strlen(my_val)));
         cmc_assert(msg_create_and_test(MSG_CTRL_UPDATE, my_key, strlen(my_key), my_val, strlen(my_val)));
@@ -166,7 +166,7 @@ CMC_CREATE_UNIT(ControlMessagesTest, true, {
 
         // Empty value
         cmc_assert(msg_create_and_test(MSG_CTRL_SHUTDOWN, my_key, strlen(my_key), my_empty_val, strlen(my_empty_val)));
-        cmc_assert(msg_create_and_test(MSG_CTRL_PING, my_key, strlen(my_key), my_empty_val, strlen(my_empty_val)));
+        cmc_assert(msg_create_and_test(MSG_CTRL_WAIT, my_key, strlen(my_key), my_empty_val, strlen(my_empty_val)));
         cmc_assert(msg_create_and_test(MSG_CTRL_CREATE, my_key, strlen(my_key), my_empty_val, strlen(my_empty_val)));
         cmc_assert(msg_create_and_test(MSG_CTRL_READ, my_key, strlen(my_key), my_empty_val, strlen(my_empty_val)));
         cmc_assert(msg_create_and_test(MSG_CTRL_UPDATE, my_key, strlen(my_key), my_empty_val, strlen(my_empty_val)));

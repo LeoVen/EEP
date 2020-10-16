@@ -22,8 +22,8 @@ enum message_control
     /* Shuts down the server */
     MSG_CTRL_SHUTDOWN = 0,
 
-    /* Asks to receive a random response from the server */
-    MSG_CTRL_PING = 1,
+    /* Makes the running task on the server wait for X milliseconds */
+    MSG_CTRL_WAIT = 1,
 
     /* Creates a key mapping to a value */
     MSG_CTRL_CREATE = 2,
@@ -81,6 +81,11 @@ char *msg_create_str(char *ctrl_str, char *key, size_t key_size, char *val, size
  * Maps enum message_control to its character representation. Returns NULL if it is not a valid enum message_control.
  */
 const char *msg_ctrl_to_string(enum message_control ctrl);
+
+/**
+ * Returns enum message_control based on its character representation.
+*/
+enum message_control msg_string_to_ctrl(char *string);
 
 /**
  * Tries to parse the message control part of the message. Returns MSG_CTRL_INVALID if is not a valid identifier.

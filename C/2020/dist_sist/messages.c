@@ -2,7 +2,7 @@
 
 static const char *msg_map[] = {
     "SHUTDOWN",
-    "PING",
+    "WAIT",
     "CREATE",
     "READ",
     "UPDATE",
@@ -63,6 +63,22 @@ const char *msg_ctrl_to_string(enum message_control ctrl)
         return NULL;
 
     return msg_map[(int)ctrl];
+}
+
+enum message_control msg_string_to_ctrl(char *string)
+{
+    enum message_control result = MSG_CTRL_INVALID;
+
+    for (size_t i = 0; i < msg_map_len; i++)
+    {
+        if (strcmp(string, msg_map[i]) == 0)
+        {
+            result = (enum message_control)i;
+            break;
+        }
+    }
+
+    return result;
 }
 
 enum message_control msg_get_control(char *message, size_t msg_size)
@@ -220,16 +236,7 @@ bool msg_parse(char *message, size_t msg_size, struct msg_message *msg)
     for (size_t i = ctrl_start, j = 0; i <= ctrl_end && j < MSG_MAX_CTRL_SIZE; i++, j++)
         ctrl_str[j] = message[i];
 
-    msg->ctrl = MSG_CTRL_INVALID;
-
-    for (size_t i = 0; i < msg_map_len; i++)
-    {
-        if (strcmp(ctrl_str, msg_map[i]) == 0)
-        {
-            msg->ctrl = (enum message_control)i;
-            break;
-        }
-    }
+    msg->ctrl = msg_string_to_ctrl(ctrl_str);
 
     if (msg->ctrl == MSG_CTRL_INVALID)
         return false;

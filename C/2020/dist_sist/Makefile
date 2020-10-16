@@ -1,6 +1,6 @@
 CC = gcc
 INCLUDE = ../../../../C-Macro-Collections/src
-CFLAGS = -Wall
+CFLAGS = -Wall --std=c11
 BUILD = ./build
 LINKLIB = -pthread
 DEFINES = -DCMC_LOG_COLOR -DCMC_TEST_COLOR

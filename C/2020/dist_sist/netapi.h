@@ -9,6 +9,7 @@
 #include <stdbool.h>
 #include <stdlib.h>
 #include <unistd.h>
+#include <sys/time.h>
 #include <sys/socket.h>
 #include <arpa/inet.h>
 
@@ -24,8 +25,9 @@
  *      net_delete      -> Deletes an entry
  *      net_save        -> Saves a backup
  * Client/Server
- *      net_recv     -> Receive message from socket
- *      net_send     -> Send message to socket
+ *      net_sockopt     -> Some default socket options
+ *      net_recv        -> Receive message from socket
+ *      net_send        -> Send message to socket
  */
 
 #ifndef NETAPI_SERVER_PORT

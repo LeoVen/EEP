@@ -8,7 +8,7 @@ bool net_sockopt(int socket_fd)
     struct timeval tv;
     tv.tv_sec = NETAPI_TIMEOUT;
     tv.tv_usec = 0;
-    if (setsockopt(socket_fd, SOL_SOCKET, SO_RCVTIMEO, (const char *)&tv, sizeof(tv)) < 0)
+    if (setsockopt(socket_fd, SOL_SOCKET, SO_RCVTIMEO, (const char *)&tv, sizeof(struct timeval)) < 0)
     {
         cmc_log_fatal("Could not set default socket options.");
         perror("");

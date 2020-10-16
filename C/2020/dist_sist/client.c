@@ -7,60 +7,101 @@
 #include "messages.h"
 #include "netapi.h"
 
+bool read_line(char *buffer, int max_len, char *message);
+
 int main(int argc, char const *argv[])
 {
-    if (argc != 4)
-    {
-        cmc_log_fatal("Usage: %s <ctrl> <key> <value>", argv[0]);
-        return 1;
-    }
-
     int server_fd;
     struct sockaddr_in cliaddr;
 
     if (!net_client(&server_fd, &cliaddr))
         return 2;
 
-    char *msg_str = msg_create_str((char *)argv[1], (char *)argv[2], strlen(argv[2]), (char *)argv[3], strlen(argv[3]));
+    cmc_log_info("Connected to server...");
 
-    if (!msg_str)
+    while (true)
     {
-        cmc_log_fatal("Could not create a valid message from given parameters.");
-        close(server_fd);
-        return 3;
-    }
+        printf("Commands:\n");
+        printf(" > q | Q    : Quit\n");
+        printf(" > SHUTDOWN : Shuts down the server.\n");
+        printf(" > CREATE   : Creates a new key-value pair.\n");
+        printf(" > READ     : Retrieves an existing key-value pair.\n");
 
-    struct msg_message msg;
+        char command[NETAPI_RECV_BUFFER_SIZE] = { 0 };
 
-    if (!msg_parse(msg_str, strlen(msg_str), &msg))
-    {
-        cmc_log_fatal("Could not parse back the message created from the parameters.");
-        close(server_fd);
-        free(msg_str);
-        return 4;
-    }
+        if (!read_line(command, NETAPI_RECV_BUFFER_SIZE, "Command"))
+            continue;
 
-    free(msg_str);
-
-    if (msg.ctrl == MSG_CTRL_SHUTDOWN)
-    {
-        net_shutdown(server_fd, msg.key);
-    }
-    else if (msg.ctrl == MSG_CTRL_CREATE)
-    {
-        net_create(server_fd, msg.key, msg.val);
-    }
-    else if (msg.ctrl == MSG_CTRL_READ)
-    {
-        char *result;
-        if (net_read(server_fd, msg.key, &result))
+        if (command[0] == 'q' || command[0] == 'Q')
         {
-            cmc_log_info("Got value from server: %s", result);
+            cmc_log_info("Logging off.");
+            break;
+        }
+
+        char key[100], val[100], *result;
+        enum message_control ctrl = msg_string_to_ctrl(command);
+
+        if (ctrl == MSG_CTRL_SHUTDOWN)
+        {
+            if (!read_line(key, sizeof(key), "Reason for shutdown"))
+                continue;
+
+            if (!net_shutdown(server_fd, key))
+                break;
+        }
+        else if (ctrl == MSG_CTRL_CREATE)
+        {
+            if (!read_line(key, sizeof(key), "Key"))
+                continue;
+            if (!read_line(val, sizeof(val), "Value"))
+                continue;
+
+            if (!net_create(server_fd, key, val))
+                break;
+        }
+        else if (ctrl == MSG_CTRL_READ)
+        {
+            if (!read_line(key, sizeof(key), "Key"))
+                continue;
+
+            if (!net_read(server_fd, key, &result))
+                break;
+
+            printf("[ Result ] > %s\n", result);
+            free(result);
         }
     }
 
-    msg_message_destroy(&msg);
     close(server_fd);
 
     return 0;
+}
+
+bool read_line(char *buffer, int max_len, char *message)
+{
+    printf("[ %s ] > ", message);
+
+    if (!fgets(buffer, max_len, stdin))
+    {
+        cmc_log_error("Couldn't read command.");
+        return false;
+    }
+
+    int i = NETAPI_RECV_BUFFER_SIZE - 1;
+    for (; i > 0; i--)
+    {
+        if (buffer[i] == '\n')
+        {
+            buffer[i] = 0;
+            break;
+        }
+    }
+
+    if (i == 0)
+    {
+        cmc_log_error("Couldn't read command.");
+        return false;
+    }
+
+    return true;
 }
