@@ -128,7 +128,7 @@ int server_thread(void *arguments)
         if (length == 0)
             break;
 
-        cmc_log_debug("Received message: %s", reply);
+        cmc_log_debug("[%d] Received message: %s", id, reply);
 
         struct msg_message *msg = calloc(1, sizeof(struct msg_message));
 
@@ -136,17 +136,18 @@ int server_thread(void *arguments)
 
         if (!result)
         {
-            cmc_log_error("Could not parse received message.");
+            cmc_log_error("[%d] Could not parse received message.", id);
             continue;
         }
         else if (msg->ctrl == MSG_CTRL_SHUTDOWN)
         {
-            cmc_log_info("Shuting down server because: %s", msg->key);
+            cmc_log_info("[%d] Shuting down server because: %s", id, msg->key);
             server_alive = false;
             break;
         }
         else if (msg->ctrl == MSG_CTRL_CREATE)
         {
+            cmc_log_trace("[%d] Creating new key-value pair.", id);
             cmc_mtx_lock(db_mutex);
             dict_insert(database, msg->key, msg->val);
             int flag = dict_flag(database);
@@ -156,7 +157,7 @@ int server_thread(void *arguments)
 
             if (flag != CMC_FLAG_OK)
             {
-                cmc_log_warn("Could not add key-value pair to database - %s",
+                cmc_log_warn("[%d] Could not add key-value pair to database - %s", id,
                     cmc_flags_to_str[flag]);
 
                 snprintf(callback, sizeof(callback), "Could not add key-value pair to database: %s",
@@ -171,19 +172,22 @@ int server_thread(void *arguments)
 
             if (!net_callback(client_fd, callback))
             {
-                cmc_log_fatal("Could not send callback to client!");
+                cmc_log_fatal("[%d] Could not send callback to client!", id);
             }
         }
         else if (msg->ctrl == MSG_CTRL_READ)
         {
+            cmc_log_trace("[%d] Retrieving value from a key.", id);
             cmc_mtx_lock(db_mutex);
             char *value = dict_get(database, msg->key);
+            cmc_mtx_unlock(db_mutex); // Unlocking here could invalidate value pointer
+                                      // if another thread can quickly remove the key
 
             char *callback = "OK";
 
             if (!value)
             {
-                cmc_log_warn("Failed to retrieve value from key %s.", msg->key);
+                cmc_log_warn("[%d] Failed to retrieve value from key \"%s.\"", id, msg->key);
 
                 char *error = "Failed to retrieve value from key.";
 
@@ -191,11 +195,11 @@ int server_thread(void *arguments)
 
                 if (!to_send)
                 {
-                    cmc_log_error("Could not create result message.");
+                    cmc_log_error("[%d] Could not create result message.", id);
                 }
-                else if (!net_send(client_fd, to_send, strlen(to_send)))
+                if (!net_send(client_fd, to_send, strlen(to_send)))
                 {
-                    cmc_log_error("Could not send result to client.");
+                    cmc_log_error("[%d] Could not send result to client.", id);
                 }
 
                 free(to_send);
@@ -206,19 +210,22 @@ int server_thread(void *arguments)
 
                 if (!to_send)
                 {
-                    cmc_log_error("Could not create result message.");
+                    cmc_log_error("[%d] Could not create result message.", id);
                 }
                 else
                 {
                     if (!net_send(client_fd, to_send, strlen(to_send)))
                     {
-                        cmc_log_error("Could not send result to client.");
+                        cmc_log_error("[%d] Could not send result to client.", id);
                     }
                 }
 
-                cmc_mtx_unlock(db_mutex);
                 free(to_send);
             }
+        }
+        else
+        {
+            cmc_log_warn("[%d] Unknown control message.", id);
         }
 
         if (destroy)

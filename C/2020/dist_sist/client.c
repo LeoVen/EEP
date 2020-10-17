@@ -61,7 +61,7 @@ int main(int argc, char const *argv[])
                 continue;
 
             if (!net_create(server_fd, key, val))
-                break;
+                continue;
         }
         else if (ctrl == MSG_CTRL_READ)
         {
@@ -69,7 +69,7 @@ int main(int argc, char const *argv[])
                 continue;
 
             if (!net_read(server_fd, key, &result))
-                break;
+                continue;
 
             printf("%s[%s Result %s]%s > %s%s%s\n", tc_red(), tc_reset(), tc_red(), tc_reset(), tc_yellow(), result, tc_reset());
             free(result);
