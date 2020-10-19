@@ -8,11 +8,12 @@
 #include "messages.h"
 #include "netapi.h"
 
+/* Database */
 #define CMC_DICTIONARY (dict, dictionary, , char *, char *)
 CMC_CMC_HASHMAP_CORE(PUBLIC, HEADER, CMC_DICTIONARY)
 CMC_CMC_HASHMAP_CORE(PUBLIC, SOURCE, CMC_DICTIONARY)
 
-void dict_str_free(char *data)
+void server_str_free(char *data)
 {
     free(data);
 }
@@ -21,22 +22,52 @@ struct dictionary_fkey dict_methods_key = {
     .str = cmc_str_str,
     .cmp = cmc_str_cmp,
     .hash = cmc_str_hash_sdbm,
-    .free = dict_str_free
+    .free = server_str_free
 };
 
 struct dictionary_fval dict_methods_val = {
     .str = cmc_str_str,
     .cmp = cmc_str_cmp,
     .hash = cmc_str_hash_sdbm,
-    .free = dict_str_free
+    .free = server_str_free
 };
 
+/* Client listing */
+struct client_info
+{
+    int fd;
+    struct sockaddr_in addr;
+};
+
+/* Maps a client ID to its file descriptor */
+#define CMC_CLIENTS_IDS (cl, climap, , char *, int)
+CMC_CMC_HASHBIDIMAP_CORE(PUBLIC, HEADER, CMC_CLIENTS_IDS)
+CMC_CMC_HASHBIDIMAP_CORE(PUBLIC, SOURCE, CMC_CLIENTS_IDS)
+
+struct climap_fkey climap_methods_key = {
+    .str = cmc_str_str,
+    .cmp = cmc_str_cmp,
+    .hash = cmc_str_hash_sdbm,
+    .free = server_str_free
+};
+
+struct climap_fval climap_methods_val = {
+    .str = cmc_i32_str,
+    .cmp = cmc_i32_cmp,
+    .hash = cmc_i32_hash
+};
+
+/* Threads */
 struct server_thread_arg
 {
     // A pointer to the database
     struct dictionary *database;
     // The database mutex
     struct cmc_mutex *db_mutex;
+    // A pointer to the clients connections
+    struct climap *clients;
+    // The clients connections mutex
+    struct cmc_mutex *cl_mutex;
     // The client's file descriptor
     int client_fd;
 };
@@ -62,6 +93,19 @@ int main(void)
         perror("");
         close(server_fd);
         dict_free(database);
+        return 2;
+    }
+
+    /* Setting up clients list */
+    struct climap *clients = cl_new(100, 0.6, &climap_methods_key, &climap_methods_val);
+    struct cmc_mutex *cl_mutex = &(struct cmc_mutex){ 0 };
+    if (!cmc_mtx_init(cl_mutex))
+    {
+        cmc_log_fatal("Could not start database mutex.");
+        perror("");
+        close(server_fd);
+        dict_free(database);
+        return 3;
     }
 
     struct sockaddr_in cliaddr;
@@ -83,10 +127,42 @@ int main(void)
 
         if (server_alive)
         {
+            ssize_t length;
+            netapi_recv_buffer client_id_recv;
+
+            /* Get client's ID */
+            if (!net_recv(client_fd, client_id_recv, &length))
+            {
+                cmc_log_error("Could not get client's ID.");
+                continue;
+            }
+
+            size_t len = strlen(client_id_recv);
+            char *client_id = calloc(1, len + 1);
+
+            memcpy(client_id, client_id_recv, len);
+
+            cmc_log_info("Logged in: %s", client_id);
+
+            /* Add the client's id to the connection's list */
+            cmc_mtx_lock(cl_mutex);
+            cl_insert(clients, client_id, client_fd);
+            int flag = cl_flag(clients);
+            cmc_mtx_unlock(cl_mutex);
+
+            if (flag != CMC_FLAG_OK)
+            {
+                cmc_log_error("Could not add new client id - %s", cmc_flags_to_str[flag]);
+                continue;
+            }
+
+            /* Preparing thread to serve the client */
             struct cmc_thread thread = { 0 };
             struct server_thread_arg *arg = calloc(1, sizeof(struct server_thread_arg));
             arg->database = database;
             arg->db_mutex = db_mutex;
+            arg->clients = clients;
+            arg->cl_mutex = cl_mutex;
             arg->client_fd = client_fd;
 
             if (!cmc_thrd_create(&thread, server_thread, arg))
@@ -97,7 +173,9 @@ int main(void)
     }
 
     cmc_mtx_destroy(db_mutex);
+    cmc_mtx_destroy(cl_mutex);
     dict_free(database);
+    cl_free(clients);
     close(server_fd);
 }
 
@@ -112,6 +190,8 @@ int server_thread(void *arguments)
     struct dictionary *database = args->database;
     struct cmc_mutex *db_mutex = args->db_mutex;
     int client_fd = args->client_fd;
+    struct climap *clients = args->clients;
+    struct cmc_mutex *cl_mutex = args->cl_mutex;
 
     free(args);
 
@@ -128,7 +208,7 @@ int server_thread(void *arguments)
         if (length == 0)
             break;
 
-        cmc_log_debug("[%d] Received message: %s", id, reply);
+        cmc_log_debug("[%" PRIiMAX "] Received message: %s", id, reply);
 
         struct msg_message *msg = calloc(1, sizeof(struct msg_message));
 
@@ -136,18 +216,18 @@ int server_thread(void *arguments)
 
         if (!result)
         {
-            cmc_log_error("[%d] Could not parse received message.", id);
+            cmc_log_error("[%" PRIiMAX "] Could not parse received message.", id);
             continue;
         }
         else if (msg->ctrl == MSG_CTRL_SHUTDOWN)
         {
-            cmc_log_info("[%d] Shuting down server because: %s", id, msg->key);
+            cmc_log_info("[%" PRIiMAX "] Shuting down server because: %s", id, msg->key);
             server_alive = false;
             break;
         }
         else if (msg->ctrl == MSG_CTRL_CREATE)
         {
-            cmc_log_trace("[%d] Creating new key-value pair.", id);
+            cmc_log_trace("[%" PRIiMAX "] Creating new key-value pair.", id);
             cmc_mtx_lock(db_mutex);
             dict_insert(database, msg->key, msg->val);
             int flag = dict_flag(database);
@@ -157,7 +237,7 @@ int server_thread(void *arguments)
 
             if (flag != CMC_FLAG_OK)
             {
-                cmc_log_warn("[%d] Could not add key-value pair to database - %s", id,
+                cmc_log_warn("[%" PRIiMAX "] Could not add key-value pair to database - %s", id,
                     cmc_flags_to_str[flag]);
 
                 snprintf(callback, sizeof(callback), "Could not add key-value pair to database: %s",
@@ -172,12 +252,12 @@ int server_thread(void *arguments)
 
             if (!net_callback(client_fd, callback))
             {
-                cmc_log_fatal("[%d] Could not send callback to client!", id);
+                cmc_log_fatal("[%" PRIiMAX "] Could not send callback to client!", id);
             }
         }
         else if (msg->ctrl == MSG_CTRL_READ)
         {
-            cmc_log_trace("[%d] Retrieving value from a key.", id);
+            cmc_log_trace("[%" PRIiMAX "] Retrieving value from a key.", id);
             cmc_mtx_lock(db_mutex);
             char *value = dict_get(database, msg->key);
             cmc_mtx_unlock(db_mutex); // Unlocking here could invalidate value pointer
@@ -187,7 +267,7 @@ int server_thread(void *arguments)
 
             if (!value)
             {
-                cmc_log_warn("[%d] Failed to retrieve value from key \"%s.\"", id, msg->key);
+                cmc_log_warn("[%" PRIiMAX "] Failed to retrieve value from key \"%s.\"", id, msg->key);
 
                 char *error = "Failed to retrieve value from key.";
 
@@ -195,11 +275,11 @@ int server_thread(void *arguments)
 
                 if (!to_send)
                 {
-                    cmc_log_error("[%d] Could not create result message.", id);
+                    cmc_log_error("[%" PRIiMAX "] Could not create result message.", id);
                 }
                 if (!net_send(client_fd, to_send, strlen(to_send)))
                 {
-                    cmc_log_error("[%d] Could not send result to client.", id);
+                    cmc_log_error("[%" PRIiMAX "] Could not send result to client.", id);
                 }
 
                 free(to_send);
@@ -210,22 +290,54 @@ int server_thread(void *arguments)
 
                 if (!to_send)
                 {
-                    cmc_log_error("[%d] Could not create result message.", id);
+                    cmc_log_error("[%" PRIiMAX "] Could not create result message.", id);
                 }
                 else
                 {
                     if (!net_send(client_fd, to_send, strlen(to_send)))
                     {
-                        cmc_log_error("[%d] Could not send result to client.", id);
+                        cmc_log_error("[%" PRIiMAX "] Could not send result to client.", id);
                     }
                 }
 
                 free(to_send);
             }
         }
+        else if (msg->ctrl == MSG_CTRL_UPDATE)
+        {
+            cmc_log_trace("[%" PRIiMAX "] Updating existing key-value pair.", id);
+            cmc_mtx_lock(db_mutex);
+            char *old_value;
+            dict_update(database, msg->key, msg->val, &old_value);
+            free(old_value);
+            int flag = dict_flag(database);
+            cmc_mtx_unlock(db_mutex);
+
+            char callback[100];
+
+            if (flag != CMC_FLAG_OK)
+            {
+                cmc_log_warn("[%" PRIiMAX "] Could not add key-value pair to database - %s", id,
+                    cmc_flags_to_str[flag]);
+
+                snprintf(callback, sizeof(callback), "Could not add key-value pair to database: %s",
+                    cmc_flags_to_str[flag]);
+            }
+            else
+            {
+                snprintf(callback, sizeof(callback), "%s", "OK");
+            }
+
+            destroy = false;
+
+            if (!net_callback(client_fd, callback))
+            {
+                cmc_log_fatal("[%" PRIiMAX "] Could not send callback to client!", id);
+            }
+        }
         else
         {
-            cmc_log_warn("[%d] Unknown control message.", id);
+            cmc_log_warn("[%" PRIiMAX "] Unknown control message.", id);
         }
 
         if (destroy)
@@ -233,6 +345,17 @@ int server_thread(void *arguments)
 
         free(msg);
     }
+
+    /* Remove this client's ID because it is getting disconnected */
+    cmc_mtx_lock(cl_mutex);
+    char *cli_id;
+    cl_remove_by_val(clients, client_fd, &cli_id, NULL);
+    free(cli_id);
+    int flag = cl_flag(clients);
+    cmc_mtx_unlock(cl_mutex);
+
+    if (flag != CMC_FLAG_OK)
+        cmc_log_error("[%d] Could not remove client's ID from map.", id);
 
     cmc_log_debug("Shuting down thread %" PRIiMAX ".", id);
 

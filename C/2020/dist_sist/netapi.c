@@ -63,7 +63,7 @@ bool net_server(int *out_fd, struct sockaddr_in *out_server)
     return true;
 }
 
-bool net_client(int *out_fd, struct sockaddr_in *out_client)
+bool net_client(int *out_fd, struct sockaddr_in *out_client, char *client_id)
 {
     *out_fd = socket(AF_INET, SOCK_STREAM, 0);
 
@@ -95,6 +95,12 @@ bool net_client(int *out_fd, struct sockaddr_in *out_client)
     else
     {
         cmc_log_debug("Connected to socket %d", NETAPI_SERVER_PORT);
+    }
+
+    if (!net_send(*out_fd, client_id, strlen(client_id)))
+    {
+        cmc_log_fatal("Could not send client's ID to server.");
+        return false;
     }
 
     return true;
@@ -159,7 +165,7 @@ bool net_shutdown(int server_fd, char *reason)
     int dummy;
     struct sockaddr_in dummyaddr;
 
-    if (!net_client(&dummy, &dummyaddr))
+    if (!net_client(&dummy, &dummyaddr, "Dummy Connection for Shutdown"))
     {
         cmc_log_error("Failed to shutdown server.");
         return false;
@@ -267,6 +273,55 @@ bool net_read(int server_fd, char *key, char **out_val)
     return true;
 }
 
+bool net_update(int server_fd, char *key, char *val)
+{
+    char *msg_send = msg_create(MSG_CTRL_UPDATE, key, strlen(key), val, strlen(val));
+
+    if (!msg_send)
+    {
+        cmc_log_error("Could not update key-value pair.");
+        return false;
+    }
+
+    if (!net_send(server_fd, msg_send, strlen(msg_send)))
+    {
+        cmc_log_error("Could not send data to server.");
+        free(msg_send);
+        return false;
+    }
+
+    free(msg_send);
+
+    netapi_recv_buffer reply;
+    ssize_t reply_len;
+
+    if (!net_recv(server_fd, reply, &reply_len))
+    {
+        cmc_log_error("Could not receive callback from server.");
+    }
+
+    struct msg_message msg_recv;
+
+    if (!msg_parse(reply, strlen(reply), &msg_recv))
+    {
+        cmc_log_error("Could not parse callback from server");
+        return false;
+    }
+
+    if (strcmp(msg_recv.val, "OK") != 0)
+    {
+        cmc_log_error("%s", msg_recv.val);
+        msg_message_destroy(&msg_recv);
+        return false;
+    }
+
+    cmc_log_info("Operation successfull.");
+
+    msg_message_destroy(&msg_recv);
+
+    return true;
+}
+
 bool net_send(int fd, void *data, size_t data_len)
 {
     ssize_t len = send(fd, data, data_len, 0);
@@ -281,7 +336,7 @@ bool net_send(int fd, void *data, size_t data_len)
         cmc_log_warn("Message sent to %d was 0 bytes long.", NETAPI_SERVER_PORT);
     }
 
-    cmc_log_info("Sent %d bytes", len);
+    cmc_log_trace("Sent %d bytes", len);
 
     return true;
 }

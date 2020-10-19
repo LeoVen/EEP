@@ -49,8 +49,15 @@
 typedef char netapi_recv_buffer[NETAPI_RECV_BUFFER_SIZE];
 
 /* Connections */
+/**
+ * Creates a server connection
+ */
 bool net_server(int *out_fd, struct sockaddr_in *out_server);
-bool net_client(int *out_fd, struct sockaddr_in *out_client);
+
+/**
+ * Creates a client connection
+ */
+bool net_client(int *out_fd, struct sockaddr_in *out_client, char *client_id);
 
 /* Server-only */
 bool net_accept(int server_fd, int *out_client_fd, struct sockaddr_in *out_client);
@@ -60,6 +67,7 @@ bool net_callback(int client_fd, char *error_message);
 bool net_shutdown(int server_fd, char *reason);
 bool net_create(int server_fd, char *key, char *val);
 bool net_read(int server_fd, char *key, char **out_val);
+bool net_update(int server_fd, char *key, char *val);
 
 /* Lower level */
 bool net_sockopt(int socket_fd, int seconds);

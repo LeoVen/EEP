@@ -13,12 +13,19 @@
 
 bool read_line(char *buffer, int max_len, char *message);
 
-int main(int argc, char const *argv[])
+int main(void)
 {
     int server_fd;
     struct sockaddr_in cliaddr;
+    char id[MAX_CHARS];
 
-    if (!net_client(&server_fd, &cliaddr))
+    if (!read_line(id, MAX_CHARS, "ID"))
+    {
+        cmc_log_fatal("Invalid client ID.");
+        return 1;
+    }
+
+    if (!net_client(&server_fd, &cliaddr, id))
         return 2;
 
     cmc_log_info("Connected to server...");
@@ -30,6 +37,7 @@ int main(int argc, char const *argv[])
         printf(" > %sSHUTDOWN%s : Shuts down the server.\n", tc_blue(), tc_reset());
         printf(" > %sCREATE%s   : Creates a new key-value pair.\n", tc_blue(), tc_reset());
         printf(" > %sREAD%s     : Retrieves an existing key-value pair.\n", tc_blue(), tc_reset());
+        printf(" > %sUPDATE%s   : Updates an existing key-value pair.\n", tc_blue(), tc_reset());
 
         char command[MAX_CHARS] = { 0 };
 
@@ -73,6 +81,16 @@ int main(int argc, char const *argv[])
 
             printf("%s[%s Result %s]%s > %s%s%s\n", tc_red(), tc_reset(), tc_red(), tc_reset(), tc_yellow(), result, tc_reset());
             free(result);
+        }
+        else if (ctrl == MSG_CTRL_UPDATE)
+        {
+            if (!read_line(key, sizeof(key), "Key"))
+                continue;
+            if (!read_line(val, sizeof(val), "Value"))
+                continue;
+
+            if (!net_update(server_fd, key, val))
+                continue;
         }
         else
         {
