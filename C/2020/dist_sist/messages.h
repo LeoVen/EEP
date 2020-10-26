@@ -15,35 +15,54 @@
 
 #define MSG_SEPARATOR ':'
 #define MSG_MAX_CTRL_SIZE 20 // Max size + a few extra bytes
+#define MSG_CREATE_FORMAT "%s %s%c%s"
 
-/**
- * MSG_CTRL_SHUTDOWN : Shuts down the server
- *      <key: reason for shutdown>MSG_SEPARATOR<value: ignored>
- * MSG_CTRL_PING : Asks to receive a response from the server
- *      <key: ignored>MSG_SEPARATOR<value: ignored>
- * MSG_CTRL_CREATE : Creates a key mapping to a value
- *      <key>MSG_SEPARATOR<value>
- * MSG_CTRL_READ : Gets the value mapped to the provided key
- *      <key>MSG_SEPARATOR<value: ignored>
- * MSG_CTRL_UPDATE : Updates an existing key to map to another value
- *      <key>MSG_SEPARATOR<value: possibly new value>
- * MSG_CTRL_DELETE : Deletes an existing key
- *      <key>MSG_SEPARATOR<value: ignored>
- * MSG_CTRL_SAVE : Creates a file saving the database's state
- *      <key: file name>MSG_SEPARATOR<value: ignored>
- * MSG_CTRL_INVALID: An invalid control message
- */
 enum message_control
 {
+    /* Shuts down the server */
     MSG_CTRL_SHUTDOWN = 0,
-    MSG_CTRL_PING = 1,
+
+    /* Makes the running task on the server wait for X milliseconds */
+    MSG_CTRL_WAIT = 1,
+
+    /* Creates a key mapping to a value */
     MSG_CTRL_CREATE = 2,
+
+    /* Gets the value mapped to the provided key */
     MSG_CTRL_READ = 3,
+
+    /* Updates an existing key to map to another value */
     MSG_CTRL_UPDATE = 4,
+
+    /* Deletes an existing key */
     MSG_CTRL_DELETE = 5,
+
+    /* Creates a file saving the database's state */
     MSG_CTRL_SAVE = 6,
+
+    /* Returns database's status */
+    MSG_CTRL_STATUS = 7,
+
+    /* Callback from server with error messages or success */
+    MSG_CTRL_CALLBACK = 8,
+
+    /* Sends a message to another client */
+    MSG_CTRL_MAIL = 9,
+
+    /* An invalid control message */
     MSG_CTRL_INVALID = -1
 };
+
+struct msg_message
+{
+    enum message_control ctrl;
+    char *key;
+    char *val;
+    size_t key_len;
+    size_t val_len;
+};
+
+void msg_message_destroy(struct msg_message *msg);
 
 extern const size_t msg_map_len;
 
@@ -54,12 +73,22 @@ extern const size_t msg_map_len;
  */
 char *msg_create(enum message_control ctrl, char *key, size_t key_size, char *val, size_t val_size);
 
+/**
+ * Creates a new control message from strings only.
+ */
+char *msg_create_str(char *ctrl_str, char *key, size_t key_size, char *val, size_t val_size);
+
 // PARSING
 
 /**
  * Maps enum message_control to its character representation. Returns NULL if it is not a valid enum message_control.
  */
 const char *msg_ctrl_to_string(enum message_control ctrl);
+
+/**
+ * Returns enum message_control based on its character representation.
+*/
+enum message_control msg_string_to_ctrl(char *string);
 
 /**
  * Tries to parse the message control part of the message. Returns MSG_CTRL_INVALID if is not a valid identifier.
@@ -79,9 +108,6 @@ char *msg_get_val(char *message, size_t msg_size);
 /**
  * Parses an entire message. If anything fails, ctrl is set to MSG_CTRL_INVALID and false is returned.
  */
-bool msg_parse(char *message, size_t msg_size,
-               enum message_control *ctrl,
-               char **key, size_t *key_size,
-               char **val, size_t *val_size);
+bool msg_parse(char *message, size_t msg_size, struct msg_message *msg);
 
 #endif /* MESSAGES_H */

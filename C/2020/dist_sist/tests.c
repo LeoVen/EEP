@@ -9,37 +9,30 @@ bool msg_create_and_test(enum message_control ctrl, char *key, size_t key_size, 
     if (!message)
         return false;
 
-    char *out_key = NULL, *out_val = NULL;
-    size_t out_key_size = 0, out_val_size = 0;
-    enum message_control out_ctrl;
+    struct msg_message msg;
 
-    bool result = msg_parse(message, strlen(message), &out_ctrl,
-                            &out_key, &out_key_size,
-                            &out_val, &out_val_size);
+    bool result = msg_parse(message, strlen(message), &msg);
 
     free(message);
 
     cmc_assert(result);
-    cmc_assert_equals(int32_t, ctrl, out_ctrl);
-    cmc_assert(strcmp(key, out_key) == 0);
-    cmc_assert(strcmp(val, out_val) == 0);
-    cmc_assert_equals(size_t, strlen(out_key), out_key_size);
-    cmc_assert_equals(size_t, strlen(out_val), out_val_size);
-    cmc_assert_equals(size_t, key_size, out_key_size);
-    cmc_assert_equals(size_t, val_size, out_val_size);
+    cmc_assert_equals(int32_t, ctrl, msg.ctrl);
+    cmc_assert(strcmp(key, msg.key) == 0);
+    cmc_assert(strcmp(val, msg.val) == 0);
+    cmc_assert_equals(size_t, strlen(msg.key), msg.key_len);
+    cmc_assert_equals(size_t, strlen(msg.val), msg.val_len);
+    cmc_assert_equals(size_t, key_size, msg.key_len);
+    cmc_assert_equals(size_t, val_size, msg.val_len);
 
-    result = result && out_ctrl == ctrl &&
-            strcmp(key, out_key) == 0 &&
-            strcmp(val, out_val) == 0 &&
-            strlen(out_key) == out_key_size &&
-            strlen(out_val) == out_val_size &&
-            key_size == out_key_size &&
-            val_size == out_val_size;
+    result = result && msg.ctrl == ctrl &&
+            strcmp(key, msg.key) == 0 &&
+            strcmp(val, msg.val) == 0 &&
+            strlen(msg.key) == msg.key_len &&
+            strlen(msg.val) == msg.val_len &&
+            key_size == msg.key_len &&
+            val_size == msg.val_len;
 
-    if (out_key)
-        free(out_key);
-    if (out_val)
-        free(out_val);
+    msg_message_destroy(&msg);
 
     return result;
 }
@@ -61,7 +54,7 @@ CMC_CREATE_UNIT(ControlMessagesTest, true, {
 
     CMC_CREATE_TEST(msg_ctrl_to_string, {
         cmc_assert(strcmp(msg_ctrl_to_string(MSG_CTRL_SHUTDOWN), "SHUTDOWN") == 0);
-        cmc_assert(strcmp(msg_ctrl_to_string(MSG_CTRL_PING), "PING") == 0);
+        cmc_assert(strcmp(msg_ctrl_to_string(MSG_CTRL_WAIT), "WAIT") == 0);
         cmc_assert(strcmp(msg_ctrl_to_string(MSG_CTRL_CREATE), "CREATE") == 0);
         cmc_assert(strcmp(msg_ctrl_to_string(MSG_CTRL_READ), "READ") == 0);
         cmc_assert(strcmp(msg_ctrl_to_string(MSG_CTRL_UPDATE), "UPDATE") == 0);
@@ -107,7 +100,7 @@ CMC_CREATE_UNIT(ControlMessagesTest, true, {
         free(msg_key);
         free(msg);
 
-        msg = msg_create(MSG_CTRL_PING, key, strlen(key), "", strlen(""));
+        msg = msg_create(MSG_CTRL_WAIT, key, strlen(key), "", strlen(""));
         cmc_assert(msg != NULL);
 
         msg_key = msg_get_key(msg, strlen(msg));
@@ -117,7 +110,7 @@ CMC_CREATE_UNIT(ControlMessagesTest, true, {
         free(msg);
         free(msg_key);
 
-        msg = msg_create(MSG_CTRL_PING, "", strlen(""), "", strlen(""));
+        msg = msg_create(MSG_CTRL_WAIT, "", strlen(""), "", strlen(""));
         cmc_assert(msg != NULL);
 
         msg_key = msg_get_key(msg, strlen(msg));
@@ -139,7 +132,7 @@ CMC_CREATE_UNIT(ControlMessagesTest, true, {
         free(msg_val);
         free(msg);
 
-        msg = msg_create(MSG_CTRL_PING, key, strlen(key), "", strlen(""));
+        msg = msg_create(MSG_CTRL_WAIT, key, strlen(key), "", strlen(""));
         cmc_assert(msg != NULL);
 
         msg_val = msg_get_val(msg, strlen(msg));
@@ -148,7 +141,7 @@ CMC_CREATE_UNIT(ControlMessagesTest, true, {
         free(msg);
         free(msg_val);
 
-        msg = msg_create(MSG_CTRL_PING, "", strlen(""), "", strlen(""));
+        msg = msg_create(MSG_CTRL_WAIT, "", strlen(""), "", strlen(""));
         cmc_assert(msg != NULL);
 
         msg_val = msg_get_val(msg, strlen(msg));
@@ -164,7 +157,7 @@ CMC_CREATE_UNIT(ControlMessagesTest, true, {
 
         // Non-empty value
         cmc_assert(msg_create_and_test(MSG_CTRL_SHUTDOWN, my_key, strlen(my_key), my_val, strlen(my_val)));
-        cmc_assert(msg_create_and_test(MSG_CTRL_PING, my_key, strlen(my_key), my_val, strlen(my_val)));
+        cmc_assert(msg_create_and_test(MSG_CTRL_WAIT, my_key, strlen(my_key), my_val, strlen(my_val)));
         cmc_assert(msg_create_and_test(MSG_CTRL_CREATE, my_key, strlen(my_key), my_val, strlen(my_val)));
         cmc_assert(msg_create_and_test(MSG_CTRL_READ, my_key, strlen(my_key), my_val, strlen(my_val)));
         cmc_assert(msg_create_and_test(MSG_CTRL_UPDATE, my_key, strlen(my_key), my_val, strlen(my_val)));
@@ -173,7 +166,7 @@ CMC_CREATE_UNIT(ControlMessagesTest, true, {
 
         // Empty value
         cmc_assert(msg_create_and_test(MSG_CTRL_SHUTDOWN, my_key, strlen(my_key), my_empty_val, strlen(my_empty_val)));
-        cmc_assert(msg_create_and_test(MSG_CTRL_PING, my_key, strlen(my_key), my_empty_val, strlen(my_empty_val)));
+        cmc_assert(msg_create_and_test(MSG_CTRL_WAIT, my_key, strlen(my_key), my_empty_val, strlen(my_empty_val)));
         cmc_assert(msg_create_and_test(MSG_CTRL_CREATE, my_key, strlen(my_key), my_empty_val, strlen(my_empty_val)));
         cmc_assert(msg_create_and_test(MSG_CTRL_READ, my_key, strlen(my_key), my_empty_val, strlen(my_empty_val)));
         cmc_assert(msg_create_and_test(MSG_CTRL_UPDATE, my_key, strlen(my_key), my_empty_val, strlen(my_empty_val)));

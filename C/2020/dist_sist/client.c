@@ -3,57 +3,131 @@
 #include <sys/socket.h>
 #include <arpa/inet.h>
 
+#define TC_COLOR
+#define MAX_CHARS 100
+
 #include "macro_collections.h"
 #include "messages.h"
+#include "netapi.h"
+#include "terminal_color.h"
 
-int main(int argc, char const *argv[])
+bool read_line(char *buffer, int max_len, char *message);
+
+int main(void)
 {
-    if (argc != 3)
+    int server_fd;
+    struct sockaddr_in cliaddr;
+    char id[MAX_CHARS];
+
+    if (!read_line(id, MAX_CHARS, "ID"))
     {
-        cmc_log_fatal("Usage: %s <port_number> <message>", argv[0]);
+        cmc_log_fatal("Invalid client ID.");
         return 1;
     }
 
-    int port = atoi(argv[1]);
-
-    int targetdf = socket(AF_INET, SOCK_STREAM, IPPROTO_TCP);
-
-    if (targetdf < 0)
-    {
-        cmc_log_error("Error creating socket file descriptor.");
+    if (!net_client(&server_fd, &cliaddr, id))
         return 2;
-    }
-    else
+
+    cmc_log_info("Connected to server...");
+
+    while (true)
     {
-        cmc_log_info("Opened socket successfully.");
+        printf("\n%sCommands%s:\n", tc_green(), tc_reset());
+        printf(" > %sq%s | %sQ%s    : Quit\n", tc_blue(), tc_reset(), tc_blue(), tc_reset());
+        printf(" > %sSHUTDOWN%s : Shuts down the server.\n", tc_blue(), tc_reset());
+        printf(" > %sCREATE%s   : Creates a new key-value pair.\n", tc_blue(), tc_reset());
+        printf(" > %sREAD%s     : Retrieves an existing key-value pair.\n", tc_blue(), tc_reset());
+        printf(" > %sUPDATE%s   : Updates an existing key-value pair.\n", tc_blue(), tc_reset());
+
+        char command[MAX_CHARS] = { 0 };
+
+        if (!read_line(command, 100, "Command"))
+            continue;
+
+        if (command[0] == 'q' || command[0] == 'Q')
+        {
+            cmc_log_info("Logging off.");
+            break;
+        }
+
+        char key[MAX_CHARS], val[MAX_CHARS], *result;
+        enum message_control ctrl = msg_string_to_ctrl(command);
+
+        if (ctrl == MSG_CTRL_SHUTDOWN)
+        {
+            if (!read_line(key, sizeof(key), "Reason for shutdown"))
+                continue;
+
+            net_shutdown(server_fd, key);
+            break;
+        }
+        else if (ctrl == MSG_CTRL_CREATE)
+        {
+            if (!read_line(key, sizeof(key), "Key"))
+                continue;
+            if (!read_line(val, sizeof(val), "Value"))
+                continue;
+
+            if (!net_create(server_fd, key, val))
+                continue;
+        }
+        else if (ctrl == MSG_CTRL_READ)
+        {
+            if (!read_line(key, sizeof(key), "Key"))
+                continue;
+
+            if (!net_read(server_fd, key, &result))
+                continue;
+
+            printf("%s[%s Result %s]%s > %s%s%s\n", tc_red(), tc_reset(), tc_red(), tc_reset(), tc_yellow(), result, tc_reset());
+            free(result);
+        }
+        else if (ctrl == MSG_CTRL_UPDATE)
+        {
+            if (!read_line(key, sizeof(key), "Key"))
+                continue;
+            if (!read_line(val, sizeof(val), "Value"))
+                continue;
+
+            if (!net_update(server_fd, key, val))
+                continue;
+        }
+        else
+        {
+            cmc_log_error("Unknown command");
+        }
     }
 
-    struct sockaddr_in targetaddr;
-    memset(&targetaddr, 0, sizeof(targetaddr));
-    targetaddr.sin_addr.s_addr = INADDR_ANY;
-    targetaddr.sin_family = AF_INET;
-    targetaddr.sin_port = htons(port);
+    close(server_fd);
 
-    if (connect(targetdf, (struct sockaddr *)&targetaddr, sizeof(targetaddr)) < 0)
-    {
-        cmc_log_error("Could not connect to socket: %d", port);
-        return 3;
-    }
-    else
-    {
-        cmc_log_info("Connected to socket %d", port);
-    }
+    return 0;
+}
 
-    cmc_log_info("Sending message to %d", port);
+bool read_line(char *buffer, int max_len, char *message)
+{
+    printf("%s[%s %s %s]%s > ", tc_red(), tc_reset(), message, tc_red(), tc_reset());
 
-    if (send(targetdf, argv[2], strlen(argv[2]), 0) < 0)
+    if (!fgets(buffer, max_len, stdin))
     {
-        cmc_log_error("Could not send message to socket at %d", port);
-    }
-    else
-    {
-        cmc_log_info("Sent %d bytes", strlen(argv[2]));
+        cmc_log_error("Couldn't read command.");
+        return false;
     }
 
-    close(targetdf); // Close file descriptor
+    int i = 0;
+    for (; i < max_len; i++)
+    {
+        if (buffer[i] == '\n')
+        {
+            buffer[i] = '\0';
+            break;
+        }
+    }
+
+    if (i == 0)
+    {
+        cmc_log_error("Couldn't read command.");
+        return false;
+    }
+
+    return true;
 }
