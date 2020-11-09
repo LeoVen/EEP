@@ -5,57 +5,11 @@
 #include <arpa/inet.h>
 
 #include "macro_collections.h"
+
+#include "collections.h"
+#include "mail.h"
 #include "messages.h"
 #include "netapi.h"
-
-/* Database */
-#define CMC_DICTIONARY (dict, dictionary, , char *, char *)
-CMC_CMC_HASHMAP_CORE(PUBLIC, HEADER, CMC_DICTIONARY)
-CMC_CMC_HASHMAP_CORE(PUBLIC, SOURCE, CMC_DICTIONARY)
-
-void server_str_free(char *data)
-{
-    free(data);
-}
-
-struct dictionary_fkey dict_methods_key = {
-    .str = cmc_str_str,
-    .cmp = cmc_str_cmp,
-    .hash = cmc_str_hash_sdbm,
-    .free = server_str_free
-};
-
-struct dictionary_fval dict_methods_val = {
-    .str = cmc_str_str,
-    .cmp = cmc_str_cmp,
-    .hash = cmc_str_hash_sdbm,
-    .free = server_str_free
-};
-
-/* Client listing */
-struct client_info
-{
-    int fd;
-    struct sockaddr_in addr;
-};
-
-/* Maps a client ID to its file descriptor */
-#define CMC_CLIENTS_IDS (cl, climap, , char *, int)
-CMC_CMC_HASHBIDIMAP_CORE(PUBLIC, HEADER, CMC_CLIENTS_IDS)
-CMC_CMC_HASHBIDIMAP_CORE(PUBLIC, SOURCE, CMC_CLIENTS_IDS)
-
-struct climap_fkey climap_methods_key = {
-    .str = cmc_str_str,
-    .cmp = cmc_str_cmp,
-    .hash = cmc_str_hash_sdbm,
-    .free = server_str_free
-};
-
-struct climap_fval climap_methods_val = {
-    .str = cmc_i32_str,
-    .cmp = cmc_i32_cmp,
-    .hash = cmc_i32_hash
-};
 
 /* Threads */
 struct server_thread_arg
@@ -68,7 +22,11 @@ struct server_thread_arg
     struct climap *clients;
     // The clients connections mutex
     struct cmc_mutex *cl_mutex;
-    // The client's file descriptor
+    // The mailing queue
+    struct mailq *mails;
+    // The mailing queue mutex
+    struct cmc_mutex *mq_mutex;
+    // The client's file descriptor for callbacks
     int client_fd;
 };
 
@@ -82,7 +40,37 @@ int main(void)
     struct sockaddr_in servaddr;
 
     if (!net_server(&server_fd, &servaddr))
-        return 1;
+    {
+        cmc_log_fatal("Could not start server socket.");
+        return 0;
+    }
+
+    /* Setting up clients list */
+    struct climap *clients = cl_new(100, 0.6, &climap_methods_key, &climap_methods_val);
+    struct cmc_mutex *cl_mutex = &(struct cmc_mutex){ 0 };
+    if (!cmc_mtx_init(cl_mutex))
+    {
+        cmc_log_fatal("Could not start clients mutex.");
+        perror("");
+        goto error_0;
+    }
+
+    /* Setting up message queue */
+    struct mailq *mails = mq_new(100, &mailq_methods_val);
+    struct cmc_mutex *mq_mutex = &(struct cmc_mutex){ 0 };
+    if (!cmc_mtx_init(mq_mutex))
+    {
+        cmc_log_fatal("Could not start mails mutex.");
+        perror("");
+        goto error_1;
+    }
+
+    if (!mail_server(clients, cl_mutex, mails, mq_mutex))
+    {
+        cmc_log_fatal("Could not start mail server.");
+        perror("");
+        goto error_2;
+    }
 
     /* Setting up Database */
     struct dictionary *database = dict_new(1000, 0.6, &dict_methods_key, &dict_methods_val);
@@ -91,90 +79,83 @@ int main(void)
     {
         cmc_log_fatal("Could not start database mutex.");
         perror("");
-        close(server_fd);
-        dict_free(database);
-        return 2;
-    }
-
-    /* Setting up clients list */
-    struct climap *clients = cl_new(100, 0.6, &climap_methods_key, &climap_methods_val);
-    struct cmc_mutex *cl_mutex = &(struct cmc_mutex){ 0 };
-    if (!cmc_mtx_init(cl_mutex))
-    {
-        cmc_log_fatal("Could not start database mutex.");
-        perror("");
-        close(server_fd);
-        dict_free(database);
-        return 3;
+        goto error_3;
     }
 
     struct sockaddr_in cliaddr;
-    int client_fd;
+    int client_fd, mail_fd;
 
-    while (server_alive)
+    while (server_alive && mail_server_alive())
     {
-        if (!net_accept(server_fd, &client_fd, &cliaddr))
+        if (!net_accept(server_fd, &client_fd, &cliaddr, &mail_fd))
         {
             cmc_log_fatal("Failed to accept message or server timeout. Shutting down...");
             perror("");
             break;
         }
 
-        if (server_alive)
+        if (server_alive && mail_server_alive())
             cmc_log_debug("Connection Accepted from %s:%d", inet_ntoa(cliaddr.sin_addr), ntohs(cliaddr.sin_port));
         else
-            cmc_log_debug("Connection is Shutting down the server %s:%d", inet_ntoa(cliaddr.sin_addr), ntohs(cliaddr.sin_port));
-
-        if (server_alive)
         {
-            ssize_t length;
-            netapi_recv_buffer client_id_recv;
+            cmc_log_debug("Connection is Shutting down the server %s:%d", inet_ntoa(cliaddr.sin_addr), ntohs(cliaddr.sin_port));
+            break;
+        }
 
-            /* Get client's ID */
-            if (!net_recv(client_fd, client_id_recv, &length))
-            {
-                cmc_log_error("Could not get client's ID.");
-                continue;
-            }
+        ssize_t length;
+        netapi_recv_buffer client_id_recv;
 
-            size_t len = strlen(client_id_recv);
-            char *client_id = calloc(1, len + 1);
+        /* Get client's ID */
+        if (!net_recv(client_fd, client_id_recv, &length))
+        {
+            cmc_log_error("Could not get client's ID.");
+            continue;
+        }
 
-            memcpy(client_id, client_id_recv, len);
+        size_t len = strlen(client_id_recv);
+        char *client_id = calloc(1, len + 1);
 
-            cmc_log_info("Logged in: %s", client_id);
+        memcpy(client_id, client_id_recv, len);
 
-            /* Add the client's id to the connection's list */
-            cmc_mtx_lock(cl_mutex);
-            cl_insert(clients, client_id, client_fd);
-            int flag = cl_flag(clients);
-            cmc_mtx_unlock(cl_mutex);
+        cmc_log_info("Logged in: %s", client_id);
 
-            if (flag != CMC_FLAG_OK)
-            {
-                cmc_log_error("Could not add new client id - %s", cmc_flags_to_str[flag]);
-                continue;
-            }
+        /* Add the client's id to the connection's list */
+        cmc_mtx_lock(cl_mutex);
+        cl_insert(clients, client_id, client_fd);
+        int flag = cl_flag(clients);
+        cmc_mtx_unlock(cl_mutex);
 
-            /* Preparing thread to serve the client */
-            struct cmc_thread thread = { 0 };
-            struct server_thread_arg *arg = calloc(1, sizeof(struct server_thread_arg));
-            arg->database = database;
-            arg->db_mutex = db_mutex;
-            arg->clients = clients;
-            arg->cl_mutex = cl_mutex;
-            arg->client_fd = client_fd;
+        if (flag != CMC_FLAG_OK)
+        {
+            cmc_log_error("Could not add new client id - %s", cmc_flags_to_str[flag]);
+            continue;
+        }
 
-            if (!cmc_thrd_create(&thread, server_thread, arg))
-            {
-                cmc_log_error("Failed to spawn server thread.");
-            }
+        /* Preparing thread to serve the client */
+        struct cmc_thread thread = { 0 };
+        struct server_thread_arg *arg = calloc(1, sizeof(struct server_thread_arg));
+        arg->database = database;
+        arg->db_mutex = db_mutex;
+        arg->clients = clients;
+        arg->cl_mutex = cl_mutex;
+        arg->client_fd = client_fd;
+
+        if (!cmc_thrd_create(&thread, server_thread, arg))
+        {
+            cmc_log_error("Failed to spawn server thread.");
+            perror("");
         }
     }
 
     cmc_mtx_destroy(db_mutex);
-    cmc_mtx_destroy(cl_mutex);
+    error_3:
     dict_free(database);
+    error_2:
+    cmc_mtx_destroy(mq_mutex);
+    error_1:
+    mq_free(mails);
+    cmc_mtx_destroy(cl_mutex);
+    error_0:
     cl_free(clients);
     close(server_fd);
 }
@@ -212,9 +193,7 @@ int server_thread(void *arguments)
 
         struct msg_message *msg = calloc(1, sizeof(struct msg_message));
 
-        bool result = msg_parse(reply, length, msg);
-
-        if (!result)
+        if (!msg_parse(reply, length, msg))
         {
             cmc_log_error("[%" PRIiMAX "] Could not parse received message.", id);
             continue;
@@ -223,6 +202,7 @@ int server_thread(void *arguments)
         {
             cmc_log_info("[%" PRIiMAX "] Shuting down server because: %s", id, msg->key);
             server_alive = false;
+            mail_server_shutdown();
             break;
         }
         else if (msg->ctrl == MSG_CTRL_CREATE)
@@ -334,6 +314,10 @@ int server_thread(void *arguments)
             {
                 cmc_log_fatal("[%" PRIiMAX "] Could not send callback to client!", id);
             }
+        }
+        else if (msg->ctrl == MSG_CTRL_MAIL)
+        {
+
         }
         else
         {
