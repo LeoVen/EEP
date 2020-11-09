@@ -21,18 +21,15 @@ CMC_CMC_HASHBIDIMAP_CORE(PUBLIC, HEADER, CMC_CLIENTS_IDS)
 extern struct climap_fkey climap_methods_key;
 extern struct climap_fval climap_methods_val;
 
-/* Queue that stores Mails */
-struct mail_queue_item
-{
-    // The destination's ID
-    char *client_id;
-    // Message content
-    char *message;
-};
+/* A list of messages */
+#define CMC_MSG_LIST (ml, msglist, , , char *)
+CMC_CMC_LIST_CORE(PUBLIC, HEADER, CMC_MSG_LIST)
 
-#define CMC_MAIL_QUEUE (mq, mailq, , , struct mail_queue_item)
-CMC_CMC_QUEUE_CORE(PUBLIC, HEADER, CMC_MAIL_QUEUE)
+/* Maps a client ID to a list of messages */
+#define CMC_MAIL_QUEUE (mq, mailq, , char *, struct msglist *)
+CMC_CMC_HASHMAP_CORE(PUBLIC, HEADER, CMC_MAIL_QUEUE)
 
+extern struct mailq_fkey mailq_methods_key;
 extern struct mailq_fval mailq_methods_val;
 
 #endif /* COLLECTIONS_H */

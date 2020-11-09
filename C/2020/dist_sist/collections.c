@@ -38,15 +38,20 @@ struct climap_fval climap_methods_val = {
     .hash = cmc_i32_hash
 };
 
-/* Queue that stores Mails */
-CMC_CMC_QUEUE_CORE(PUBLIC, SOURCE, CMC_MAIL_QUEUE)
+/* A list of messages */
+CMC_CMC_LIST_CORE(PUBLIC, SOURCE, CMC_MSG_LIST)
 
-void collect_mailq_free(struct mail_queue_item item)
-{
-    free(item.client_id);
-    free(item.message);
-}
+struct msglist_fval msglist_methods_val = {
+    .free = collect_str_free
+};
+
+/* Maps a client ID to a list of messages */
+CMC_CMC_HASHMAP_CORE(PUBLIC, SOURCE, CMC_MAIL_QUEUE)
+
+struct mailq_fkey mailq_methods_key = {
+    .free = collect_str_free
+};
 
 struct mailq_fval mailq_methods_val = {
-    .free = collect_mailq_free
+    .free = ml_free
 };

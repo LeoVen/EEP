@@ -46,8 +46,11 @@ enum message_control
     /* Callback from server with error messages or success */
     MSG_CTRL_CALLBACK = 8,
 
-    /* Sends a message to another client */
-    MSG_CTRL_MAIL = 9,
+    /* Sends a mail to another client */
+    MSG_CTRL_MAIL_SEND = 9,
+
+    /* Receives all mails from server */
+    MSG_CTRL_MAIL_RECV = 10,
 
     /* An invalid control message */
     MSG_CTRL_INVALID = -1

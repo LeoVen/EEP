@@ -11,12 +11,7 @@
 #include "messages.h"
 #include "netapi.h"
 
-/* Connections */
-bool mail_server(struct climap *clients, struct cmc_mutex *cl_mutex,
-                 struct mailq *mails, struct cmc_mutex *mq_mutex);
-bool mail_client(char *client_id);
-
-void mail_server_shutdown(void);
-bool mail_server_alive(void);
+bool net_mail_send(int server_fd, char *destination_id, char *message);
+bool net_mail_recv(int server_fd, char *client_id, struct msglist **result);
 
 #endif /* MAIL_H */

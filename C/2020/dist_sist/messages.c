@@ -10,10 +10,11 @@ static const char *msg_map[] = {
     "SAVE",
     "STATUS",
     "CALLBACK",
-    "MAIL",
+    "MAIL_SEND",
+    "MAIL_RECV"
 };
 
-const size_t msg_map_len = 10;
+const size_t msg_map_len = 11;
 
 void msg_message_destroy(struct msg_message *msg)
 {

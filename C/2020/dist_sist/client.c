@@ -27,12 +27,6 @@ int main(void)
         return 1;
     }
 
-    if (!mail_client(id))
-    {
-        cmc_log_fatal("Could not start mail client.");
-        return 2;
-    }
-
     if (!net_client(&server_fd, &cliaddr, id))
         return 3;
 
@@ -41,12 +35,12 @@ int main(void)
     while (true)
     {
         printf("\n%sCommands%s:\n", tc_green(), tc_reset());
-        printf(" > %sq%s | %sQ%s    : Quit\n", tc_blue(), tc_reset(), tc_blue(), tc_reset());
-        printf(" > %sSHUTDOWN%s : Shuts down the server.\n", tc_blue(), tc_reset());
-        printf(" > %sCREATE%s   : Creates a new key-value pair.\n", tc_blue(), tc_reset());
-        printf(" > %sREAD%s     : Retrieves an existing key-value pair.\n", tc_blue(), tc_reset());
-        printf(" > %sUPDATE%s   : Updates an existing key-value pair.\n", tc_blue(), tc_reset());
-        printf(" > %sMAIL%s     : Send a message to another client.\n", tc_blue(), tc_reset());
+        printf(" > %sq%s | %sQ%s     : Quit\n", tc_blue(), tc_reset(), tc_blue(), tc_reset());
+        printf(" > %sSHUTDOWN%s  : Shuts down the server.\n", tc_blue(), tc_reset());
+        printf(" > %sCREATE%s    : Creates a new key-value pair.\n", tc_blue(), tc_reset());
+        printf(" > %sREAD%s      : Retrieves an existing key-value pair.\n", tc_blue(), tc_reset());
+        printf(" > %sUPDATE%s    : Updates an existing key-value pair.\n", tc_blue(), tc_reset());
+        printf(" > %sSEND MAIL%s : Send an e-mail to another client.\n", tc_blue(), tc_reset());
 
         char command[MAX_CHARS] = { 0 };
 
@@ -68,7 +62,6 @@ int main(void)
                 continue;
 
             net_shutdown(server_fd, key);
-            mail_server_shutdown();
             break;
         }
         else if (ctrl == MSG_CTRL_CREATE)
@@ -102,14 +95,14 @@ int main(void)
             if (!net_update(server_fd, key, val))
                 continue;
         }
-        else if (ctrl == MSG_CTRL_MAIL)
+        else if (ctrl == MSG_CTRL_MAIL_SEND)
         {
             if (!read_line(key, sizeof(key), "ClientId"))
                 continue;
             if (!read_line(val, sizeof(val), "Message"))
                 continue;
 
-            if (!net_mail(server_fd, key, val))
+            if (!net_mail_send(server_fd, key, val))
                 continue;
         }
         else

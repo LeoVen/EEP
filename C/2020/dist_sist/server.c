@@ -56,20 +56,13 @@ int main(void)
     }
 
     /* Setting up message queue */
-    struct mailq *mails = mq_new(100, &mailq_methods_val);
+    struct mailq *mails = mq_new(100, 0.6, &mailq_methods_key, &mailq_methods_val);
     struct cmc_mutex *mq_mutex = &(struct cmc_mutex){ 0 };
     if (!cmc_mtx_init(mq_mutex))
     {
         cmc_log_fatal("Could not start mails mutex.");
         perror("");
         goto error_1;
-    }
-
-    if (!mail_server(clients, cl_mutex, mails, mq_mutex))
-    {
-        cmc_log_fatal("Could not start mail server.");
-        perror("");
-        goto error_2;
     }
 
     /* Setting up Database */
@@ -85,7 +78,7 @@ int main(void)
     struct sockaddr_in cliaddr;
     int client_fd, mail_fd;
 
-    while (server_alive && mail_server_alive())
+    while (server_alive)
     {
         if (!net_accept(server_fd, &client_fd, &cliaddr, &mail_fd))
         {
@@ -94,7 +87,7 @@ int main(void)
             break;
         }
 
-        if (server_alive && mail_server_alive())
+        if (server_alive)
             cmc_log_debug("Connection Accepted from %s:%d", inet_ntoa(cliaddr.sin_addr), ntohs(cliaddr.sin_port));
         else
         {
@@ -150,7 +143,6 @@ int main(void)
     cmc_mtx_destroy(db_mutex);
     error_3:
     dict_free(database);
-    error_2:
     cmc_mtx_destroy(mq_mutex);
     error_1:
     mq_free(mails);
@@ -202,7 +194,6 @@ int server_thread(void *arguments)
         {
             cmc_log_info("[%" PRIiMAX "] Shuting down server because: %s", id, msg->key);
             server_alive = false;
-            mail_server_shutdown();
             break;
         }
         else if (msg->ctrl == MSG_CTRL_CREATE)
@@ -315,7 +306,11 @@ int server_thread(void *arguments)
                 cmc_log_fatal("[%" PRIiMAX "] Could not send callback to client!", id);
             }
         }
-        else if (msg->ctrl == MSG_CTRL_MAIL)
+        else if (msg->ctrl == MSG_CTRL_MAIL_SEND)
+        {
+
+        }
+        else if (msg->ctrl == MSG_CTRL_MAIL_RECV)
         {
 
         }
