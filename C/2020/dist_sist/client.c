@@ -40,7 +40,9 @@ int main(void)
         printf(" > %sCREATE%s    : Creates a new key-value pair.\n", tc_blue(), tc_reset());
         printf(" > %sREAD%s      : Retrieves an existing key-value pair.\n", tc_blue(), tc_reset());
         printf(" > %sUPDATE%s    : Updates an existing key-value pair.\n", tc_blue(), tc_reset());
-        printf(" > %sSEND MAIL%s : Send an e-mail to another client.\n", tc_blue(), tc_reset());
+        printf(" > %sDELETE%s    : Deletes an existing key-value pair.\n", tc_blue(), tc_reset());
+        printf(" > %sMAIL_SEND%s : Send an e-mail to another client.\n", tc_blue(), tc_reset());
+        printf(" > %sMAIL_RECV%s : Receive all e-mails stored in the server.\n", tc_blue(), tc_reset());
 
         char command[MAX_CHARS] = { 0 };
 
@@ -95,6 +97,14 @@ int main(void)
             if (!net_update(server_fd, key, val))
                 continue;
         }
+        else if (ctrl == MSG_CTRL_DELETE)
+        {
+            if (!read_line(key, sizeof(key), "Key"))
+                continue;
+
+            if (!net_delete(server_fd, key))
+                continue;
+        }
         else if (ctrl == MSG_CTRL_MAIL_SEND)
         {
             if (!read_line(key, sizeof(key), "ClientId"))
@@ -104,6 +114,14 @@ int main(void)
 
             if (!net_mail_send(server_fd, key, val))
                 continue;
+        }
+        else if (ctrl == MSG_CTRL_MAIL_RECV)
+        {
+            struct msglist *result;
+            if (!net_mail_recv(server_fd, id, &result))
+                continue;
+
+            // TODO print emails
         }
         else
         {

@@ -109,7 +109,7 @@ bool net_client(int *out_fd, struct sockaddr_in *out_client, char *client_id)
     return true;
 }
 
-bool net_accept(int server_fd, int *out_client_fd, struct sockaddr_in *out_client, int *out_mail_fd)
+bool net_accept(int server_fd, int *out_client_fd, struct sockaddr_in *out_client)
 {
     socklen_t len = sizeof(struct sockaddr_in);
 
@@ -283,6 +283,55 @@ bool net_update(int server_fd, char *key, char *val)
     if (!msg_send)
     {
         cmc_log_error("Could not update key-value pair.");
+        return false;
+    }
+
+    if (!net_send(server_fd, msg_send, strlen(msg_send)))
+    {
+        cmc_log_error("Could not send data to server.");
+        free(msg_send);
+        return false;
+    }
+
+    free(msg_send);
+
+    netapi_recv_buffer reply;
+    ssize_t reply_len;
+
+    if (!net_recv(server_fd, reply, &reply_len))
+    {
+        cmc_log_error("Could not receive callback from server.");
+    }
+
+    struct msg_message msg_recv;
+
+    if (!msg_parse(reply, strlen(reply), &msg_recv))
+    {
+        cmc_log_error("Could not parse callback from server");
+        return false;
+    }
+
+    if (strcmp(msg_recv.val, "OK") != 0)
+    {
+        cmc_log_error("%s", msg_recv.val);
+        msg_message_destroy(&msg_recv);
+        return false;
+    }
+
+    cmc_log_info("Operation successfull.");
+
+    msg_message_destroy(&msg_recv);
+
+    return true;
+}
+
+bool net_delete(int server_fd, char *key)
+{
+    char *msg_send = msg_create(MSG_CTRL_DELETE, key, strlen(key), "", strlen(""));
+
+    if (!msg_send)
+    {
+        cmc_log_error("Could not delete key-value pair.");
         return false;
     }
 

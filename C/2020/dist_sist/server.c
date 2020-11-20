@@ -76,11 +76,11 @@ int main(void)
     }
 
     struct sockaddr_in cliaddr;
-    int client_fd, mail_fd;
+    int client_fd;
 
     while (server_alive)
     {
-        if (!net_accept(server_fd, &client_fd, &cliaddr, &mail_fd))
+        if (!net_accept(server_fd, &client_fd, &cliaddr))
         {
             cmc_log_fatal("Failed to accept message or server timeout. Shutting down...");
             perror("");
@@ -204,7 +204,7 @@ int server_thread(void *arguments)
             int flag = dict_flag(database);
             cmc_mtx_unlock(db_mutex);
 
-            char callback[100];
+            char callback[200];
 
             if (flag != CMC_FLAG_OK)
             {
@@ -238,7 +238,7 @@ int server_thread(void *arguments)
 
             if (!value)
             {
-                cmc_log_warn("[%" PRIiMAX "] Failed to retrieve value from key \"%s.\"", id, msg->key);
+                cmc_log_warn("[%" PRIiMAX "] Failed to retrieve value from key \"%s\".", id, msg->key);
 
                 char *error = "Failed to retrieve value from key.";
 
@@ -280,18 +280,19 @@ int server_thread(void *arguments)
             cmc_mtx_lock(db_mutex);
             char *old_value;
             dict_update(database, msg->key, msg->val, &old_value);
-            free(old_value);
             int flag = dict_flag(database);
+            if (flag == CMC_FLAG_OK)
+                free(old_value);
             cmc_mtx_unlock(db_mutex);
 
-            char callback[100];
+            char callback[200];
 
             if (flag != CMC_FLAG_OK)
             {
-                cmc_log_warn("[%" PRIiMAX "] Could not add key-value pair to database - %s", id,
+                cmc_log_warn("[%" PRIiMAX "] Could not update key-value pair to database - %s", id,
                     cmc_flags_to_str[flag]);
 
-                snprintf(callback, sizeof(callback), "Could not add key-value pair to database: %s",
+                snprintf(callback, sizeof(callback), "Could not update key-value pair to database: %s",
                     cmc_flags_to_str[flag]);
             }
             else
@@ -306,13 +307,43 @@ int server_thread(void *arguments)
                 cmc_log_fatal("[%" PRIiMAX "] Could not send callback to client!", id);
             }
         }
+        else if (msg->ctrl == MSG_CTRL_DELETE)
+        {
+            cmc_log_trace("[%" PRIuMAX "] Deleting key-value pair.", id);
+            cmc_mtx_lock(db_mutex);
+            char *old_value;
+            dict_remove(database, msg->key, &old_value);
+            int flag = dict_flag(database);
+            if (flag == CMC_FLAG_OK)
+                free(old_value);
+            cmc_mtx_unlock(db_mutex);
+
+            char callback[200];
+            if (flag != CMC_FLAG_OK)
+            {
+                cmc_log_warn("[%" PRIiMAX "] Could not delete key-value pair to database - %s", id,
+                    cmc_flags_to_str[flag]);
+
+                snprintf(callback, sizeof(callback), "Could not delete key-value pair to database: %s",
+                    cmc_flags_to_str[flag]);
+            }
+            else
+            {
+                snprintf(callback, sizeof(callback), "%s", "OK");
+            }
+
+            if (!net_callback(client_fd, callback))
+            {
+                cmc_log_fatal("[%" PRIiMAX "] Could not send callback to client!", id);
+            }
+        }
         else if (msg->ctrl == MSG_CTRL_MAIL_SEND)
         {
-
+            // TODO
         }
         else if (msg->ctrl == MSG_CTRL_MAIL_RECV)
         {
-
+            // TODO
         }
         else
         {
