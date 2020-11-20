@@ -25,6 +25,8 @@ extern struct climap_fval climap_methods_val;
 #define CMC_MSG_LIST (ml, msglist, , , char *)
 CMC_CMC_LIST_CORE(PUBLIC, HEADER, CMC_MSG_LIST)
 
+extern struct msglist_fval msglist_methods_val;
+
 /* Maps a client ID to a list of messages */
 #define CMC_MAIL_QUEUE (mq, mailq, , char *, struct msglist *)
 CMC_CMC_HASHMAP_CORE(PUBLIC, HEADER, CMC_MAIL_QUEUE)

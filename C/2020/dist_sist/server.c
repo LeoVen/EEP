@@ -1,5 +1,6 @@
 #include <errno.h>
 #include <stdio.h>
+#include <time.h>
 #include <unistd.h>
 #include <sys/socket.h>
 #include <arpa/inet.h>
@@ -10,6 +11,8 @@
 #include "mail.h"
 #include "messages.h"
 #include "netapi.h"
+
+#define DEBUG_LINE printf("Debug %d\n", __LINE__);
 
 /* Threads */
 struct server_thread_arg
@@ -132,6 +135,8 @@ int main(void)
         arg->clients = clients;
         arg->cl_mutex = cl_mutex;
         arg->client_fd = client_fd;
+        arg->mails = mails;
+        arg->mq_mutex = mq_mutex;
 
         if (!cmc_thrd_create(&thread, server_thread, arg))
         {
@@ -165,6 +170,8 @@ int server_thread(void *arguments)
     int client_fd = args->client_fd;
     struct climap *clients = args->clients;
     struct cmc_mutex *cl_mutex = args->cl_mutex;
+    struct mailq *mails = args->mails;
+    struct cmc_mutex *mq_mutex = args->mq_mutex;
 
     free(args);
 
@@ -183,7 +190,7 @@ int server_thread(void *arguments)
 
         cmc_log_debug("[%" PRIiMAX "] Received message: %s", id, reply);
 
-        struct msg_message *msg = calloc(1, sizeof(struct msg_message));
+        struct msg_message *msg = &(struct msg_message) { 0 };
 
         if (!msg_parse(reply, length, msg))
         {
@@ -200,8 +207,10 @@ int server_thread(void *arguments)
         {
             cmc_log_trace("[%" PRIiMAX "] Creating new key-value pair.", id);
             cmc_mtx_lock(db_mutex);
+
             dict_insert(database, msg->key, msg->val);
             int flag = dict_flag(database);
+
             cmc_mtx_unlock(db_mutex);
 
             char callback[200];
@@ -230,7 +239,9 @@ int server_thread(void *arguments)
         {
             cmc_log_trace("[%" PRIiMAX "] Retrieving value from a key.", id);
             cmc_mtx_lock(db_mutex);
+
             char *value = dict_get(database, msg->key);
+
             cmc_mtx_unlock(db_mutex); // Unlocking here could invalidate value pointer
                                       // if another thread can quickly remove the key
 
@@ -278,11 +289,14 @@ int server_thread(void *arguments)
         {
             cmc_log_trace("[%" PRIiMAX "] Updating existing key-value pair.", id);
             cmc_mtx_lock(db_mutex);
+
             char *old_value;
             dict_update(database, msg->key, msg->val, &old_value);
+
             int flag = dict_flag(database);
             if (flag == CMC_FLAG_OK)
                 free(old_value);
+
             cmc_mtx_unlock(db_mutex);
 
             char callback[200];
@@ -311,11 +325,14 @@ int server_thread(void *arguments)
         {
             cmc_log_trace("[%" PRIuMAX "] Deleting key-value pair.", id);
             cmc_mtx_lock(db_mutex);
+
             char *old_value;
             dict_remove(database, msg->key, &old_value);
+
             int flag = dict_flag(database);
             if (flag == CMC_FLAG_OK)
                 free(old_value);
+
             cmc_mtx_unlock(db_mutex);
 
             char callback[200];
@@ -339,7 +356,71 @@ int server_thread(void *arguments)
         }
         else if (msg->ctrl == MSG_CTRL_MAIL_SEND)
         {
-            // TODO
+            cmc_log_trace("[%" PRIuMAX "] Storing message for %s.", id, msg->key);
+
+            char callback[200];
+
+            cmc_mtx_lock(cl_mutex);
+            char *cli_id = cl_get_key(clients, client_fd);
+            int flag = cl_flag(clients);
+
+            if (flag != CMC_FLAG_OK || cli_id == NULL)
+                goto mail_send_error;
+
+            // Create saved message
+            time_t t = time(NULL);
+            struct tm *lt = localtime(&t);
+            char time[32];
+            time[strftime(time, sizeof(time), "%Y-%m-%d %H:%M:%S", lt)] = '\0';
+
+            size_t len_to_insert = strlen(time) + strlen(cli_id) + msg->val_len + 7;
+            char *to_insert = calloc(1, len_to_insert);
+
+            snprintf(to_insert, len_to_insert, "%s [%s] : %s", time, cli_id, msg->val);
+
+            cmc_mtx_unlock(cl_mutex); // No longer using cli_id
+
+            // Add to message queue
+            cmc_mtx_lock(mq_mutex);
+
+            struct msglist *list = mq_get(mails, msg->key);
+
+            if (mq_flag(mails) == CMC_FLAG_NOT_FOUND)
+            {
+                list = ml_new(10, &msglist_methods_val);
+                ml_push_back(list, to_insert);
+                flag |= ml_flag(list);
+
+                mq_insert(mails, msg->key, list);
+                flag |= mq_flag(mails);
+            }
+            else if (list != NULL)
+            {
+                ml_push_back(list, to_insert);
+                flag |= ml_flag(list);
+                free(msg->key); // Key is already mapped
+            }
+
+            destroy = false;
+            cmc_mtx_unlock(mq_mutex);
+
+            // Reply back to client
+            mail_send_error:
+            if (flag != CMC_FLAG_OK)
+            {
+                cmc_log_warn("[%" PRIiMAX "] Error while saving client's message.", id);
+
+                snprintf(callback, sizeof(callback), "Error while saving client's message.");
+            }
+            else
+            {
+                snprintf(callback, sizeof(callback), "%s", "OK");
+            }
+
+            if (!net_callback(client_fd, callback))
+            {
+                cmc_log_fatal("[%" PRIiMAX "] Could not send callback to client!", id);
+            }
         }
         else if (msg->ctrl == MSG_CTRL_MAIL_RECV)
         {
@@ -352,8 +433,6 @@ int server_thread(void *arguments)
 
         if (destroy)
             msg_message_destroy(msg);
-
-        free(msg);
     }
 
     /* Remove this client's ID because it is getting disconnected */
