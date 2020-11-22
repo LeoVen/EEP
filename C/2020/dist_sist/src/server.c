@@ -12,8 +12,6 @@
 #include "messages.h"
 #include "netapi.h"
 
-#define DEBUG_LINE printf("Debug %d\n", __LINE__);
-
 /* Threads */
 struct server_thread_arg
 {

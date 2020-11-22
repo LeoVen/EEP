@@ -68,7 +68,6 @@ bool net_create(int server_fd, char *key, char *val);
 bool net_read(int server_fd, char *key, char **out_val);
 bool net_update(int server_fd, char *key, char *val);
 bool net_delete(int server_fd, char *key);
-bool net_mail(int server_fd, char *destination_id, char *message);
 
 /* Lower level */
 bool net_sockopt(int socket_fd, int seconds);

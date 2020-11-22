@@ -89,7 +89,7 @@ bool net_client(int *out_fd, struct sockaddr_in *out_client, char *client_id)
 
     if (connect(*out_fd, (struct sockaddr *)out_client, sizeof(struct sockaddr_in)) < 0)
     {
-        cmc_log_error("Could not connect to client socket: %d", NETAPI_SERVER_PORT);
+        cmc_log_error("Could not connect to server socket: %d", NETAPI_SERVER_PORT);
         perror("");
         return false;
     }
@@ -97,8 +97,6 @@ bool net_client(int *out_fd, struct sockaddr_in *out_client, char *client_id)
     {
         cmc_log_debug("Connected to socket %d", NETAPI_SERVER_PORT);
     }
-
-    /**/
 
     if (!net_send(*out_fd, client_id, strlen(client_id)))
     {
