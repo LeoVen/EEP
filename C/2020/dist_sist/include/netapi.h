@@ -35,7 +35,7 @@
 #endif
 
 #ifndef NETAPI_RECV_BUFFER_SIZE
-#define NETAPI_RECV_BUFFER_SIZE 2000
+#define NETAPI_RECV_BUFFER_SIZE 5000
 #endif
 
 #ifndef NETAPI_TIMEOUT
@@ -68,6 +68,8 @@ bool net_create(int server_fd, char *key, char *val);
 bool net_read(int server_fd, char *key, char **out_val);
 bool net_update(int server_fd, char *key, char *val);
 bool net_delete(int server_fd, char *key);
+bool net_backup(int server_fd);
+bool net_status(int server_fd, char **status);
 
 /* Lower level */
 bool net_sockopt(int socket_fd, int seconds);

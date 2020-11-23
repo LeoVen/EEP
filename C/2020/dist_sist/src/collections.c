@@ -50,6 +50,8 @@ struct msglist_fval msglist_methods_val = {
 CMC_CMC_HASHMAP_CORE(PUBLIC, SOURCE, CMC_MAIL_QUEUE)
 
 struct mailq_fkey mailq_methods_key = {
+    .cmp = cmc_str_cmp,
+    .hash = cmc_str_hash_sdbm,
     .free = collect_str_free
 };
 

@@ -42,6 +42,7 @@ int main(void)
         printf(" > %sUPDATE%s    : Updates an existing key-value pair.\n", tc_blue(), tc_reset());
         printf(" > %sDELETE%s    : Deletes an existing key-value pair.\n", tc_blue(), tc_reset());
         printf(" > %sBACKUP%s    : Saves a backup file from database.\n", tc_blue(), tc_reset());
+        printf(" > %sSTATUS%s    : Retrieves the database's status.\n", tc_blue(), tc_reset());
         printf(" > %sMAIL_SEND%s : Send an e-mail to another client.\n", tc_blue(), tc_reset());
         printf(" > %sMAIL_RECV%s : Receive all e-mails stored in the server.\n", tc_blue(), tc_reset());
 
@@ -106,6 +107,19 @@ int main(void)
             if (!net_delete(server_fd, key))
                 continue;
         }
+        else if (ctrl == MSG_CTRL_BACKUP)
+        {
+            if (!net_backup(server_fd))
+                continue;
+        }
+        else if (ctrl == MSG_CTRL_STATUS)
+        {
+            if (!net_status(server_fd, &result))
+                continue;
+
+            printf("%s[%s Database Status %s]%s > %s%s%s\n", tc_red(), tc_reset(), tc_red(), tc_reset(), tc_yellow(), result, tc_reset());
+            free(result);
+        }
         else if (ctrl == MSG_CTRL_MAIL_SEND)
         {
             if (!read_line(key, sizeof(key), "ClientId"))
@@ -122,7 +136,13 @@ int main(void)
             if (!net_mail_recv(server_fd, id, &result))
                 continue;
 
-            // TODO print emails
+            // TODO
+            // printf("Received emails:\n");
+
+            // for (size_t i = 0; i < result->count; i++)
+            // {
+            //     printf("%s\n", result->buffer[i]);
+            // }
         }
         else
         {

@@ -7,7 +7,7 @@
 
 #include <stdio.h>
 
-const char *tc_reset(void)
+CMC_UNUSED static const char *tc_reset(void)
 {
 #ifdef TC_COLOR
     return "\x1b[0m";
@@ -16,7 +16,7 @@ const char *tc_reset(void)
 #endif
 }
 
-const char *tc_red(void)
+CMC_UNUSED static const char *tc_red(void)
 {
 #ifdef TC_COLOR
     return "\x1b[31m";
@@ -25,7 +25,7 @@ const char *tc_red(void)
 #endif
 }
 
-const char *tc_green(void)
+CMC_UNUSED static const char *tc_green(void)
 {
 #ifdef TC_COLOR
     return "\x1b[32m";
@@ -34,7 +34,7 @@ const char *tc_green(void)
 #endif
 }
 
-const char *tc_blue(void)
+CMC_UNUSED static const char *tc_blue(void)
 {
 #ifdef TC_COLOR
     return "\x1b[36m";
@@ -43,7 +43,7 @@ const char *tc_blue(void)
 #endif
 }
 
-const char *tc_yellow(void)
+CMC_UNUSED static const char *tc_yellow(void)
 {
 #ifdef TC_COLOR
     return "\x1b[33m";

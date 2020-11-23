@@ -34,7 +34,7 @@ struct server_thread_arg
 
 int server_thread(void *arguments);
 void get_datetime(char time_[32]);
-void get_date(char date_[10]);
+void get_datefile(char date_[10]);
 
 bool server_alive = true;
 
@@ -366,35 +366,55 @@ int server_thread(void *arguments)
 
             char file_name[200];
             char date[10];
-            get_date(date);
+            get_datefile(date);
 
             snprintf(file_name, sizeof(file_name), "%sDatabaseBackup.txt", date);
 
-            database_save(database, file_name);
+            bool result = database_save(database, file_name);
 
             cmc_mtx_unlock(db_mutex);
 
-            // if (flag != CMC_FLAG_OK)
-            // {
-            //     cmc_log_warn("[%" PRIiMAX "] Could not delete key-value pair to database - %s", id,
-            //         cmc_flags_to_str[flag]);
+            char callback[200];
+            if (!result)
+            {
+                cmc_log_warn("[%" PRIiMAX "] Could not make database backup.", id);
 
-            //     snprintf(callback, sizeof(callback), "Could not delete key-value pair to database: %s",
-            //         cmc_flags_to_str[flag]);
-            // }
-            // else
-            // {
-            //     snprintf(callback, sizeof(callback), "%s", "OK");
-            // }
+                snprintf(callback, sizeof(callback), "Could not make database backup.");
+            }
+            else
+            {
+                snprintf(callback, sizeof(callback), "%s", "OK");
+            }
 
-            // if (!net_callback(client_fd, callback))
-            // {
-            //     cmc_log_fatal("[%" PRIiMAX "] Could not send callback to client!", id);
-            // }
+            if (!net_callback(client_fd, callback))
+            {
+                cmc_log_fatal("[%" PRIiMAX "] Could not send callback to client!", id);
+            }
         }
         else if (msg->ctrl == MSG_CTRL_STATUS)
         {
+            size_t count = dict_count(database);
+            size_t capacity = dict_capacity(database);
 
+            char result[300];
+
+            snprintf(result, sizeof(result), "Count: %" PRIiMAX " | Capacity: %" PRIiMAX "", count, capacity);
+
+            char *to_send = msg_create(MSG_CTRL_STATUS, "STATUS", strlen("STATUS"), result, strlen(result));
+
+            if (!to_send)
+            {
+                cmc_log_error("[%" PRIiMAX "] Could not create result message.", id);
+            }
+            else
+            {
+                if (!net_send(client_fd, to_send, strlen(to_send)))
+                {
+                    cmc_log_error("[%" PRIiMAX "] Could not send result to client.", id);
+                }
+
+                free(to_send);
+            }
         }
         else if (msg->ctrl == MSG_CTRL_MAIL_SEND)
         {
@@ -425,7 +445,7 @@ int server_thread(void *arguments)
 
             struct msglist *list = mq_get(mails, msg->key);
 
-            if (mq_flag(mails) == CMC_FLAG_NOT_FOUND)
+            if (mq_flag(mails) == CMC_FLAG_NOT_FOUND || list == NULL)
             {
                 list = ml_new(10, &msglist_methods_val);
                 ml_push_back(list, to_insert);
@@ -446,9 +466,9 @@ int server_thread(void *arguments)
 
             // Reply back to client
             mail_send_error:
-            if (flag != CMC_FLAG_OK)
+            if (flag != CMC_FLAG_OK || cli_id == NULL)
             {
-                cmc_log_warn("[%" PRIiMAX "] Error while saving client's message.", id);
+                cmc_log_error("[%" PRIiMAX "] Error while saving client's message.", id);
 
                 snprintf(callback, sizeof(callback), "Error while saving client's message.");
             }
@@ -464,7 +484,81 @@ int server_thread(void *arguments)
         }
         else if (msg->ctrl == MSG_CTRL_MAIL_RECV)
         {
-            // TODO
+            cmc_log_trace("[%" PRIuMAX "] Retrieving messages for %s.", id, msg->key);
+
+            size_t curr = 0, max = NETAPI_RECV_BUFFER_SIZE - 1;
+            netapi_recv_buffer result = { 0 };
+
+            char *cli_id = msg->val;
+
+            cmc_mtx_lock(mq_mutex);
+
+            struct msglist *list = mq_get(mails, cli_id);
+            int flag = mq_flag(mails);
+
+            if (flag != CMC_FLAG_OK || list == NULL)
+                goto mail_recv_error;
+
+            // Format all messages into one string
+            int i;
+            for (i = 0; i < ml_count(list); i++)
+            {
+                char *message = list->buffer[i];
+
+                int delta = snprintf(&(result[curr]), max - curr, "%s\n", message);
+
+                if (delta < 0)
+                    break;
+
+                curr += delta;
+            }
+
+            mail_recv_error:
+
+            cmc_mtx_unlock(mq_mutex); // No longer using list
+
+            char key[200] = { 0 };
+
+            if (flag != CMC_FLAG_OK || cli_id == NULL)
+            {
+                cmc_log_error("[%" PRIiMAX "] Error while retrieving client's emails - %s", id,
+                    cmc_flags_to_str[flag]);
+
+                snprintf(key, sizeof(key), "Error while retrieving client's emails - %s",
+                    cmc_flags_to_str[flag]);
+            }
+            else
+            {
+                snprintf(key, sizeof(key), "%s", "OK");
+            }
+
+            char *to_send = msg_create(MSG_CTRL_MAIL_RECV, key, strlen(key), result, strlen(result));
+
+            if (!to_send)
+            {
+                cmc_log_error("[%" PRIiMAX "] Could not create result message.", id);
+            }
+            else
+            {
+                if (!net_send(client_fd, to_send, strlen(to_send)))
+                {
+                    cmc_log_error("[%" PRIiMAX "] Could not send result to client.", id);
+                }
+
+                // Remove emails from msg list
+
+                cmc_mtx_lock(mq_mutex);
+
+                struct msglist *list = mq_get(mails, cli_id);
+                if (mq_flag(mails) == CMC_FLAG_OK)
+                {
+                    ml_clear(list);
+                }
+
+                cmc_mtx_unlock(mq_mutex); // No longer using list
+
+                free(to_send);
+            }
         }
         else
         {
@@ -498,9 +592,9 @@ void get_datetime(char time_[32])
     time_[strftime(time_, 32, "%Y-%m-%d %H:%M:%S", lt)] = '\0';
 }
 
-void get_date(char date_[10])
+void get_datefile(char date_[10])
 {
     time_t t = time(NULL);
     struct tm *lt = localtime(&t);
-    date_[strftime(date_, 10, "%Y%m%d", lt)] = '\0';
+    date_[strftime(date_, 10, "%Y%m%d%H%M%S", lt)] = '\0';
 }
