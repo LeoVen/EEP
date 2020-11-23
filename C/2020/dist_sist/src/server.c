@@ -8,6 +8,7 @@
 #include "macro_collections.h"
 
 #include "collections.h"
+#include "database.h"
 #include "mail.h"
 #include "messages.h"
 #include "netapi.h"
@@ -32,6 +33,8 @@ struct server_thread_arg
 };
 
 int server_thread(void *arguments);
+void get_datetime(char time_[32]);
+void get_date(char date_[10]);
 
 bool server_alive = true;
 
@@ -75,6 +78,9 @@ int main(void)
         perror("");
         goto error_3;
     }
+
+    if (!database_load(database, DATABASE_DEFAULT_FILE_NAME))
+        cmc_log_error("Could not load database.");
 
     struct sockaddr_in cliaddr;
     int client_fd;
@@ -144,6 +150,7 @@ int main(void)
     }
 
     cmc_mtx_destroy(db_mutex);
+    database_save(database, DATABASE_DEFAULT_FILE_NAME);
     error_3:
     dict_free(database);
     cmc_mtx_destroy(mq_mutex);
@@ -352,6 +359,43 @@ int server_thread(void *arguments)
                 cmc_log_fatal("[%" PRIiMAX "] Could not send callback to client!", id);
             }
         }
+        else if (msg->ctrl == MSG_CTRL_BACKUP)
+        {
+            cmc_log_trace("Saving Database's state...");
+            cmc_mtx_lock(db_mutex);
+
+            char file_name[200];
+            char date[10];
+            get_date(date);
+
+            snprintf(file_name, sizeof(file_name), "%sDatabaseBackup.txt", date);
+
+            database_save(database, file_name);
+
+            cmc_mtx_unlock(db_mutex);
+
+            // if (flag != CMC_FLAG_OK)
+            // {
+            //     cmc_log_warn("[%" PRIiMAX "] Could not delete key-value pair to database - %s", id,
+            //         cmc_flags_to_str[flag]);
+
+            //     snprintf(callback, sizeof(callback), "Could not delete key-value pair to database: %s",
+            //         cmc_flags_to_str[flag]);
+            // }
+            // else
+            // {
+            //     snprintf(callback, sizeof(callback), "%s", "OK");
+            // }
+
+            // if (!net_callback(client_fd, callback))
+            // {
+            //     cmc_log_fatal("[%" PRIiMAX "] Could not send callback to client!", id);
+            // }
+        }
+        else if (msg->ctrl == MSG_CTRL_STATUS)
+        {
+
+        }
         else if (msg->ctrl == MSG_CTRL_MAIL_SEND)
         {
             cmc_log_trace("[%" PRIuMAX "] Storing message for %s.", id, msg->key);
@@ -366,10 +410,8 @@ int server_thread(void *arguments)
                 goto mail_send_error;
 
             // Create saved message
-            time_t t = time(NULL);
-            struct tm *lt = localtime(&t);
             char time[32];
-            time[strftime(time, sizeof(time), "%Y-%m-%d %H:%M:%S", lt)] = '\0';
+            get_datetime(time);
 
             size_t len_to_insert = strlen(time) + strlen(cli_id) + msg->val_len + 7;
             char *to_insert = calloc(1, len_to_insert);
@@ -447,4 +489,18 @@ int server_thread(void *arguments)
     cmc_log_debug("Shuting down thread %" PRIiMAX ".", id);
 
     return 0;
+}
+
+void get_datetime(char time_[32])
+{
+    time_t t = time(NULL);
+    struct tm *lt = localtime(&t);
+    time_[strftime(time_, 32, "%Y-%m-%d %H:%M:%S", lt)] = '\0';
+}
+
+void get_date(char date_[10])
+{
+    time_t t = time(NULL);
+    struct tm *lt = localtime(&t);
+    date_[strftime(date_, 10, "%Y%m%d", lt)] = '\0';
 }

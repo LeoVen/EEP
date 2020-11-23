@@ -59,7 +59,7 @@ CMC_CREATE_UNIT(ControlMessagesTest, true, {
         cmc_assert(strcmp(msg_ctrl_to_string(MSG_CTRL_READ), "READ") == 0);
         cmc_assert(strcmp(msg_ctrl_to_string(MSG_CTRL_UPDATE), "UPDATE") == 0);
         cmc_assert(strcmp(msg_ctrl_to_string(MSG_CTRL_DELETE), "DELETE") == 0);
-        cmc_assert(strcmp(msg_ctrl_to_string(MSG_CTRL_SAVE), "SAVE") == 0);
+        cmc_assert(strcmp(msg_ctrl_to_string(MSG_CTRL_BACKUP), "BACKUP") == 0);
         cmc_assert(msg_ctrl_to_string(MSG_CTRL_INVALID) == NULL);
     });
 
@@ -162,7 +162,7 @@ CMC_CREATE_UNIT(ControlMessagesTest, true, {
         cmc_assert(msg_create_and_test(MSG_CTRL_READ, my_key, strlen(my_key), my_val, strlen(my_val)));
         cmc_assert(msg_create_and_test(MSG_CTRL_UPDATE, my_key, strlen(my_key), my_val, strlen(my_val)));
         cmc_assert(msg_create_and_test(MSG_CTRL_DELETE, my_key, strlen(my_key), my_val, strlen(my_val)));
-        cmc_assert(msg_create_and_test(MSG_CTRL_SAVE, my_key, strlen(my_key), my_val, strlen(my_val)));
+        cmc_assert(msg_create_and_test(MSG_CTRL_BACKUP, my_key, strlen(my_key), my_val, strlen(my_val)));
 
         // Empty value
         cmc_assert(msg_create_and_test(MSG_CTRL_SHUTDOWN, my_key, strlen(my_key), my_empty_val, strlen(my_empty_val)));
@@ -171,7 +171,7 @@ CMC_CREATE_UNIT(ControlMessagesTest, true, {
         cmc_assert(msg_create_and_test(MSG_CTRL_READ, my_key, strlen(my_key), my_empty_val, strlen(my_empty_val)));
         cmc_assert(msg_create_and_test(MSG_CTRL_UPDATE, my_key, strlen(my_key), my_empty_val, strlen(my_empty_val)));
         cmc_assert(msg_create_and_test(MSG_CTRL_DELETE, my_key, strlen(my_key), my_empty_val, strlen(my_empty_val)));
-        cmc_assert(msg_create_and_test(MSG_CTRL_SAVE, my_key, strlen(my_key), my_empty_val, strlen(my_empty_val)));
+        cmc_assert(msg_create_and_test(MSG_CTRL_BACKUP, my_key, strlen(my_key), my_empty_val, strlen(my_empty_val)));
     });
 });
 

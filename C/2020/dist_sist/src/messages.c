@@ -7,7 +7,7 @@ static const char *msg_map[] = {
     "READ",
     "UPDATE",
     "DELETE",
-    "SAVE",
+    "BACKUP",
     "STATUS",
     "CALLBACK",
     "MAIL_SEND",

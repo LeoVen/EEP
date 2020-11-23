@@ -41,6 +41,7 @@ int main(void)
         printf(" > %sREAD%s      : Retrieves an existing key-value pair.\n", tc_blue(), tc_reset());
         printf(" > %sUPDATE%s    : Updates an existing key-value pair.\n", tc_blue(), tc_reset());
         printf(" > %sDELETE%s    : Deletes an existing key-value pair.\n", tc_blue(), tc_reset());
+        printf(" > %sBACKUP%s    : Saves a backup file from database.\n", tc_blue(), tc_reset());
         printf(" > %sMAIL_SEND%s : Send an e-mail to another client.\n", tc_blue(), tc_reset());
         printf(" > %sMAIL_RECV%s : Receive all e-mails stored in the server.\n", tc_blue(), tc_reset());
 

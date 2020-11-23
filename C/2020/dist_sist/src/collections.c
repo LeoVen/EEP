@@ -2,6 +2,7 @@
 
 /* Database */
 CMC_CMC_HASHMAP_CORE(PUBLIC, SOURCE, CMC_DICTIONARY)
+CMC_EXT_CMC_HASHMAP_ITER(PUBLIC, SOURCE, CMC_DICTIONARY)
 
 void collect_str_free(char *data)
 {

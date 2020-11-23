@@ -38,7 +38,7 @@ enum message_control
     MSG_CTRL_DELETE = 5,
 
     /* Creates a file saving the database's state */
-    MSG_CTRL_SAVE = 6,
+    MSG_CTRL_BACKUP = 6,
 
     /* Returns database's status */
     MSG_CTRL_STATUS = 7,

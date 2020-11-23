@@ -10,6 +10,7 @@
 /* Database */
 #define CMC_DICTIONARY (dict, dictionary, , char *, char *)
 CMC_CMC_HASHMAP_CORE(PUBLIC, HEADER, CMC_DICTIONARY)
+CMC_EXT_CMC_HASHMAP_ITER(PUBLIC, HEADER, CMC_DICTIONARY)
 
 extern struct dictionary_fkey dict_methods_key;
 extern struct dictionary_fval dict_methods_val;
