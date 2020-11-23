@@ -1,5 +1,5 @@
 CC = gcc
-INCLUDE = -I ../../../../C-Macro-Collections/src -I ./include
+INCLUDE = -I ./lib/cmc -I ./include
 CFLAGS = -Wall --std=c11
 BUILD = ./build
 LINKLIB = -pthread
