@@ -25,6 +25,7 @@ class ActivationRelu:
     def forward(self, inputs):
         self.output = np.maximum(0, inputs)
 
+
 layer1 = DenseLayer(X.shape[1], 5)
 layer1.forward(X)
 
