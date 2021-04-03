@@ -17,6 +17,8 @@ class DenseLayer:
         self.biases = np.zeros((1, n_neurons))
     def forward(self, inputs):
         self.output = np.dot(inputs, self.weights) + self.biases
+    def layer_info(self):
+        print(f"W.shape: {self.weights.shape}; B.shape: {self.biases.shape}")
 
 
 class ActivationRelu:
@@ -32,9 +34,22 @@ class ActivationSoftmax:
 
 x, y = spiral_data(samples=100, classes=3)
 
-dense1 = DenseLayer(2, 3)
+print(f'x.shape: {x.shape}')
+# print(x[:5])
+
+print(f'y.shape: {y.shape}')
+# print(y[:5])
+
+def plot_data(x, y):
+    import matplotlib.pyplot as plt
+    plt.scatter(x[:,0], x[:,1], c=y)
+    plt.show()
+
+# plot_data(x, y)
+
+dense1 = DenseLayer(2, 10)
 activation1 = ActivationRelu()
-dense2 = DenseLayer(3, 3)
+dense2 = DenseLayer(10, 10)
 activation2 = ActivationSoftmax()
 
 # Compute
