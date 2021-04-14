@@ -13,7 +13,7 @@ if len(physical_devices) > 0:
     tf.config.experimental.set_memory_growth(physical_devices[0], True)
     print('Memory Growth = True')
 
-(x_train, y_train), (x_test, y_test) = tf.keras.datasets.mnist.load_data()
+(x_train, y_train), (x_test, y_test) = tf.keras.datasets.cifar10.load_data()
 
 x_train = x_train / 255.0
 x_test = x_test / 255.0
@@ -23,7 +23,7 @@ print(y_train.shape)
 
 def get_model(batch_norm, max_pooling, dropout):
 
-    inputs = keras.Input(shape=(28, 28, 1))
+    inputs = keras.Input(shape=(32, 32, 3))
 
     x = keras.layers.Conv2D(32, 3)(inputs)
     if batch_norm:

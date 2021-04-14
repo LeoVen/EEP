@@ -1,4 +1,3 @@
-# https://www.thepythoncode.com/article/canny-edge-detection-opencv-python
 import cv2
 import numpy as np
 import tensorflow as tf
