@@ -1,0 +1,18 @@
+public enum TokenType {
+    OP_NEG,
+    OP_ADD,
+    OP_MUL,
+    OP_DIV,
+    OP_NOT,
+    OP_AND,
+    OP_OR,
+    TOK_LT,
+    TOK_LE,
+    TOK_GT,
+    TOK_GE,
+    TOK_EQ,
+    TOK_OPEN,
+    TOK_CLOSE,
+    NUMBER,
+    IDENT,
+}
