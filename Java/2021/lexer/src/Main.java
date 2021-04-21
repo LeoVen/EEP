@@ -1,5 +1,6 @@
 import java.io.BufferedReader;
 import java.io.FileReader;
+import java.util.List;
 
 public class Main {
     public static void main(String[] args) {
@@ -12,7 +13,7 @@ public class Main {
             BufferedReader reader = new BufferedReader(new FileReader(fileName));
             Lexer lexer = new Lexer(reader);
 
-            String result = lexer.parse();
+            List<Token<TokenType, TokenValue>> result = lexer.parse();
 
             System.out.println(result);
         } catch (Exception e)  {

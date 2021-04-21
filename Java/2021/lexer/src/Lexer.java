@@ -1,36 +1,36 @@
 import java.io.BufferedReader;
 import java.io.IOException;
+import java.util.ArrayList;
+import java.util.List;
 
 public class Lexer {
     private BufferedReader reader;
     private int currentChar;
+    private String memory;
+    private boolean finished = false;
+    private boolean goNext = true;
 
     public Lexer(BufferedReader reader) {
         this.reader = reader;
+        this.memory = "";
     }
 
-    public String parse() throws IOException {
-        StringBuilder sb = new StringBuilder();
+    public List<Token<TokenType, TokenValue>> parse() throws IOException {
+        ArrayList<Token<TokenType, TokenValue>> result = new ArrayList<>();
 
-        sb.append("[ ");
-
-        int total = 0;
-
-        while (true) {
+        while (!finished) {
+            if (goNext)
+                this.nextChar();
+            else
+                goNext = true;
             this.seek();
             Token<TokenType, TokenValue> token = nextToken();
             if (token != null) {
-                if (total > 0) {
-                    sb.append(", ");
-                }
-                sb.append(token);
-                total += 1;
-            } else break;
+                result.add(token);
+            }
         }
 
-        sb.append(" ]");
-
-        return sb.toString();
+        return result;
     }
 
     private void nextChar() throws IOException {
@@ -38,9 +38,8 @@ public class Lexer {
     }
 
     public void seek() throws IOException {
-        currentChar = reader.read();
         while (Character.isSpaceChar(currentChar)) {
-            currentChar = reader.read();
+            this.nextChar();
         }
     }
 
@@ -54,6 +53,7 @@ public class Lexer {
         }
 
         // EOF
+        finished = true;
         return null;
     }
 
@@ -69,8 +69,18 @@ public class Lexer {
     }
 
     private Token<TokenType, TokenValue> getOperator() throws IOException {
-        StringBuilder readResult = new StringBuilder();
-        readResult.append(currentChar);
+        if (!memory.isEmpty()) {
+            switch (memory.charAt(0)) {
+                case '<' -> {
+                    memory = "";
+                    return new Token<>(TokenType.CMP_LT, new TokenValue("<"));
+                }
+                case '>' -> {
+                    memory = "";
+                    return new Token<>(TokenType.CMP_GT, new TokenValue(">"));
+                }
+            }
+        }
 
         switch (currentChar) {
             case '+' -> {
@@ -94,29 +104,78 @@ public class Lexer {
             case '|' -> {
                 return new Token<>(TokenType.OP_OR, new TokenValue("|"));
             }
+            case '(' -> {
+                return new Token<>(TokenType.PAREN_OPEN, new TokenValue("("));
+            }
+            case ')' -> {
+                return new Token<>(TokenType.PAREN_CLOSE, new TokenValue(")"));
+            }
+            case '<' -> {
+                nextChar();
+                switch (currentChar) {
+                    case '=' -> {
+                        return new Token<>(TokenType.CMP_LE, new TokenValue("<="));
+                    }
+                    default -> {
+                        addToMemory("<");
+                        return getOperator();
+                    }
+                }
+            }
+            case '>' -> {
+                nextChar();
+                switch (currentChar) {
+                    case '=' -> {
+                        return new Token<>(TokenType.CMP_GE, new TokenValue(">="));
+                    }
+                    default -> {
+                        addToMemory(">");
+                        return getOperator();
+                    }
+                }
+            }
+            case '=' -> {
+                nextChar();
+                switch (currentChar) {
+                    case '=' -> {
+                        return new Token<>(TokenType.CMP_EQ, new TokenValue("=="));
+                    }
+                    default -> {
+                        addToMemory("=");
+                        return getOperator();
+                    }
+                }
+            }
         }
 
         return null;
+    }
+
+    private void addToMemory(String s) {
+        memory += s;
     }
 
     private Token<TokenType, TokenValue> getNumber() throws IOException {
         StringBuilder readResult = new StringBuilder();
 
         while (Character.isDigit(currentChar)) {
-            readResult.append(currentChar);
+            readResult.append((char)currentChar);
             nextChar();
         }
 
         if (currentChar == '.') {
+            readResult.append((char)currentChar);
             nextChar();
             while (Character.isDigit(currentChar)) {
-                readResult.append(currentChar);
+                readResult.append((char)currentChar);
                 nextChar();
             }
 
+            goNext = false;
             return new Token<>(TokenType.NUMBER, new TokenValue(Double.parseDouble(readResult.toString())));
         }
 
-        return null;
+        goNext = false;
+        return new Token<>(TokenType.NUMBER, new TokenValue(Integer.parseInt(readResult.toString())));
     }
 }
