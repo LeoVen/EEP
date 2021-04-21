@@ -12,7 +12,7 @@ public class Token<Ttype extends TokenType, Tvalue extends TokenValue> {
     @Override
     public String toString() {
         return "Token [" + tokenType +
-                ", " + tokenValue +
-                "]";
+                ", '" + tokenValue +
+                "']";
     }
 }

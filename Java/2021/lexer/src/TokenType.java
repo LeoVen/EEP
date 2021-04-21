@@ -13,6 +13,8 @@ public enum TokenType {
     CMP_EQ,
     PAREN_OPEN,
     PAREN_CLOSE,
+    BRACK_OPEN,
+    BRACK_CLOSE,
     NUMBER,
     IDENT,
 }

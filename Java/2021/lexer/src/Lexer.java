@@ -110,6 +110,12 @@ public class Lexer {
             case ')' -> {
                 return new Token<>(TokenType.PAREN_CLOSE, new TokenValue(")"));
             }
+            case '{' -> {
+                return new Token<>(TokenType.BRACK_OPEN, new TokenValue("{"));
+            }
+            case '}' -> {
+                return new Token<>(TokenType.BRACK_CLOSE, new TokenValue("}"));
+            }
             case '<' -> {
                 nextChar();
                 switch (currentChar) {
