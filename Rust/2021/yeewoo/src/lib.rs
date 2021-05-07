@@ -62,13 +62,17 @@ impl Component for Model {
                 </button>
                 <p>{ self.value }</p>
                 <div style="display: flex; flex-wrap: wrap; font-family: monospace;">
-                    { (0..255).into_iter().map(|num|
-                        html! {
-                            <div style=&format!(
-                                "background-color: rgb({0}, {0}, {0}); padding: 1em;", num
-                            )>{format!("#{0:02x}{0:02x}{0:02x}", num)}</div>
-                        }
-                    ).collect::<Html>() }
+                    { (0..255).into_iter().map(|red|
+                        (0..255).into_iter().map(move |green| {
+                            (0..255).into_iter().map(move |blue| {
+                                html! {
+                                    <div style=&format!(
+                                        "background-color: rgb({}, {}, {}); padding: 1em;", red, green, blue)
+                                    >{format!("#{:02x}{:02x}{:02x}", red, green, blue)}</div>
+                                }
+                            })
+                        })
+                    ).flatten().flatten().collect::<Html>() }
                 </div>
             </div>
         }
