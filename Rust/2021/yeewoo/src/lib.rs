@@ -44,6 +44,25 @@ impl Component for Model {
 
     fn view(&self) -> Html {
         let change = self.change;
+        let value = self.value;
+
+        let colors = if value > 0 {
+            html! {
+                <div style="display: flex; flex-wrap: wrap; font-family: monospace;">
+                    { (0..value).into_iter().map(|red|
+                        (0..value).into_iter().map(move |green| {
+                            (0..value).into_iter().map(move |blue| {
+                                html! {
+                                    <div style=&format!("background-color: rgb({}, {}, {}); padding: 2px;", red, green, blue)></div>
+                                }
+                            })
+                        })
+                    ).flatten().flatten().collect::<Html>() }
+                </div>
+            }
+        } else {
+            html! { <p> {"No happy colors :("} </p> }
+        };
 
         html! {
             <div>
@@ -58,22 +77,11 @@ impl Component for Model {
                             let y = e.delta_y();
                             Msg::ChangeCounter((-y / 100.0) as i64)
                         })>
-                        { change }
+                        <p> { change } </p>
                 </button>
-                <p>{ self.value }</p>
-                <div style="display: flex; flex-wrap: wrap; font-family: monospace;">
-                    { (0..255).into_iter().map(|red|
-                        (0..255).into_iter().map(move |green| {
-                            (0..255).into_iter().map(move |blue| {
-                                html! {
-                                    <div style=&format!(
-                                        "background-color: rgb({}, {}, {}); padding: 1em;", red, green, blue)
-                                    >{format!("#{:02x}{:02x}{:02x}", red, green, blue)}</div>
-                                }
-                            })
-                        })
-                    ).flatten().flatten().collect::<Html>() }
-                </div>
+                <p>{ value }</p>
+                <p> {"Total Colors:"}{ value.pow(3) } </p>
+                {colors}
             </div>
         }
     }
