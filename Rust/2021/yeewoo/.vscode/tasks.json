@@ -1,0 +1,38 @@
+{
+	"version": "2.0.0",
+	"tasks": [
+		{
+			"type": "shell",
+			"command": "miniserve",
+			"args": [
+				"./static",
+				"--index",
+				"index.html"
+			],
+			"group": "build",
+			"problemMatcher": [],
+			"dependsOn": [
+				"Build"
+			],
+			"label": "Run"
+		},
+		{
+			"type": "shell",
+			"command": "wasm-pack",
+			"args": [
+				"build",
+				"--target",
+				"web",
+				"--out-name",
+				"wasm",
+				"--out-dir",
+				"./static"
+			],
+			"problemMatcher": [
+				"$rustc"
+			],
+			"group": "build",
+			"label": "Build"
+		}
+	]
+}
