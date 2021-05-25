@@ -1,5 +1,3 @@
-#![feature(async_closure)]
-
 use std::{
     fs::{self, Metadata},
     io,
