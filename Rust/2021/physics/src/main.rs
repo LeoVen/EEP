@@ -22,17 +22,19 @@ pub struct Ball {
 }
 
 // Pixels per second^2
-const GRAVITY: f64 = 9.807 * 4.0;
+const GRAVITY: f64 = 9.807;
+// Simulation speed
+const PIXEL_ACCELERATION: f64 = 10.0;
 
 impl Ball {
     pub fn gravity(&mut self, dt: f64) {
         const GRAV: Vec2 = Vec2 { x: 0.0, y: GRAVITY };
-        self.vel.x += GRAV.x * dt;
-        self.vel.y += GRAV.y * dt;
+        self.vel.x += GRAV.x * dt * PIXEL_ACCELERATION;
+        self.vel.y += GRAV.y * dt * PIXEL_ACCELERATION;
     }
-    pub fn update(&mut self) {
-        self.pos.x += self.vel.x;
-        self.pos.y += self.vel.y;
+    pub fn velocity(&mut self, dt: f64) {
+        self.pos.x += self.vel.x * dt * PIXEL_ACCELERATION;
+        self.pos.y += self.vel.y * dt * PIXEL_ACCELERATION;
     }
     pub fn center_rect(&self) -> Rectangle<f64> {
         center_on(self.pos.x, self.pos.y, self.w, self.h)
@@ -74,7 +76,7 @@ fn main() {
             } else {
                 ball.gravity(dt);
             }
-            ball.update();
+            ball.velocity(dt);
         });
     }
 }
